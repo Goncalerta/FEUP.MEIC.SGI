@@ -1,11 +1,11 @@
 # SGI 2022/2023 - TP3
 
-## Group: T0xG0y
+## Group T04G02
 
-| Name             | Number    | E-Mail             |
-| ---------------- | --------- | ------------------ |
-| John Doe         | 201801010 | ...                |
-| Jane Doe         | 201801011 | ...                |
+| Name                            | Number    | E-Mail                   |
+| ------------------------------- | --------- | ------------------------ |
+| Diogo Luís Henriques Costa      | 201906731 | up201906731@edu.fe.up.pt |
+| Pedro Gonçalo de Castro Correia | 201905348 | up201905348@edu.fe.up.pt |
 
 ----
 ## Project information
