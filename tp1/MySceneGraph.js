@@ -1,5 +1,8 @@
 import { CGFXMLreader } from '../lib/CGF.js';
+import { MyCylinder } from './MyCylinder.js';
 import { MyRectangle } from './MyRectangle.js';
+import { MySphere } from './MySphere.js';
+import { MyTorus } from './MyTorus.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
@@ -538,6 +541,7 @@ export class MySceneGraph {
 
             // Retrieves the primitive coordinates.
             if (primitiveType == 'rectangle') {
+                // <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
                 // x1
                 var x1 = this.reader.getFloat(grandChildren[0], 'x1');
                 if (!(x1 != null && !isNaN(x1)))
@@ -561,6 +565,77 @@ export class MySceneGraph {
                 var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
+            }
+            else if (primitiveType == 'cylinder') {
+                // <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+                // base
+                var base = this.reader.getFloat(grandChildren[0], 'base');
+                if (!(base != null && !isNaN(base)))
+                    return "unable to parse base of the primitive coordinates for ID = " + primitiveId;
+                
+                // top
+                var top = this.reader.getFloat(grandChildren[0], 'top');
+                if (!(top != null && !isNaN(top)))
+                    return "unable to parse top of the primitive coordinates for ID = " + primitiveId;
+                
+                // height
+                var height = this.reader.getFloat(grandChildren[0], 'height');
+                if (!(height != null && !isNaN(height)))
+                    return "unable to parse height of the primitive coordinates for ID = " + primitiveId;
+
+                // slices
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
+                if (!(slices != null && !isNaN(slices)))
+                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
+
+                // stacks
+                var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+                if (!(stacks != null && !isNaN(stacks)))
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                var cylinder = new MyCylinder(this.scene, base, top, height, slices, stacks);
+
+                this.primitives[primitiveId] = cylinder;
+            }
+            else if (primitiveType == 'sphere') {
+                // <sphere radius="ff" slices="ii" stacks="ii" />
+                var radius = this.reader.getFloat(grandChildren[0], 'radius');
+                if (!(radius != null && !isNaN(radius)))
+                    return "unable to parse radius of the primitive coordinates for ID = " + primitiveId;
+
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
+                if (!(slices != null && !isNaN(slices)))
+                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
+                
+                var stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+                if (!(stacks != null && !isNaN(stacks)))
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                var sphere = new MySphere(this.scene, radius, slices, stacks);
+
+                this.primitives[primitiveId] = sphere;
+            }
+            else if (primitiveType == 'torus') {
+                // <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+                var inner = this.reader.getFloat(grandChildren[0], 'inner');
+                if (!(inner != null && !isNaN(inner)))
+                    return "unable to parse inner of the primitive coordinates for ID = " + primitiveId;
+
+                var outer = this.reader.getFloat(grandChildren[0], 'outer');
+                if (!(outer != null && !isNaN(outer)))
+                    return "unable to parse outer of the primitive coordinates for ID = " + primitiveId;
+                
+                var slices = this.reader.getInteger(grandChildren[0], 'slices');
+                if (!(slices != null && !isNaN(slices)))
+                    return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
+
+                var loops = this.reader.getInteger(grandChildren[0], 'loops');
+                if (!(loops != null && !isNaN(loops)))
+                    return "unable to parse loops of the primitive coordinates for ID = " + primitiveId;
+
+                var torus = new MyTorus(this.scene, inner, outer, slices, loops);
+
+                this.primitives[primitiveId] = torus;
             }
             else {
                 console.warn("To do: Parse other primitives.");

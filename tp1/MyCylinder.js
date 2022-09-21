@@ -55,8 +55,8 @@ export class MyCylinder extends CGFobject {
         }
 
         for (let i = 0; i < this.stacks; i++) {
-            for (let j = 0; j <= this.slices; j++) {
-                const indexVertex = i * this.slices + j;
+            for (let j = 0; j < this.slices; j++) {
+                const indexVertex = i * (this.slices + 1) + j;
                 const indexVertexTop = indexVertex + this.slices + 1;
 
                 this.indices.push(indexVertex, indexVertex + 1, indexVertexTop + 1)
