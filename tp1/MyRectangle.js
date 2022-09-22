@@ -7,6 +7,7 @@ import { CGFobject } from '../lib/CGF.js';
  * @param y - Scale of rectangle in Y
  */
 export class MyRectangle extends CGFobject {
+	// TODO what does this id parameter mean?
 	constructor(scene, id, x1, x2, y1, y2) {
 		super(scene);
 		this.x1 = x1;
