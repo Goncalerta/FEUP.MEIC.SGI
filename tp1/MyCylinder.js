@@ -29,8 +29,14 @@ export class MyCylinder extends CGFobject {
 
         const alpha = Math.PI*2 / this.slices;
         const stackHeight = this.height/this.stacks;
-        const sinLeaningAngle = (this.baseRadius - this.topRadius) / this.height;
-        const cosLeaningAngle = Math.sqrt(1 - sinLeaningAngle ** 2);
+
+        const hypo = Math.sqrt((this.baseRadius - this.topRadius)**2 + this.height**2);
+        const sinLeaningAngle = (this.baseRadius - this.topRadius) / hypo;
+        const cosLeaningAngle = this.height / hypo;
+
+        // TODO is this one right?
+        // const sinLeaningAngle = (this.baseRadius - this.topRadius) / this.height;
+        // const cosLeaningAngle = Math.sqrt(1 - sinLeaningAngle ** 2);
 
         for (let i = 0; i <= this.stacks; i++) {
             for (let j = 0; j <= this.slices; j++) {
@@ -50,7 +56,7 @@ export class MyCylinder extends CGFobject {
                     Math.sin(currentAngle) * sinLeaningAngle
                 ]));
 
-                //this.texCoords.push(j * 1/this.slices, (i + 1) % 2); // TODO check texture
+                //this.texCoords.push(j/this.slices, i/this.stacks); // TODO check texture
             }
         }
 
