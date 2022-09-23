@@ -91,6 +91,9 @@ export class MySceneGraph {
             nodeNames.push(nodes[i].nodeName);
         }
 
+        if (nodeNames.indexOf("parsererror") != -1)
+            return "Parser error: " + nodes[nodeNames.indexOf("parsererror")].innerText;
+
         var error;
 
         // Processes each node, verifying errors.
@@ -442,6 +445,47 @@ export class MySceneGraph {
         return null;
     }
 
+    parseSingleTransformation(transformationID, transformationNode, transfMatrix) {
+        switch (transformationNode.nodeName) {
+            case 'translate':
+                var coordinates = this.parseCoordinates3D(transformationNode, "translate transformation for ID " + transformationID);
+                if (!Array.isArray(coordinates))
+                    return coordinates;
+
+                mat4.translate(transfMatrix, transfMatrix, coordinates);
+                break;
+            case 'scale':                        
+                var coordinates = this.parseCoordinates3D(transformationNode, "scale transformation for ID " + transformationID);
+                if (!Array.isArray(coordinates))
+                    return coordinates;
+
+                mat4.scale(transfMatrix, transfMatrix, coordinates);
+                break;
+            case 'rotate':
+                let axis = this.reader.getString(transformationNode, 'axis');
+                let axisVector;
+                if (axis == 'x') {
+                    axisVector = [1, 0, 0];
+                } else if (axis == 'y') {
+                    axisVector = [0, 1, 0];
+                } else if (axis == 'z') {
+                    axisVector = [0, 0, 1];
+                } else {
+                    return "Invalid axis '" + axis + "' for rotate transformation for ID " + transformationID;
+                }
+
+                let angle = this.reader.getFloat(transformationNode, 'angle');
+                if (!(angle != null && !isNaN(angle)))
+                    return "unable to parse angle of the rotation for ID = " + transformationID;
+                
+                mat4.rotate(transfMatrix, transfMatrix, angle * DEGREE_TO_RAD, axisVector);
+                break;
+            default:
+                return "Invalid transformation '" + transformationNode + "' for ID " + transformationID;
+        }
+        return null;
+    }
+
     /**
      * Parses the <transformations> block.
      * @param {transformations block element} transformationsNode
@@ -476,22 +520,11 @@ export class MySceneGraph {
             var transfMatrix = mat4.create();
 
             for (var j = 0; j < grandChildren.length; j++) {
-                switch (grandChildren[j].nodeName) {
-                    case 'translate':
-                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
-                        if (!Array.isArray(coordinates))
-                            return coordinates;
-
-                        transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
-                        break;
-                    case 'scale':                        
-                        this.onXMLMinorError("To do: Parse scale transformations.");
-                        break;
-                    case 'rotate':
-                        // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
-                        break;
+                let error = this.parseSingleTransformation(transformationID, grandChildren[j], transfMatrix);
+                if (error != null) {
+                    return error;
                 }
+
             }
             this.transformations[transformationID] = transfMatrix;
         }
@@ -743,10 +776,39 @@ export class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            this.onXMLMinorError("To do: Parse components.");
-
-            
             // Transformations
+            // TODO teacher said to not precompute transformationrefs but to do it in inlined transformations
+            //      should we really do that? isn't it better to just precompute it all?
+            let current_transformation = null;
+            for (let child of grandChildren[transformationIndex].children) {
+                if (child.nodeName == "transformationref") {
+                    let transformationID = this.reader.getString(child, 'id');
+                    if (transformationID == null)
+                        return "no ID defined for transformationID";
+                    if (this.transformations[transformationID] == null)
+                        return "transformationID does not exist";
+                    
+                    if (current_transformation != null) {
+                        component.addTransformation(current_transformation);
+                        current_transformation = null;
+                    }
+
+                    component.addTransformation(this.transformations[transformationID]);
+                } else {
+                    if (current_transformation == null) {
+                        current_transformation = mat4.create();
+                    }
+                    let error = this.parseSingleTransformation(componentID, child, current_transformation);
+                    if (error != null) {
+                        return error;
+                    }
+                }
+
+                if (current_transformation != null) {
+                    component.addTransformation(current_transformation);
+                    current_transformation = null;
+                }
+            }
 
             // Materials
 
@@ -756,9 +818,21 @@ export class MySceneGraph {
             for (let child of grandChildren[childrenIndex].children) {
                 if (child.nodeName == 'componentref') {
                     let componentref = this.reader.getString(child, 'id');
+
+                    if (this.components[componentref] == null) {
+                        this.onXMLError("componentref " + componentref + " does not exist");
+                        continue;
+                    }
+
                     component.addChild(this.components[componentref]);
                 } else if (child.nodeName == 'primitiveref') {
                     let primitiveref = this.reader.getString(child, 'id');
+
+                    if (this.primitives[primitiveref] == null) {
+                        this.onXMLError("primitiveref " + primitiveref + " does not exist");
+                        continue;
+                    }
+
                     component.addChild(this.primitives[primitiveref]);
                 } else {
                     this.onXMLMinorError("Unexpected tag <" + child.nodeName + ">");
@@ -885,6 +959,11 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
+        // this.compontents doesnt contain idRoot
+        if (this.components[this.idRoot] == null) {
+            this.onXMLError("Root component not found");
+            return;
+        }
         this.components[this.idRoot].display();
     }
 }
