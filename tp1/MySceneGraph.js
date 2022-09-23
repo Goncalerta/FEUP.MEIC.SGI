@@ -4,6 +4,7 @@ import { MyRectangle } from './MyRectangle.js';
 import { MySphere } from './MySphere.js';
 import { MyTorus } from './MyTorus.js';
 import { MyTriangle } from './MyTriangle.js';
+import { MyComponent } from './MyComponent.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
@@ -681,7 +682,7 @@ export class MySceneGraph {
                 this.primitives[primitiveId] = triangle;
             }
             else {
-                console.warn("To do: Parse other primitives.");
+                console.warn("Unexpected primitive.");
             }
         }
 
@@ -719,8 +720,19 @@ export class MySceneGraph {
             if (this.components[componentID] != null)
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
-            grandChildren = children[i].children;
+            this.components[componentID] = new MyComponent(this.scene);
 
+        }
+
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeName != "component") {
+                continue;
+            }
+
+            var componentID = this.reader.getString(children[i], 'id');
+            let component = this.components[componentID];
+
+            grandChildren = children[i].children;
             nodeNames = [];
             for (var j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
@@ -732,6 +744,8 @@ export class MySceneGraph {
             var childrenIndex = nodeNames.indexOf("children");
 
             this.onXMLMinorError("To do: Parse components.");
+
+            
             // Transformations
 
             // Materials
@@ -739,6 +753,19 @@ export class MySceneGraph {
             // Texture
 
             // Children
+            for (let child of grandChildren[childrenIndex].children) {
+                if (child.nodeName == 'componentref') {
+                    let componentref = this.reader.getString(child, 'id');
+                    component.addChild(this.components[componentref]);
+                } else if (child.nodeName == 'primitiveref') {
+                    let primitiveref = this.reader.getString(child, 'id');
+                    component.addChild(this.primitives[primitiveref]);
+                } else {
+                    this.onXMLMinorError("Unexpected tag <" + child.nodeName + ">");
+                }
+            }
+
+            this.components[componentID] = component;
         }
     }
 
@@ -858,9 +885,6 @@ export class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //To do: Create display loop for transversing the scene graph
-
-        //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['demoRectangle'].display();
+        this.components[this.idRoot].display();
     }
 }
