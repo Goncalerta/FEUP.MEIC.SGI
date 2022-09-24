@@ -25,6 +25,8 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        this.materials = [];
+
         this.sceneInited = false;
 
         this.initCameras();
@@ -104,6 +106,22 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+    }
+
+    pushMaterial(material) {
+        material.apply();
+        this.materials.push(material);
+    }
+
+    popMaterial() {
+        if (this.materials.length == 0) {
+            console.error("Error: No material in stack.");
+            return;
+        }
+        this.materials.pop();
+        if (this.materials.length > 0) {
+            this.materials[this.materials.length - 1].apply();
+        }
     }
 
     /**

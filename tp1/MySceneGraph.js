@@ -5,6 +5,7 @@ import { MySphere } from './MySphere.js';
 import { MyTorus } from './MyTorus.js';
 import { MyTriangle } from './MyTriangle.js';
 import { MyComponent } from './MyComponent.js';
+import { CGFappearance } from '../lib/CGF.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
@@ -417,9 +418,6 @@ export class MySceneGraph {
 
         this.materials = [];
 
-        var grandChildren = [];
-        var nodeNames = [];
-
         // Any number of materials.
         for (var i = 0; i < children.length; i++) {
 
@@ -436,12 +434,45 @@ export class MySceneGraph {
             // Checks for repeated IDs.
             if (this.materials[materialID] != null)
                 return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+            
+            let shininess = this.reader.getFloat(children[i], 'shininess');
+            if (!(shininess != null && !isNaN(shininess)))
+                return "unable to parse shininess of the material for ID = " + materialID;
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+            this.materials[materialID] = new CGFappearance(this.scene);
+            this.materials[materialID].setShininess(shininess);
+            
+            for (let properties of children[i].children) {
+                if (properties.nodeName == "emission") {
+                    let emission = this.parseColor(properties, "emission of material " + materialID);
+                    if (!Array.isArray(emission))
+                        return emission;
+                        this.materials[materialID].setEmission(...emission);
+                }
+                else if (properties.nodeName == "ambient") {
+                    let ambient = this.parseColor(properties, "ambient of material " + materialID);
+                    if (!Array.isArray(ambient))
+                        return ambient;
+                    this.materials[materialID].setAmbient(...ambient);
+                }
+                else if (properties.nodeName == "diffuse") {
+                    let diffuse = this.parseColor(properties, "diffuse of material " + materialID);
+                    if (!Array.isArray(diffuse))
+                        return diffuse;
+                        this.materials[materialID].setDiffuse(...diffuse);
+                }
+                else if (properties.nodeName == "specular") {
+                    let specular = this.parseColor(properties, "specular of material " + materialID);
+                    if (!Array.isArray(specular))
+                        return specular;
+                        this.materials[materialID].setSpecular(...specular);
+                }
+                else
+                    this.onXMLMinorError("unknown tag <" + properties.nodeName + ">");
+            }
         }
 
-        //this.log("Parsed materials");
+        this.log("Parsed materials");
         return null;
     }
 
@@ -833,9 +864,29 @@ export class MySceneGraph {
                 }
             }
 
-            // Materials
+            this.components[componentID] = component;
 
-            // Texture
+            // Materials
+            for (let child of grandChildren[materialsIndex].children) {
+                if (child.nodeName != "material") {
+                    this.onXMLMinorError("Unexpected tag <" + child.nodeName + ">");
+                    continue;
+                }
+
+                let materialID = this.reader.getString(child, 'id');
+                if (materialID == null) {
+                    this.onXMLMinorError("no ID defined for materialID");
+                    continue;
+                }
+    
+                if (materialID == "inherit") {
+                    component.inheritMaterial();
+                } else {
+                    component.addMaterial(this.materials[materialID]);
+                }
+            }
+
+            // Texture TODO
 
             // Children
             for (let child of grandChildren[childrenIndex].children) {
