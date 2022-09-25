@@ -48,6 +48,12 @@ export class MyInterface extends CGFinterface {
     };
 
     isKeyPressed(keyCode) {
+        // TODO this is similar to what we did in CGRA, should we handle it differently?
+        if (this.activeKeys[keyCode] === true && keyCode == "keyM") {
+            this.activeKeys[keyCode] = false;
+            return true;
+        }
+
         return this.activeKeys[keyCode] || false;
     }
 }

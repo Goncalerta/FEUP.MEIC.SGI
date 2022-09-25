@@ -26,11 +26,23 @@
     </textures>
 
     <materials>
-        <material id="demoMaterial" shininess="10">
+        <material id="demoMaterialR" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
             <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="demoMaterialG" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.6" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.6" b="0.0" a="1.0" />
+        </material>
+        <material id="demoMaterialB" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.6" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.6" a="1.0" />
         </material>
     </materials>
 
@@ -77,7 +89,9 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -95,7 +109,8 @@
                 <scale x="30" y="30" z="30" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -108,7 +123,7 @@
                 <scale x="30" y="30" z="30" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -125,7 +140,9 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -147,7 +164,9 @@
                 <translate x="0" y="0" z="-0.5" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -161,7 +180,9 @@
                 <translate x="-0.075" y="-0.075" z="-5.5" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -178,7 +199,9 @@
                 <scale x="0.15" y="0.15" z="8" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -191,7 +214,9 @@
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -203,7 +228,9 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -217,7 +244,9 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -231,7 +260,9 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -245,7 +276,9 @@
                 <translate x="0" y="0" z="6.75" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -262,7 +295,9 @@
                 <scale x="1.75" y="1.75" z="1" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -275,7 +310,9 @@
                 <scale x="0.4" y="0.4" z="0.7" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -288,7 +325,9 @@
                 <transformationref id="spacestationMainMirrorSupportTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -301,7 +340,9 @@
                 <transformationref id="spacestationMainMirrorSupportTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -316,7 +357,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -329,7 +372,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -342,7 +387,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -355,7 +402,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -368,7 +417,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -381,7 +432,9 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -395,7 +448,9 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>
@@ -490,7 +545,9 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="demoMaterial" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
             </materials>
             <texture id="demoTexture"/>
             <children>

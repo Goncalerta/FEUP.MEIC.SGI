@@ -433,7 +433,7 @@ export class MySceneGraph {
 
             // Checks for repeated IDs.
             if (this.materials[materialID] != null)
-                return "ID must be unique for each light (conflict: ID = " + materialID + ")";
+                return "ID must be unique for each material (conflict: ID = " + materialID + ")";
             
             let shininess = this.reader.getFloat(children[i], 'shininess');
             if (!(shininess != null && !isNaN(shininess)))
@@ -785,6 +785,7 @@ export class MySceneGraph {
         var children = componentsNode.children;
 
         this.components = [];
+        this.componentsIds = [];
 
         var grandChildren = [];
         var grandgrandChildren = [];
@@ -808,6 +809,7 @@ export class MySceneGraph {
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
 
             this.components[componentID] = new MyComponent(this.scene);
+            this.componentsIds.push(componentID);
 
         }
 
@@ -917,6 +919,11 @@ export class MySceneGraph {
         }
     }
 
+    toggleMaterial() {
+        for (let componentId of this.componentsIds) {
+            this.components[componentId].toggleMaterial();
+        }
+    }
 
     /**
      * Parse the coordinates from a node with ID = id

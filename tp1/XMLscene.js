@@ -125,6 +125,26 @@ export class XMLscene extends CGFscene {
     }
 
     /**
+     * @method update
+     * Called periodically (as per setUpdatePeriod() in init()).
+     * Updates the objects in the scene and checks input from keys.
+     * @param {Number} - Current time in milliseconds.
+     */
+    update(t) {
+        this.checkKeys();
+    }
+
+    /**
+     * @method checkKeys
+     * Checks for user's input in tge keyboard and acts accordingly.
+     */
+    checkKeys() {
+        if (this.gui.isKeyPressed("KeyM")) {
+            this.graph.toggleMaterial();
+        }
+    }
+
+    /**
      * Displays the scene.
      */
     display() {

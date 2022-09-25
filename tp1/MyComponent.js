@@ -17,7 +17,7 @@ export class MyComponent extends CGFobject {
 		this.materials.push(material);
 	}
 
-	nextMaterial() {
+	toggleMaterial() {
 		this.currentMaterialIdx = (this.currentMaterialIdx + 1) % this.materials.length;
 	}
 
