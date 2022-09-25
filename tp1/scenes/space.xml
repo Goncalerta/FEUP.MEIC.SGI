@@ -23,6 +23,7 @@
     </lights>
 
     <textures>
+        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
     </textures>
 
     <materials>
@@ -184,7 +185,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="spacestationStemTube" />
                 <componentref id="spacestationStemPanel1" />
@@ -203,7 +204,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -218,7 +219,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="none"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -452,7 +453,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cubeFace1" />
                 <componentref id="cubeFace2" />
@@ -549,7 +550,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="hexagonPart1" />
                 <componentref id="hexagonPart2" />

@@ -1,6 +1,6 @@
 import { CGFscene } from '../lib/CGF.js';
 import { CGFaxis,CGFcamera } from '../lib/CGF.js';
-
+import { CGFappearance } from '../lib/CGF.js';
 
 var DEGREE_TO_RAD = Math.PI / 180;
 
@@ -25,7 +25,7 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        this.materials = [];
+        this.appearanceStack = [];
 
         this.sceneInited = false;
 
@@ -108,19 +108,42 @@ export class XMLscene extends CGFscene {
         this.sceneInited = true;
     }
 
-    pushMaterial(material) {
-        material.apply();
-        this.materials.push(material);
+    pushAppearance(material, texture) {
+        let newAppearance = new CGFappearance(this);
+        if (material == "inherit") {
+            material = this.appearanceStack[this.appearanceStack.length - 1].material;
+        }
+        if (texture == "inherit") {
+            texture = this.appearanceStack[this.appearanceStack.length - 1].texture;
+        }
+
+        newAppearance.setEmission(...material.emission);
+        newAppearance.setAmbient(...material.ambient);
+        newAppearance.setDiffuse(...material.diffuse);
+        newAppearance.setSpecular(...material.specular);
+        newAppearance.setShininess(material.shininess);
+
+        if (texture != "none") {
+            newAppearance.setTexture(texture);
+        }
+
+        newAppearance.apply();
+        
+        this.appearanceStack.push({
+            material: material,
+            texture: texture,
+            appearance: newAppearance
+        });
     }
 
-    popMaterial() {
-        if (this.materials.length == 0) {
-            console.error("Error: No material in stack.");
+    popAppearance() {
+        if (this.appearanceStack.length == 0) {
+            console.error("Error: No appearance in stack.");
             return;
         }
-        this.materials.pop();
-        if (this.materials.length > 0) {
-            this.materials[this.materials.length - 1].apply();
+        this.appearanceStack.pop();
+        if (this.appearanceStack.length > 0) {
+            this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
         }
     }
 

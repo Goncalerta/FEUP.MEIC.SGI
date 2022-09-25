@@ -1,5 +1,6 @@
 import { CGFobject } from '../lib/CGF.js';
 
+
 export class MyComponent extends CGFobject {
 	constructor(scene) {
 		super(scene);
@@ -7,6 +8,11 @@ export class MyComponent extends CGFobject {
 		this.transformations = [];
 		this.materials = [];
 		this.currentMaterialIdx = 0;
+		this.texture = "none";
+
+		// TODO
+		this.length_s = 1.0;
+		this.length_t = 1.0;
 	}
 
 	inheritMaterial() {
@@ -15,6 +21,16 @@ export class MyComponent extends CGFobject {
 
 	addMaterial(material) {
 		this.materials.push(material);
+	}
+
+	setTexture(texture, length_s, length_t) {
+		this.texture = texture;
+		this.length_s = length_s;
+		this.length_t = length_t;
+	}
+
+	inheritTexture() {
+		this.texture = "inherit";
 	}
 
 	toggleMaterial() {
@@ -31,8 +47,9 @@ export class MyComponent extends CGFobject {
 	
 	display() {
 		let currentMaterial = this.materials[this.currentMaterialIdx];
-		if (currentMaterial != "inherit") {
-			this.scene.pushMaterial(currentMaterial);
+
+		if (currentMaterial != "inherit" || this.texture != "inherit") {
+			this.scene.pushAppearance(currentMaterial, this.texture);
 		}
 		
 		this.scene.pushMatrix();
@@ -45,8 +62,8 @@ export class MyComponent extends CGFobject {
 		}
 
 		this.scene.popMatrix();
-		if (currentMaterial != "inherit") {
-			this.scene.popMaterial();
+		if (currentMaterial != "inherit" || this.texture != "inherit") {
+			this.scene.popAppearance();
 		}
     }
 }
