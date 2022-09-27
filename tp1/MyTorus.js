@@ -48,7 +48,7 @@ export class MyTorus extends CGFobject {
                 
                 this.normals.push(...normalizeVector([x * Math.cos(outerAngle), x * Math.sin(outerAngle), z]));
 
-                // TODO texture coords
+                // TODO [texCoords] texture coords
             }
         }
 

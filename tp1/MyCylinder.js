@@ -34,7 +34,7 @@ export class MyCylinder extends CGFobject {
         const sinLeaningAngle = (this.baseRadius - this.topRadius) / hypo;
         const cosLeaningAngle = this.height / hypo;
 
-        // TODO is this one right?
+        // TODO [confirm] is this one right?
         // const sinLeaningAngle = (this.baseRadius - this.topRadius) / this.height;
         // const cosLeaningAngle = Math.sqrt(1 - sinLeaningAngle ** 2);
 
@@ -49,14 +49,14 @@ export class MyCylinder extends CGFobject {
                     i*stackHeight
                 );
                 
-                // TODO confirm if this is correct
+                // TODO [confirm] if this is correct
                 this.normals.push(...normalizeVector([
                     Math.cos(currentAngle),
                     Math.sin(currentAngle) * cosLeaningAngle,
                     Math.sin(currentAngle) * sinLeaningAngle
                 ]));
 
-                //this.texCoords.push(j/this.slices, i/this.stacks); // TODO check texture
+                //this.texCoords.push(j/this.slices, i/this.stacks); // TODO [texCoords] check texture
             }
         }
 

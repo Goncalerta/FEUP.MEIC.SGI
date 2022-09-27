@@ -10,7 +10,7 @@ export class MyComponent extends CGFobject {
 		this.currentMaterialIdx = 0;
 		this.texture = "none";
 
-		// TODO
+		// TODO [texCoords]
 		this.length_s = 1.0;
 		this.length_t = 1.0;
 	}

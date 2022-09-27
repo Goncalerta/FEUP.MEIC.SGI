@@ -864,7 +864,7 @@ export class MySceneGraph {
             var childrenIndex = nodeNames.indexOf("children");
 
             // Transformations
-            // TODO teacher said to not precompute transformationrefs but to do it in inlined transformations
+            // TODO [duvida] teacher said to not precompute transformationrefs but to do it in inlined transformations
             //      should we really do that? isn't it better to just precompute it all?
             let current_transformation = null;
             for (let child of grandChildren[transformationIndex].children) {
@@ -931,12 +931,12 @@ export class MySceneGraph {
             } else if (textureID != "none") {
                 let length_s = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
                 if (length_s == null) {
-                    // TODO is this a good default?
+                    // TODO [duvida/texCoords] is this a good default?
                     length_s = 1.0;
                 }
                 let length_t = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
                 if (length_t == null) {
-                    // TODO is this a good default?
+                    // TODO [duvida/texCoords] is this a good default?
                     length_t = 1.0;
                 }
             
