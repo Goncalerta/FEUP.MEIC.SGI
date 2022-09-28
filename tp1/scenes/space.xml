@@ -24,6 +24,8 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <!-- <texture id="earthNightTexture" file="scenes/images/8k_earth_nightmap.jpg" /> -->
+        <texture id="earthDayTexture" file="scenes/images/8k_earth_daymap.jpg" />
     </textures>
 
     <materials>
@@ -50,6 +52,12 @@
             <ambient r="1.0" g="1.0" b="0.3" a="1.0" />
             <diffuse r="1.0" g="1.0" b="0.3" a="1.0" />
             <specular r="1.0" g="1.0" b="0.3" a="1.0" />
+        </material>
+        <material id="noEmissionNoSpecularMaterial" shininess="100">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
     </materials>
 
@@ -127,12 +135,12 @@
             <transformation>
                 <translate x="-20" y="-30" z="-25" />
                 <scale x="30" y="30" z="30" />
+                <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="demoMaterialB" />
-                <material id="demoMaterialG" />
+                <material id="noEmissionNoSpecularMaterial" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="earthDayTexture"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
