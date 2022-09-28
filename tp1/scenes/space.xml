@@ -26,6 +26,9 @@
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
         <!-- <texture id="earthNightTexture" file="scenes/images/8k_earth_nightmap.jpg" /> -->
         <texture id="earthDayTexture" file="scenes/images/8k_earth_daymap.jpg" />
+        <texture id="solarPanelTexture" file="scenes/images/solar_panel.jpg" />
+        <texture id="whiteMetalTexture" file="scenes/images/white_metal.jpg" />
+        <texture id="metalChainTexture" file="scenes/images/metal_chain.jpg" />
     </textures>
 
     <materials>
@@ -155,11 +158,12 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
+                <material id="noEmissionNoSpecularMaterial" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="metalChainTexture"/>
             <children>
                 <primitiveref id="spacestationBody" />
                 <componentref id="spacestationCenterComponent" />
@@ -179,11 +183,12 @@
                 <translate x="0" y="0" z="-0.5" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="whiteMetalTexture"/>
             <children>
                 <primitiveref id="spacestationCenter" />
             </children>
@@ -195,6 +200,7 @@
                 <translate x="-0.075" y="-0.075" z="-5.5" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
@@ -214,6 +220,7 @@
                 <scale x="0.15" y="0.15" z="8" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
@@ -229,6 +236,7 @@
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
@@ -243,11 +251,12 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="solarPanelTexture"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -259,11 +268,12 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="solarPanelTexture" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -275,11 +285,12 @@
                 <transformationref id="spacestationStemPanelTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="solarPanelTexture"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -291,11 +302,12 @@
                 <translate x="0" y="0" z="6.75" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="spacestationMainMirrorPanel" />
                 <componentref id="spacestationMainMirrorStemArticulation" />
@@ -310,6 +322,7 @@
                 <scale x="1.75" y="1.75" z="1" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
@@ -325,11 +338,12 @@
                 <scale x="0.4" y="0.4" z="0.7" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -340,11 +354,12 @@
                 <transformationref id="spacestationMainMirrorSupportTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -355,11 +370,12 @@
                 <transformationref id="spacestationMainMirrorSupportTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -372,11 +388,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -387,11 +404,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -402,11 +420,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -417,11 +436,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -432,11 +452,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -447,11 +468,12 @@
                 <transformationref id="spacestationArmTransformation" />
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -463,6 +485,7 @@
             <transformation>
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />

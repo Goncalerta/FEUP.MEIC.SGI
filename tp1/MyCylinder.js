@@ -56,7 +56,7 @@ export class MyCylinder extends CGFobject {
                     Math.sin(currentAngle) * sinLeaningAngle
                 ]));
 
-                //this.texCoords.push(j/this.slices, i/this.stacks); // TODO [texCoords] check texture
+                this.texCoords.push(j/this.slices, i/this.stacks);
             }
         }
 
