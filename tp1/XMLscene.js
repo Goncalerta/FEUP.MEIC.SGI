@@ -126,6 +126,7 @@ export class XMLscene extends CGFscene {
 
         if (texture != "none") {
             newAppearance.setTexture(texture);
+            newAppearance.setTextureWrap('REPEAT', 'REPEAT');
         }
 
         newAppearance.apply();

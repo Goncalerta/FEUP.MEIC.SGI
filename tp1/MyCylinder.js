@@ -11,7 +11,7 @@ export class MyCylinder extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-	constructor(scene, baseRadius, topRadius, height, slices, stacks) {
+    constructor(scene, baseRadius, topRadius, height, slices, stacks) {
         super(scene);
         this.baseRadius = baseRadius;
         this.topRadius = topRadius;
@@ -19,7 +19,7 @@ export class MyCylinder extends CGFobject {
         this.slices = Math.ceil(slices);
         this.stacks = Math.ceil(stacks);
         this.initBuffers();
-	}
+    }
 
     initBuffers() {
         this.vertices = [];
@@ -71,6 +71,6 @@ export class MyCylinder extends CGFobject {
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+        this.initGLBuffers();
     }
 }

@@ -10,7 +10,7 @@ export class MyTorus extends CGFobject {
      * @param {integer} slices - Number of divisions around the inner radius
      * @param {integer} loops - Number of divisions along the the outer radius
      */
-	constructor(scene, innerRadius, outerRadius, slices, loops) {
+    constructor(scene, innerRadius, outerRadius, slices, loops) {
         super(scene);
 
         this.innerRadius = innerRadius;
@@ -18,7 +18,7 @@ export class MyTorus extends CGFobject {
         this.slices = Math.ceil(slices);
         this.loops = Math.ceil(loops);
         this.initBuffers();
-	}
+    }
 
     initBuffers() {
         this.vertices = [];
@@ -63,6 +63,6 @@ export class MyTorus extends CGFobject {
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+        this.initGLBuffers();
     }
 }

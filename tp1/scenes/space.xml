@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="root" axis_length="6"/>
+    <scene root="root" axis_length="0"/>
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
@@ -9,14 +9,14 @@
     </views>
 
     <ambient>
-        <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+        <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
     <lights>
-        <omni id="demoLight" enabled="1">
+        <omni id="sunlight" enabled="1">
             <location x="240" y="-35" z="3" w="1.0" />
-            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0" g="0" b="0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
@@ -28,17 +28,28 @@
         <texture id="sunTexture" file="scenes/images/space/sun.jpg" />
         <texture id="solarPanelTexture" file="scenes/images/space/solar_panel.jpg" />
         <texture id="whiteMetalTexture" file="scenes/images/space/white_metal.jpg" />
-        <texture id="metalChainTexture" file="scenes/images/space/metal_chain.jpg" />
-        <texture id="metalTilesTexture" file="scenes/images/space/metal_tiles.jpg" />
+        <texture id="metalChainTexture" file="scenes/images/space/metal_chains.jpg" />
         <texture id="spaceshipBodyTexture" file="scenes/images/space/spaceship_body.jpg" />
     </textures>
 
     <materials>
         <material id="defaultMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="0.0" b="0.0" a="1.0" />
-            <diffuse r="0.6" g="0.0" b="0.0" a="1.0" />
-            <specular r="0.6" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="reflectiveMaterial" shininess="0.5">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+        </material>
+        <material id="darkMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
         <material id="planetMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -46,17 +57,11 @@
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
-        <material id="sunMaterial" shininess="100">
+        <material id="sunMaterial" shininess="1">
             <emission r="1.0" g="1.0" b="0.4" a="1.0" />
             <ambient r="1.0" g="1.0" b="0.3" a="1.0" />
             <diffuse r="1.0" g="1.0" b="0.3" a="1.0" />
             <specular r="1.0" g="1.0" b="0.3" a="1.0" />
-        </material>
-        <material id="noEmissionNoSpecularMaterial" shininess="100">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
     </materials>
 
@@ -90,7 +95,7 @@
             <materials>
                 <material id="defaultMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="metalTilesTexture"/>
             <children>
                 <componentref id="spacestation" />
                 <componentref id="sun" />
@@ -123,7 +128,7 @@
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="earthNightTexture"/>
+            <texture id="earthDayTexture"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -153,7 +158,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="noEmissionNoSpecularMaterial" />
+                <material id="defaultMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -175,9 +180,6 @@
             </transformation>
             <materials>
                 <material id="inherit" />
-                <material id="demoMaterialR" />
-                <material id="demoMaterialG" />
-                <material id="demoMaterialB" />
             </materials>
             <texture id="spaceshipBodyTexture" />
             <children>
@@ -218,7 +220,7 @@
                 <scale x="1.24" y="1.24" z="0.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkMaterial" />
             </materials>
             <texture id="whiteMetalTexture"/>
             <children>
@@ -247,13 +249,11 @@
         <component id="spacestationStemTube">
             <transformation>
                 <scale x="0.15" y="0.15" z="8" />
-                <rotate axis="x" angle="90" />
-                <translate x="0" y="0" z="-1" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="5" length_t="0.2"/>
+            <texture id="metalChainTexture" length_s="5" length_t="0.2" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -278,9 +278,9 @@
                 <scale x="2" y="0.75" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="2.0" length_t="1.0"/>
+            <texture id="solarPanelTexture" length_s="2.0" length_t="4.0"/>
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
@@ -294,7 +294,7 @@
                 <scale x="2" y="0.75" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="reflectiveMaterial" />
             </materials>
             <texture id="solarPanelTexture" length_s="1.4" length_t="1.0" />
             <children>
@@ -310,7 +310,7 @@
                 <scale x="2" y="0.75" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="reflectiveMaterial" />
             </materials>
             <texture id="solarPanelTexture" length_s="1.0" length_t="1.0"/>
             <children>
@@ -342,9 +342,9 @@
                 <scale x="1.75" y="1.75" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="reflectiveMaterial" />
             </materials>
-            <texture id="metalTilesTexture"/>
+            <texture id="none" />
             <children>
                 <componentref id="hexagon" />
             </children>
@@ -357,9 +357,9 @@
                 <rotate axis="x" angle="-180" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkMaterial" />
             </materials>
-            <texture id="metalTilesTexture"/>
+            <texture id="none" />
             <children>
                 <componentref id="hexagon" />
             </children>
@@ -372,7 +372,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="2.0" length_t="4.0"/>
+            <texture id="metalChainTexture" length_s="2.0" length_t="4.0" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -387,7 +387,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -402,7 +402,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.1" length_t="10"/>
+            <texture id="metalChainTexture" length_s="0.1" length_t="10" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -418,7 +418,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -430,7 +430,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="none"/>
             <children>
                 <componentref id="spacestationArm1" />
             </children>
@@ -442,7 +442,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="none"/>
             <children>
                 <componentref id="spacestationArm1" />
             </children>
@@ -454,7 +454,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="none"/>
             <children>
                 <componentref id="spacestationArm1" />
             </children>
@@ -466,7 +466,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="none"/>
             <children>
                 <componentref id="spacestationArm1" />
             </children>
@@ -478,7 +478,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
+            <texture id="none"/>
             <children>
                 <componentref id="spacestationArm1" />
             </children>
@@ -690,7 +690,7 @@
                 <rotate axis="x" angle="180" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkMaterial" />
             </materials>
             <texture id="inherit"/>
             <children>
