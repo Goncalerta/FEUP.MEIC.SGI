@@ -220,7 +220,7 @@
                 <scale x="1.24" y="1.24" z="0.2" />
             </transformation>
             <materials>
-                <material id="darkMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="whiteMetalTexture"/>
             <children>
