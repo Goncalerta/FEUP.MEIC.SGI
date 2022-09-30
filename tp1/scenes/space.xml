@@ -179,6 +179,33 @@
             <texture id="whiteMetalTexture"/>
             <children>
                 <primitiveref id="spacestationCenter" />
+                <componentref id="spacestationCenterComponentTop" />
+                <componentref id="spacestationCenterComponentBottom" />
+            </children>
+        </component>
+        <component id="spacestationCenterComponentTop">
+            <transformation>
+                <translate x="0" y="0" z="1" />
+                <scale x="0.495" y="0.495" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="whiteMetalTexture"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="spacestationCenterComponentBottom">
+            <transformation>
+                <scale x="1.24" y="1.24" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="whiteMetalTexture"/>
+            <children>
+                <primitiveref id="sphere" />
             </children>
         </component>
 
