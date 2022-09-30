@@ -1,4 +1,6 @@
 import { CGFobject } from '../lib/CGF.js';
+import { MyRectangle } from './MyRectangle.js';
+import { MyTriangle } from './MyTriangle.js';
 
 
 export class MyComponent extends CGFobject {
@@ -10,7 +12,6 @@ export class MyComponent extends CGFobject {
 		this.currentMaterialIdx = 0;
 		this.texture = "none";
 
-		// TODO [texCoords]
 		this.length_s = 1.0;
 		this.length_t = 1.0;
 	}
@@ -57,6 +58,12 @@ export class MyComponent extends CGFobject {
 		}
 
         for (let child of this.children) {
+			if (child instanceof MyRectangle || child instanceof MyTriangle) {
+				child.updateLengthST(this.length_s, this.length_t);
+			} else if (child instanceof MyComponent) {
+				child.ifInheritSetLengths(this.length_s, this.length_t);
+			}
+
 			child.display();
 		}
 
@@ -68,5 +75,13 @@ export class MyComponent extends CGFobject {
 			this.scene.popAppearance();
 		}
     }
+
+	ifInheritSetLengths(parent_length_s, parent_length_t) {
+		if (this.texture == "inherit") {
+			this.length_s = parent_length_s;
+			this.length_t = parent_length_t;
+		}
+	}
+
 }
 

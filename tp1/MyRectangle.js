@@ -1,4 +1,5 @@
 import { CGFobject } from '../lib/CGF.js';
+import { applyLengthsToTextureCoords } from './utils.js';
 /**
  * MyRectangle
  * @constructor
@@ -13,6 +14,9 @@ export class MyRectangle extends CGFobject {
 		this.x2 = x2;
 		this.y1 = y1;
 		this.y2 = y2;
+
+		this.length_s = 1.0;
+		this.length_t = 1.0;
 
 		this.initBuffers();
 	}
@@ -66,6 +70,15 @@ export class MyRectangle extends CGFobject {
 	 */
 	updateTexCoords(coords) {
 		this.texCoords = [...coords];
+		this.updateTexCoordsGLBuffers();
+	}
+
+	updateLengthST(new_length_s, new_length_t) {
+		this.texCoords = applyLengthsToTextureCoords(this.texCoords, this.length_s, this.length_t, new_length_s, new_length_t);
+
+		this.length_s = new_length_s;
+		this.length_t = new_length_t;
+
 		this.updateTexCoordsGLBuffers();
 	}
 }
