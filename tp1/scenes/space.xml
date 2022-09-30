@@ -24,11 +24,13 @@
 
     <textures>
         <texture id="demoTexture" file="scenes/images/vidral.jpg" />
-        <!-- <texture id="earthNightTexture" file="scenes/images/8k_earth_nightmap.jpg" /> -->
+        <texture id="earthNightTexture" file="scenes/images/8k_earth_nightmap.jpg" />
         <texture id="earthDayTexture" file="scenes/images/8k_earth_daymap.jpg" />
         <texture id="solarPanelTexture" file="scenes/images/solar_panel.jpg" />
         <texture id="whiteMetalTexture" file="scenes/images/white_metal.jpg" />
         <texture id="metalChainTexture" file="scenes/images/metal_chain.jpg" />
+        <texture id="hexagonMetalTexture" file="scenes/images/hexagon_metal.jpg" />
+        <texture id="torusTexture" file="scenes/images/torus_texture.jpg" />
     </textures>
 
     <materials>
@@ -129,7 +131,7 @@
             <materials>
                 <material id="demoMaterialY" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -143,7 +145,7 @@
             <materials>
                 <material id="noEmissionNoSpecularMaterial" />
             </materials>
-            <texture id="earthDayTexture"/>
+            <texture id="earthNightTexture"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -163,9 +165,9 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="metalChainTexture"/>
+            <texture id="none"/>
             <children>
-                <primitiveref id="spacestationBody" />
+                <componentref id="spacestationBodyComponent" />
                 <componentref id="spacestationCenterComponent" />
                 <componentref id="spacestationStem" />
                 <componentref id="spacestationArm1" />
@@ -174,6 +176,22 @@
                 <componentref id="spacestationArm4" />
                 <componentref id="spacestationArm5" />
                 <componentref id="spacestationArm6" />
+            </children>
+        </component>
+
+        <!-- Space station torus component-->
+        <component id="spacestationBodyComponent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="demoMaterialR" />
+                <material id="demoMaterialG" />
+                <material id="demoMaterialB" />
+            </materials>
+            <texture id="torusTexture" />
+            <children>
+                <primitiveref id="spacestationBody" />
             </children>
         </component>
 
@@ -218,6 +236,8 @@
         <component id="spacestationStemTube">
             <transformation>
                 <scale x="0.15" y="0.15" z="8" />
+                <rotate axis="x" angle="90" />
+                <translate x="0" y="0" z="-1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -225,7 +245,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="5" length_t="0.2"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -241,7 +261,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="none"/>
+            <texture id="metalChainTexture" length_s="2.0" length_t="2.0"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -256,7 +276,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="solarPanelTexture"/>
+            <texture id="solarPanelTexture" length_s="2.0" length_t="1.0"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -273,7 +293,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="solarPanelTexture" />
+            <texture id="solarPanelTexture" length_s="1.4" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -290,7 +310,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="solarPanelTexture"/>
+            <texture id="solarPanelTexture" length_s="1.0" length_t="1.0"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -327,7 +347,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="demoTexture"/>
+            <texture id="hexagonMetalTexture"/>
             <children>
                 <componentref id="hexagon" />
             </children>
@@ -343,7 +363,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="2.0" length_t="4.0"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -359,7 +379,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -375,7 +395,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.1" length_t="10"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -393,7 +413,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -409,7 +429,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -425,7 +445,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -441,7 +461,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -457,7 +477,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -473,7 +493,7 @@
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="metalChainTexture" length_s="0.4" length_t="8"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -583,6 +603,7 @@
             <transformation>
             </transformation>
             <materials>
+                <material id="inherit" />
                 <material id="demoMaterialR" />
                 <material id="demoMaterialG" />
                 <material id="demoMaterialB" />

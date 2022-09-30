@@ -34,22 +34,59 @@ export function crossProduct([a1, a2, a3], [b1, b2, b3]) {
     ];
 }
 
+
 /**
  * Subtracts v2 to v1: returns v1-v2
  * @param {list} v1 
  * @param {list} v2 
  */
 export function subtractVectors(v1, v2) {
-    if (v1 == null || v2 == null || v1.lenght != v2.lenght) {
+    if (v1 == null || v2 == null || v1.length != v2.length) {
         console.log("Subtracting invalid vectors.");
         return null;
     }
 
     const res = [...v1];
 
-    for (let i = 0; i < v1.lenght; i++) {
+    for (let i = 0; i < v1.length; i++) {
         res[i] -= v2[i];
     }
 
     return res;
+}
+
+
+/**
+ * Calculates the norm of a vector
+ * @param {list} vector
+ */
+export function calculateNorm(vector) {
+    let sumSquared = 0;
+    
+    for (let v of vector) {
+        sumSquared += v*v;
+    }
+
+    return Math.sqrt(sumSquared);
+}
+
+
+/**
+ * Calculates new texture coords accordingly to length_s and length_t
+ * @param {list} textureCoords 
+ * @param {float} current_length_s 
+ * @param {float} current_length_t 
+ * @param {float} new_length_s 
+ * @param {float} new_length_t 
+ * @returns Modified texture coords
+ */
+export function applyLengthsToTextureCoords(textureCoords, current_length_s, current_length_t, new_length_s, new_length_t) {
+    const textureCoordsCopy = [...textureCoords];
+
+    for (let i = 0; i < textureCoords.length; i+=2) {
+        textureCoordsCopy[i] *= current_length_s / new_length_s;
+        textureCoordsCopy[i + 1] *= current_length_t / new_length_t;
+    }
+
+    return textureCoordsCopy;
 }
