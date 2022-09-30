@@ -5,7 +5,7 @@ export class MyComponent extends CGFobject {
 	constructor(scene) {
 		super(scene);
 		this.children = [];
-		this.transformations = [];
+		this.transformation = null;
 		this.materials = [];
 		this.currentMaterialIdx = 0;
 		this.texture = "none";
@@ -41,27 +41,29 @@ export class MyComponent extends CGFobject {
 		this.children.push(child);
 	}
 
-	addTransformation(transformation) {
-		this.transformations.push(transformation);
+	setTransformation(transformation) {
+		this.transformation = transformation;
 	}
 	
 	display() {
 		let currentMaterial = this.materials[this.currentMaterialIdx];
-
 		if (currentMaterial != "inherit" || this.texture != "inherit") {
 			this.scene.pushAppearance(currentMaterial, this.texture);
 		}
 		
-		this.scene.pushMatrix();
-		for (let transformation of this.transformations) {
-			this.scene.multMatrix(transformation);
+		if (this.transformation != null) {
+			this.scene.pushMatrix();
+			this.scene.multMatrix(this.transformation);
 		}
 
         for (let child of this.children) {
 			child.display();
 		}
 
-		this.scene.popMatrix();
+		if (this.transformation != null) {
+			this.scene.popMatrix();
+		}
+
 		if (currentMaterial != "inherit" || this.texture != "inherit") {
 			this.scene.popAppearance();
 		}

@@ -543,7 +543,7 @@ export class MySceneGraph {
                 mat4.rotate(transfMatrix, transfMatrix, angle * DEGREE_TO_RAD, axisVector);
                 break;
             default:
-                return "Invalid transformation '" + transformationNode + "' for ID " + transformationID;
+                return "Unexpected transformation '" + transformationNode + "' for ID " + transformationID;
         }
         return null;
     }
@@ -660,7 +660,7 @@ export class MySceneGraph {
                 if (!(y2 != null && !isNaN(y2) && y2 > y1))
                     return "unable to parse y2 of the primitive coordinates for ID = " + primitiveId;
 
-                var rect = new MyRectangle(this.scene, primitiveId, x1, x2, y1, y2);
+                var rect = new MyRectangle(this.scene, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
             }
@@ -864,38 +864,33 @@ export class MySceneGraph {
             var childrenIndex = nodeNames.indexOf("children");
 
             // Transformations
-            // TODO [duvida/obsoleto dependendo da resposta notepad] teacher said to not precompute transformationrefs but to do it in inlined transformations
-            //      should we really do that? isn't it better to just precompute it all?
-            let current_transformation = null;
-            for (let child of grandChildren[transformationIndex].children) {
-                if (child.nodeName == "transformationref") {
-                    let transformationID = this.reader.getString(child, 'id');
+            if (grandChildren[transformationIndex].children.length > 0) {
+                let firstTransformation = grandChildren[transformationIndex].children[0];
+                if (firstTransformation.nodeName == "transformationref") {
+                    let transformationID = this.reader.getString(firstTransformation, 'id');
                     if (transformationID == null)
                         return "no ID defined for transformationID";
                     if (this.transformations[transformationID] == null)
                         return "transformationID does not exist";
-                    
-                    if (current_transformation != null) {
-                        component.addTransformation(current_transformation);
-                        current_transformation = null;
-                    }
 
-                    component.addTransformation(this.transformations[transformationID]);
+                    component.setTransformation(this.transformations[transformationID]);
+
+                    if (grandChildren[transformationIndex].children.length > 1) {
+                        this.onXMLMinorError("transformationref must be the only transformation, ignoring others");
+                    }
                 } else {
-                    if (current_transformation == null) {
-                        current_transformation = mat4.create();
+                    let current_transformation = mat4.create();
+                    for (let child of grandChildren[transformationIndex].children) {
+                        let error = this.parseSingleTransformation(componentID, child, current_transformation);
+                        if (error != null) {
+                            this.onXMLMinorError(error);
+                        }
                     }
-                    let error = this.parseSingleTransformation(componentID, child, current_transformation);
-                    if (error != null) {
-                        return error;
-                    }
-                }
-
-                if (current_transformation != null) {
-                    component.addTransformation(current_transformation);
-                    current_transformation = null;
+                    component.setTransformation(current_transformation);
                 }
             }
+
+            
 
             this.components[componentID] = component;
 
