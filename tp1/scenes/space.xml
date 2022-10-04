@@ -9,14 +9,14 @@
     </views>
 
     <ambient>
-        <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
+        <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
     <lights>
         <omni id="sunlight" enabled="1">
             <location x="240" y="-35" z="3" w="1.0" />
-            <ambient r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
         </omni>
@@ -47,7 +47,7 @@
         </material>
         <material id="darkMaterial" shininess="1">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <ambient r="1" g="1" b="1" a="1.0" />
             <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
@@ -273,21 +273,21 @@
         </component>
         <component id="spacestationStemPanel1">
             <transformation>
-                <translate x="0" y="0.075" z="1.75" />
+                <translate x="0.15" y="0.075" z="1.75" />
                 <rotate axis="x" angle="-90" />
                 <scale x="2" y="0.75" z="1" />
             </transformation>
             <materials>
                 <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="2.0" length_t="4.0"/>
+            <texture id="solarPanelTexture" length_s="2" length_t="8.0"/>
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
         </component>
         <component id="spacestationStemPanel2">
             <transformation>
-                <translate x="0" y="0" z="1.25" />
+                <translate x="0.15" y="0" z="1.25" />
                 <scale x="1.4" y="1" z="1" />
                 <translate x="0" y="0.075" z="1.75" />
                 <rotate axis="x" angle="-90" />
@@ -296,14 +296,14 @@
             <materials>
                 <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="1.4" length_t="1.0" />
+            <texture id="solarPanelTexture" length_s="1.335" length_t="8.0" />
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
         </component>
         <component id="spacestationStemPanel3">
             <transformation>
-                <translate x="0" y="0" z="2.5" />
+                <translate x="0.15" y="0" z="2.5" />
                 <scale x="1.9" y="1" z="1" />
                 <translate x="0" y="0.075" z="1.75" />
                 <rotate axis="x" angle="-90" />
@@ -312,7 +312,7 @@
             <materials>
                 <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="1.0" length_t="1.0"/>
+            <texture id="solarPanelTexture" length_s="1.0" length_t="8.0"/>
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
