@@ -80,4 +80,8 @@ export class MySphere extends CGFobject {
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
+
+    updateTexCoords(new_length_s, new_length_t) {
+        // Nao é necessario aplicar fatores de escala em superficies quadricas
+    }
 }
