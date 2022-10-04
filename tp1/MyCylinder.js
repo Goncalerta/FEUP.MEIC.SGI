@@ -19,7 +19,6 @@ export class MyCylinder extends CGFobject {
         this.slices = Math.ceil(slices);
         this.stacks = Math.ceil(stacks);
         this.initBuffers();
-        this.enableNormalViz();
     }
 
     initBuffers() {
