@@ -204,8 +204,8 @@
         </component>
         <component id="spacestationCenterComponentTop">
             <transformation>
-                <translate x="0" y="0" z="1" />
-                <scale x="0.495" y="0.495" z="0.2" />
+                <translate x="0" y="0" z="0.95" />
+                <scale x="0.515" y="0.515" z="0.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
