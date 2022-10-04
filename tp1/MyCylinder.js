@@ -19,6 +19,7 @@ export class MyCylinder extends CGFobject {
         this.slices = Math.ceil(slices);
         this.stacks = Math.ceil(stacks);
         this.initBuffers();
+        this.enableNormalViz();
     }
 
     initBuffers() {
@@ -34,10 +35,6 @@ export class MyCylinder extends CGFobject {
         const sinLeaningAngle = (this.baseRadius - this.topRadius) / hypo;
         const cosLeaningAngle = this.height / hypo;
 
-        // TODO [confirm] is this one right?
-        // const sinLeaningAngle = (this.baseRadius - this.topRadius) / this.height;
-        // const cosLeaningAngle = Math.sqrt(1 - sinLeaningAngle ** 2);
-
         for (let i = 0; i <= this.stacks; i++) {
             for (let j = 0; j <= this.slices; j++) {
                 const currentRadius = this.baseRadius + i * ((this.topRadius - this.baseRadius)/this.stacks)
@@ -49,12 +46,12 @@ export class MyCylinder extends CGFobject {
                     i*stackHeight
                 );
                 
-                // TODO [confirm] if this is correct
                 this.normals.push(...normalizeVector([
-                    Math.cos(currentAngle),
-                    Math.sin(currentAngle) * cosLeaningAngle,
-                    Math.sin(currentAngle) * sinLeaningAngle
+                    cosLeaningAngle * Math.cos(currentAngle),
+                    cosLeaningAngle * Math.sin(currentAngle),
+                    sinLeaningAngle
                 ]));
+
 
                 this.texCoords.push(j/this.slices, i/this.stacks);
             }

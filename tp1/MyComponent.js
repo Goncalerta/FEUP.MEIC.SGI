@@ -1,7 +1,4 @@
 import { CGFobject } from '../lib/CGF.js';
-import { MyRectangle } from './MyRectangle.js';
-import { MyTriangle } from './MyTriangle.js';
-
 
 export class MyComponent extends CGFobject {
     constructor(scene) {
@@ -79,4 +76,3 @@ export class MyComponent extends CGFobject {
     }
 
 }
-
