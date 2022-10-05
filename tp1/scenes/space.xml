@@ -15,7 +15,7 @@
 
     <lights>
         <omni id="sunlight" enabled="1">
-            <location x="240" y="-35" z="3" w="1.0" />
+            <location x="230" y="-35" z="3" w="1.0" />
             <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -28,8 +28,14 @@
         <texture id="sunTexture" file="scenes/images/space/sun.jpg" />
         <texture id="solarPanelTexture" file="scenes/images/space/solar_panel.jpg" />
         <texture id="whiteMetalTexture" file="scenes/images/space/white_metal.jpg" />
-        <texture id="metalChainTexture" file="scenes/images/space/metal_chains.jpg" />
+        <texture id="metalTilesTexture" file="scenes/images/space/metal_chains.jpg" />
         <texture id="spaceshipBodyTexture" file="scenes/images/space/spaceship_body.jpg" />
+        <texture id="cubemapPositiveXTexture" file="scenes/images/space/stars/px.jpg" />
+        <texture id="cubemapNegativeXTexture" file="scenes/images/space/stars/nx.jpg" />
+        <texture id="cubemapPositiveYTexture" file="scenes/images/space/stars/py.jpg" />
+        <texture id="cubemapNegativeYTexture" file="scenes/images/space/stars/ny.jpg" />
+        <texture id="cubemapPositiveZTexture" file="scenes/images/space/stars/pz.jpg" />
+        <texture id="cubemapNegativeZTexture" file="scenes/images/space/stars/nz.jpg" />
     </textures>
 
     <materials>
@@ -37,6 +43,12 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="cubemapMaterial" shininess="1">
+            <emission r="0.4" g="0.4" b="0.4" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         <material id="reflectiveMaterial" shininess="0.5">
@@ -95,12 +107,13 @@
             <materials>
                 <material id="defaultMaterial" />
             </materials>
-            <texture id="metalTilesTexture"/>
+            <texture id="metalTilesTexture" />
             <children>
                 <componentref id="spacestation" />
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moon" /> 
+                <componentref id="cubemap" />
             </children>
         </component>
 
@@ -108,8 +121,8 @@
         <!-- Sun & Planets -->
         <component id="sun">
             <transformation>
-                <translate x="250" y="35" z="3" />
-                <scale x="5" y="5" z="5" />
+                <translate x="230" y="35" z="3" />
+                <scale x="4.5" y="4.5" z="4.5" />
             </transformation>
             <materials>
                 <material id="sunMaterial" />
@@ -241,32 +254,34 @@
                 <componentref id="spacestationStemTube" />
                 <componentref id="spacestationStemPanel1" />
                 <componentref id="spacestationStemPanel2" />
-                <componentref id="spacestationStemPanel3" />
+                <componentref id="spacestationStemPanel3" /> 
                 <componentref id="spacestationStemTail" />
                 <componentref id="spacestationMainMirror" />
             </children>
         </component>
         <component id="spacestationStemTube">
             <transformation>
-                <scale x="0.15" y="0.15" z="8" />
+                <translate x="0.15" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+                <scale x="8" y="0.15" z="0.15" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="5" length_t="0.2" />
+            <texture id="metalTilesTexture" length_s="0.2" length_t="5" />
             <children>
                 <componentref id="cube" />
             </children>
         </component>
         <component id="spacestationStemTail">
             <transformation>
-                <translate x="-0.125" y="-0.125" z="0" />
+                <translate x="-0.125" y="-0.125" z="-0.1" />
                 <scale x="0.4" y="0.4" z="0.4" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="2.0" length_t="2.0"/>
+            <texture id="metalTilesTexture" length_s="0.75" length_t="0.75"/>
             <children>
                 <componentref id="cube" />
             </children>
@@ -372,7 +387,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="2.0" length_t="4.0" />
+            <texture id="metalTilesTexture" length_s="2.0" length_t="4.0" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -387,7 +402,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8" />
+            <texture id="metalTilesTexture" length_s="0.4" length_t="8" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -402,7 +417,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.1" length_t="10" />
+            <texture id="metalTilesTexture" length_s="0.1" length_t="10" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -418,7 +433,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalChainTexture" length_s="0.4" length_t="8" />
+            <texture id="metalTilesTexture" length_s="0.4" length_t="8" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -693,6 +708,105 @@
                 <material id="darkMaterial" />
             </materials>
             <texture id="inherit"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- ============ -->
+        <!-- cubemap -->
+        <component id="cubemap">
+            <transformation>
+                <scale x="500" y="500" z="500" />
+            </transformation>
+            <materials>
+                <material id="cubemapMaterial" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="cubemapPositiveX" />
+                <componentref id="cubemapNegativeX" />
+                <componentref id="cubemapPositiveY" />
+                <componentref id="cubemapNegativeY" />
+                <componentref id="cubemapPositiveZ" />
+                <componentref id="cubemapNegativeZ" />
+            </children>
+        </component>
+        <component id="cubemapPositiveX">
+            <transformation>
+                <translate x="0.5" y="-0.5" z="-0.5" />
+                <rotate axis="y" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapPositiveXTexture"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="cubemapNegativeX">
+            <transformation>
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapNegativeXTexture"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>	
+        <component id="cubemapPositiveY">
+            <transformation>
+                <rotate axis="y" angle="180" />
+                <translate x="-0.5" y="0.5" z="-0.5" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapPositiveYTexture"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="cubemapNegativeY">
+            <transformation>
+                <rotate axis="y" angle="180" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapNegativeYTexture"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="cubemapPositiveZ">
+            <transformation>
+                <translate x="0.5" y="-0.5" z="0.5" />
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapPositiveZTexture"/>
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="cubemapNegativeZ">
+            <transformation>
+                <translate x="-0.5" y="-0.5" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cubemapNegativeZTexture"/>
             <children>
                 <primitiveref id="square" />
             </children>

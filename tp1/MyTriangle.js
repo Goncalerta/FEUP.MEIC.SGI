@@ -53,6 +53,7 @@ export class MyTriangle extends CGFobject {
         const cosAlpha = (a**2 - b**2 + c**2) / (2 * a * c);
         const sinAlpha = Math.sqrt(1 - cosAlpha**2);
 
+        // TODO isnt division by length u and t redundant since they're both 1?
         this.texCoords = [
             0, 0,
             a / this.length_s, 0,
