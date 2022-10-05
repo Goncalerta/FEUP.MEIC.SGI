@@ -2,10 +2,15 @@
     <scene root="root" axis_length="0"/>
 
     <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="50" y="25" z="50" />
-            <to x="0" y="25" z="0" />
+        <perspective id="defaultCamera" near="0.1" far="500" angle="22.9">
+            <from x="30" y="30" z="30" />
+            <to x="0" y="0" z="0" />
         </perspective>
+        <ortho id="cameraO" near="0.1" far="500" left="-10" right="10" top="10" bottom="-10" >
+            <from x="30" y="30" z="30" />
+            <to x="0" y="0" z="0" />
+            <up x="0" y="1" z="0" />
+         </ortho>
     </views>
 
     <ambient>

@@ -30,6 +30,7 @@ export class MyTorus extends CGFobject {
         const stepOuter = Math.PI*2 / this.loops;
 
         for (let i = 0; i <= this.loops; i++) {
+            // TODO: precompute everything possible only once (cos, sin...) in other primitives also...
             const outerAngle = (i % this.loops) * stepOuter;
             const displaceX = Math.cos(outerAngle) * this.outerRadius;
             const displaceY = Math.sin(outerAngle) * this.outerRadius;

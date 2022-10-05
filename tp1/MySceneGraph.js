@@ -1,4 +1,4 @@
-import { CGFXMLreader } from '../lib/CGF.js';
+import { CGFcamera, CGFcameraOrtho, CGFXMLreader } from '../lib/CGF.js';
 import { MyCylinder } from './MyCylinder.js';
 import { MyRectangle } from './MyRectangle.js';
 import { MySphere } from './MySphere.js';
@@ -239,7 +239,160 @@ export class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.onXMLMinorError("TODO [views]: Parse views and create cameras.");
+        this.cameras = [];
+        // TODO are the errors on these function "MinorError"?
+
+        //  <views default="ss" >
+        //      <perspective id="ss" near="ff" far="ff" angle="ff">
+        //          <from x="ff" y="ff" z="ff" />
+        //          <to x="ff" y="ff" z="ff" />
+        //      </perspective>
+        //      <ortho id="ss"  near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" >
+        //          <from x="ff" y="ff" z="ff" />
+        //          <to x="ff" y="ff" z="ff" />
+        //          <up x="ff" y="ff" z="ff" /> <!-- opcional, default 0,1,0 -->
+        //      </ortho>
+        //  </views>
+
+        // default
+        this.selectedView = this.reader.getString(viewsNode, 'default');
+        if (this.selectedView == null)
+            return "unable to parse default view";
+
+        var children = viewsNode.children;
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].nodeName == "perspective" || children[i].nodeName == "ortho") {
+                // id
+                var viewId = this.reader.getString(children[i], 'id');
+                if (viewId == null) {
+                    this.onXMLMinorError("unable to parse id for perspective view");
+                    continue;
+                }
+
+                // Checks for repeated IDs.
+                if (this.cameras[viewId] != null)
+                    return "ID must be unique for each view (conflict: ID = " + viewId + ")";
+
+                // near
+                var near = this.reader.getFloat(children[i], 'near');
+                if (!(near != null && !isNaN(near))) {
+                    this.onXMLMinorError("unable to parse near attribute of view with ID = " + viewId);
+                    continue;
+                }
+
+                // far
+                var far = this.reader.getFloat(children[i], 'far');
+                if (!(far != null && !isNaN(far))) {
+                    this.onXMLMinorError("unable to parse far attribute of view with ID = " + viewId);
+                    continue;
+                }
+
+
+                var grandChildren = children[i].children;
+                if (grandChildren.length < 2 || grandChildren.length > 3) {
+                    this.onXMLMinorError("unable to parse children nodes of view with ID = " + viewId + ": wrong number of children (" + grandChildren.length + ")");
+                    continue;
+                }
+
+                var nodeNames = [];
+                for (var j = 0; j < grandChildren.length; j++) {
+                    nodeNames.push(grandChildren[j].nodeName);
+                }
+
+                // from & to
+                var fromToPositions = [];
+                for (const grandChildrenName of ["from", "to"]) {
+                    var attributeIndex = nodeNames.indexOf(grandChildrenName);
+    
+                    if (attributeIndex != -1) {
+                        var pos = this.parseCoordinates3D(grandChildren[attributeIndex], "view position for ID" + viewId);
+    
+                        if (!Array.isArray(pos))
+                            return pos;
+    
+                        fromToPositions.push(pos);
+                    } else {
+                        return "view " + grandChildrenName + " undefined for ID = " + viewId;
+                    }
+                }
+
+                
+                if (children[i].nodeName == "perspective") {
+                    if (nodeNames.length != 2) {
+                        return "invalid number of children of perspective view with ID = " + viewId;
+                    }
+
+                    // angle
+                    var angle = this.reader.getFloat(children[i], 'angle');
+                    if (!(angle != null && !isNaN(angle))) {
+                        this.onXMLMinorError("unable to parse angle attribute of view with ID = " + viewId);
+                        continue;
+                    }
+
+                    this.cameras[viewId] = new CGFcamera(angle * DEGREE_TO_RAD, near, far, fromToPositions[0], fromToPositions[1]);
+                    
+                } else { // == "ortho"
+                    if (nodeNames.length < 2 || nodeNames.length > 3) {
+                        return "invalid number of children of perspective view with ID = " + viewId;
+                    }
+
+                    // left
+                    var left = this.reader.getFloat(children[i], 'left');
+                    if (!(left != null && !isNaN(left))) {
+                        this.onXMLMinorError("unable to parse left attribute of view with ID = " + viewId);
+                        continue;
+                    }
+                    
+                    // right
+                    var right = this.reader.getFloat(children[i], 'right');
+                    if (!(right != null && !isNaN(right))) {
+                        this.onXMLMinorError("unable to parse right attribute of view with ID = " + viewId);
+                        continue;
+                    }
+
+                    // top
+                    var top = this.reader.getFloat(children[i], 'top');
+                    if (!(top != null && !isNaN(top))) {
+                        this.onXMLMinorError("unable to parse top attribute of view with ID = " + viewId);
+                        continue;
+                    }
+
+                    // bottom
+                    var bottom = this.reader.getFloat(children[i], 'bottom');
+                    if (!(bottom != null && !isNaN(bottom))) {
+                        this.onXMLMinorError("unable to parse bottom attribute of view with ID = " + viewId);
+                        continue;
+                    }
+
+                    // up
+                    var up = [0, 1, 0]; // default value
+                    var upAttributeIndex = nodeNames.indexOf("up");
+                    if (upAttributeIndex != -1) {
+                        var pos = this.parseCoordinates3D(grandChildren[upAttributeIndex], "view position for ID" + viewId);
+    
+                        if (!Array.isArray(pos))
+                            return pos;
+                        
+                        up = pos;
+                    }
+
+                    this.cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, fromToPositions[0], fromToPositions[1], up);
+                }
+
+            } else {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+        }
+
+        var defaultCamera = this.cameras[this.selectedView];
+        if (defaultCamera != null) {
+            this.scene.setCamera(defaultCamera); // TODO when this is not commented, its not possible to "drag" the view with the mouse
+        } else {
+            return "invalid default view";
+        }
+
+        this.log("Parsed views and created cameras.");
 
         return null;
     }

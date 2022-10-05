@@ -46,9 +46,16 @@ export class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        console.log(this)
+        // TODO should this default still be made?
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
+
+    setCamera(camera) {
+        if (camera != null) {
+            this.camera = camera;
+        }
+    }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
