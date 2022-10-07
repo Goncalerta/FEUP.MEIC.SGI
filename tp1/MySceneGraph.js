@@ -265,7 +265,7 @@ export class MySceneGraph {
                 // id
                 var viewId = this.reader.getString(children[i], 'id');
                 if (viewId == null) {
-                    this.onXMLMinorError("unable to parse id for perspective view");
+                    this.onXMLMinorError("unable to parse id for view");
                     continue;
                 }
 
@@ -387,7 +387,7 @@ export class MySceneGraph {
 
         var defaultCamera = this.cameras[this.selectedView];
         if (defaultCamera != null) {
-            this.scene.setCamera(defaultCamera); // TODO when this is not commented, its not possible to "drag" the view with the mouse
+            this.scene.setCamera(defaultCamera);
         } else {
             return "invalid default view";
         }
@@ -1076,15 +1076,14 @@ export class MySceneGraph {
 
             if (textureID == "inherit") {
                 component.inheritTexture();
+                // TODO verificar que não tem length_s e length_t
             } else if (textureID != "none") {
                 let length_s = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
                 if (length_s == null) {
-                    // TODO [duvida/texCoords] is this a good default?
                     length_s = 1.0;
                 }
                 let length_t = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
                 if (length_t == null) {
-                    // TODO [duvida/texCoords] is this a good default?
                     length_t = 1.0;
                 }
             

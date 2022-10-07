@@ -47,12 +47,13 @@ export class XMLscene extends CGFscene {
      */
     initCameras() {
         // TODO should this default still be made?
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+       // this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
 
     setCamera(camera) {
         if (camera != null) {
             this.camera = camera;
+            this.interface.setActiveCamera(this.camera);
         }
     }
 

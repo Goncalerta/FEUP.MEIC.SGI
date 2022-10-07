@@ -53,11 +53,11 @@ export class MyTriangle extends CGFobject {
         const cosAlpha = (a**2 - b**2 + c**2) / (2 * a * c);
         const sinAlpha = Math.sqrt(1 - cosAlpha**2);
 
-        // TODO isnt division by length u and t redundant since they're both 1?
+        // No need to divide by this.length_s and length_t since they start as 1.0
         this.texCoords = [
             0, 0,
-            a / this.length_s, 0,
-            (c * cosAlpha) / this.length_s, (c * sinAlpha) / this.length_t
+            a, 0,
+            (c * cosAlpha), (c * sinAlpha)
         ];
 
         this.primitiveType = this.scene.gl.TRIANGLES;
