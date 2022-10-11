@@ -25,6 +25,8 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        this.selectedView = 0;
+
         this.appearanceStack = [];
 
         this.sceneInited = false;
@@ -47,13 +49,18 @@ export class XMLscene extends CGFscene {
      */
     initCameras() {
         // TODO should this default still be made?
-       // this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+    }
+
+    updateCamera() {
+
     }
 
     setCamera(camera) {
         if (camera != null) {
             this.camera = camera;
-            this.interface.setActiveCamera(this.camera);
+            if (this.interface)
+                this.interface.setActiveCamera(this.camera);
         }
     }
 
@@ -114,6 +121,8 @@ export class XMLscene extends CGFscene {
 
         this.initLights();
 
+        this.interface.gui.add(this, 'selectedView', this.graph.cameraIds).name('Selected Camera').onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
+  
         this.sceneInited = true;
     }
 

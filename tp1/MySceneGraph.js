@@ -239,7 +239,8 @@ export class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.cameras = [];
+        this.cameras = {};
+        this.cameraIds = [];
         // TODO are the errors on these function "MinorError"?
 
         //  <views default="ss" >
@@ -255,8 +256,8 @@ export class MySceneGraph {
         //  </views>
 
         // default
-        this.selectedView = this.reader.getString(viewsNode, 'default');
-        if (this.selectedView == null)
+        this.scene.selectedView = this.reader.getString(viewsNode, 'default');
+        if (this.scene.selectedView == null)
             return "unable to parse default view";
 
         var children = viewsNode.children;
@@ -330,7 +331,6 @@ export class MySceneGraph {
                     }
 
                     this.cameras[viewId] = new CGFcamera(angle * DEGREE_TO_RAD, near, far, fromToPositions[0], fromToPositions[1]);
-                    
                 } else { // == "ortho"
                     if (nodeNames.length < 2 || nodeNames.length > 3) {
                         return "invalid number of children of perspective view with ID = " + viewId;
@@ -378,6 +378,7 @@ export class MySceneGraph {
 
                     this.cameras[viewId] = new CGFcameraOrtho(left, right, bottom, top, near, far, fromToPositions[0], fromToPositions[1], up);
                 }
+                this.cameraIds.push(viewId);
 
             } else {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
@@ -385,7 +386,7 @@ export class MySceneGraph {
             }
         }
 
-        var defaultCamera = this.cameras[this.selectedView];
+        var defaultCamera = this.cameras[this.scene.selectedView];
         if (defaultCamera != null) {
             this.scene.setCamera(defaultCamera);
         } else {
