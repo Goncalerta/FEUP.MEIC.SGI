@@ -23,7 +23,7 @@
             <to x="25" y="20" z="20" />
         </perspective>
 
-        <ortho id="moonWide" near="0.1" far="5000" left="-10" right="10" top="10" bottom="-10" >
+        <ortho id="orthoMoon" near="0.1" far="5000" left="-20" right="20" top="10" bottom="-10" >
             <from x="30" y="30" z="30" />
             <to x="0" y="0" z="-17" />
             <up x="1" y="1" z="0" />
@@ -38,6 +38,10 @@
             <from x="15" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
+        <perspective id="satelliteMainPanelBack" near="0.1" far="5000" angle="60">
+            <from x="-2" y="0.5" z="0" />
+            <to x="0" y="1.5" z="0" />
+        </perspective>
 
         <perspective id="satelliteCenter" near="0.1" far="5000" angle="22.9">
             <from x="3" y="1" z="3" />
@@ -48,6 +52,12 @@
             <from x="3" y="-10" z="3" />
             <to x="0" y="0" z="0" />
         </perspective>
+
+        <ortho id="orthoSatellite" near="0.1" far="5000" left="-10" right="10" top="5" bottom="-5" >
+            <from x="30" y="30" z="30" />
+            <to x="0" y="0" z="0" />
+            <up x="0" y="1" z="0" />
+        </ortho>
     </views>
 
     <ambient>
@@ -79,7 +89,7 @@
         <texture id="sunTexture" file="scenes/images/space/sun.jpg" />
         <texture id="solarPanelTexture" file="scenes/images/space/solar_panel.jpg" />
         <texture id="whiteMetalTexture" file="scenes/images/space/white_metal.jpg" />
-        <texture id="metalTilesTexture" file="scenes/images/space/metal_chains.jpg" />
+        <texture id="metalTilesTexture" file="scenes/images/space/metal_tiles.jpg" />
         <texture id="spaceshipBodyTexture" file="scenes/images/space/spaceship_body.jpg" />
         <texture id="cubemapPositiveXTexture" file="scenes/images/space/stars/px.jpg" />
         <texture id="cubemapNegativeXTexture" file="scenes/images/space/stars/nx.jpg" />
@@ -126,23 +136,88 @@
             <diffuse r="1.0" g="1.0" b="0.3" a="1.0" />
             <specular r="1.0" g="1.0" b="0.3" a="1.0" />
         </material>
+
+        <!-- Non-standard materials (press M) -->
+        <material id="brownSpaceshipMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.862" g="0.408" b="0.286" a="1.0" />
+            <diffuse r="0.862" g="0.408" b="0.286" a="1.0" />
+            <specular r="0.862" g="0.408" b="0.286" a="1.0" />
+        </material>
+        <material id="shinySpaceshipMaterial" shininess="0.8">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9" g="0.758" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.843" b="0.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+
+        <material id="redSpaceshipMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.8" g="0.1" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.2" b="0.0" a="1.0" />
+            <specular r="1.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="greenSpaceshipMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.8" b="0.0" a="1.0" />
+            <diffuse r="0.2" g="1.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="0.0" a="1.0" />
+        </material>
+        <material id="cyanSpaceshipMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="0.2" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="yellowSpaceshipMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="0.8" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="0.2" a="1.0" />
+            <specular r="1.0" g="1.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="goldenReflectiveMaterial" shininess="0.4">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9" g="0.758" b="0.0" a="1.0" />
+            <diffuse r="1.0" g="0.843" b="0.0" a="1.0" />
+            <specular r="1.0" g="0.95" b="0.7" a="1.0" />
+        </material>
+
+        <material id="redCubemapMaterial" shininess="1">
+            <emission r="0.6" g="0.4" b="0.4" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
+        <transformation id="halfSpinZ">
+            <rotate axis="z" angle="180" />
+        </transformation>
+        <transformation id="spacestationStemTubeTransformation">
+            <translate x="0.15" y="0" z="0" />
+            <rotate axis="y" angle="-90" />
+            <scale x="8" y="0.15" z="0.15" />
+        </transformation>
+        <transformation id="sunTransformation">
+            <translate x="230" y="35" z="3" />
+            <scale x="4.5" y="4.5" z="4.5" />
+        </transformation>
     </transformations>
 
     <primitives>
         <primitive id="spacestationBody">
-            <torus inner="0.5" outer="3.5" slices="50" loops="50" />
+            <torus inner="0.5" outer="3.5" slices="150" loops="150" />
         </primitive>
         <primitive id="spacestationCenter">
-            <cylinder top="0.5" base="1.25" height="1" slices="50" stacks="50" />
+            <cylinder top="0.5" base="1.25" height="1" slices="150" stacks="150" />
         </primitive>
         <primitive id="square">
             <rectangle x1="0" y1="0" x2="1" y2="1" />
         </primitive>
         <primitive id="sphere">
-            <sphere radius="1" slices="50" stacks="50" />
+            <sphere radius="1" slices="150" stacks="150" />
         </primitive>
         <primitive id="equilateralTriangle">
             <triangle x1="0" y1="0" z1="0" 
@@ -172,8 +247,7 @@
         <!-- Sun & Planets -->
         <component id="sun">
             <transformation>
-                <translate x="230" y="35" z="3" />
-                <scale x="4.5" y="4.5" z="4.5" />
+                <transformationref id="sunTransformation" />
             </transformation>
             <materials>
                 <material id="sunMaterial" />
@@ -223,6 +297,8 @@
             </transformation>
             <materials>
                 <material id="defaultMaterial" />
+                <material id="brownSpaceshipMaterial" />
+                <material id="shinySpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
@@ -312,9 +388,7 @@
         </component>
         <component id="spacestationStemTube">
             <transformation>
-                <translate x="0.15" y="0" z="0" />
-                <rotate axis="y" angle="-90" />
-                <scale x="8" y="0.15" z="0.15" />
+                <transformationref id="spacestationStemTubeTransformation" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -409,6 +483,7 @@
             </transformation>
             <materials>
                 <material id="reflectiveMaterial" />
+                <material id="goldenReflectiveMaterial" />
             </materials>
             <texture id="none" />
             <children>
@@ -425,7 +500,7 @@
             <materials>
                 <material id="darkMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="metalTilesTexture" />
             <children>
                 <componentref id="hexagon" />
             </children>
@@ -476,7 +551,7 @@
 
 
         <!-- Arms -->
-        <component id="spacestationArm1">
+        <component id="spacestationArmBase">
             <transformation>
                 <translate x="0.75" y="-0.075" z="-0.075" />
                 <scale x="2.5" y="0.15" z="0.15" />
@@ -489,16 +564,43 @@
                 <componentref id="cube" />
             </children>
         </component>
+        <component id="spacestationArm1">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="spacestationArmBase" />
+            </children>
+        </component>
         <component id="spacestationArm2">
             <transformation>
                 <rotate axis="z" angle="60" />
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
+                <material id="cyanSpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="spacestationArm1" />
+                <componentref id="spacestationArmBase" />
             </children>
         </component>
         <component id="spacestationArm3">
@@ -507,22 +609,38 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
+                <material id="inherit" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="spacestationArm1" />
+                <componentref id="spacestationArmBase" />
             </children>
         </component>
         <component id="spacestationArm4">
             <transformation>
-                <rotate axis="z" angle="180" />
+                <transformationref id="halfSpinZ" />
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="spacestationArm1" />
+                <componentref id="spacestationArmBase" />
             </children>
         </component>
         <component id="spacestationArm5">
@@ -531,10 +649,18 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
+                <material id="shinySpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="spacestationArm1" />
+                <componentref id="spacestationArmBase" />
             </children>
         </component>
         <component id="spacestationArm6">
@@ -543,10 +669,18 @@
             </transformation>
             <materials>
                 <material id="inherit" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="cyanSpaceshipMaterial" />
+                <material id="redSpaceshipMaterial" />
+                <material id="greenSpaceshipMaterial" />
+                <material id="cyanSpaceshipMaterial" /> 
+                <material id="shinySpaceshipMaterial" />
+                <material id="yellowSpaceshipMaterial" />
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="spacestationArm1" />
+                <componentref id="spacestationArmBase" />
             </children>
         </component>
         
@@ -690,7 +824,7 @@
         </component>
         <component id="hexagonPart3">
             <transformation>
-                <rotate axis="z" angle="180" />
+                <transformationref id="halfSpinZ" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -772,6 +906,7 @@
             </transformation>
             <materials>
                 <material id="cubemapMaterial" />
+                <material id="redCubemapMaterial" />
             </materials>
             <texture id="inherit"/>
             <children>

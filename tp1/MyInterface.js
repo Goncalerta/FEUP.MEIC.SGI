@@ -25,35 +25,34 @@ export class MyInterface extends CGFinterface {
 
         // add a group of controls (and open/expand by defult)
 
-        this.initKeys();
+        this.clickCallbacks = {};
 
         return true;
     }
 
-    /**
-     * initKeys
-     */
-    initKeys() {
-        this.scene.gui=this;
-        this.processKeyboard=function(){};
-        this.activeKeys={};
-    }
-
-    processKeyDown(event) {
-        this.activeKeys[event.code]=true;
-    };
-
-    processKeyUp(event) {
-        this.activeKeys[event.code]=false;
-    };
-
-    isKeyPressed(keyCode) {
-        // TODO [duvida] this is similar to what we did in CGRA, should we handle it differently?
-        if (this.activeKeys[keyCode] === true && keyCode == "keyM") {
-            this.activeKeys[keyCode] = false;
-            return true;
+    onClick(keyCode, callback) {
+        if (this.clickCallbacks[keyCode] == null) {
+            this.clickCallbacks[keyCode] = [];
         }
 
-        return this.activeKeys[keyCode] || false;
+        this.clickCallbacks[keyCode].push(callback);
     }
+
+    processKeyUp(event) {
+        if (this.clickCallbacks[event.code] === null) {
+            return;
+        }
+
+        for (let callback of this.clickCallbacks[event.code]) {
+            callback();
+        }
+    };
+
+    processKeyDown(event) {
+        // Not needed
+    };
+
+    processKeyboard(event) {
+        // Not needed
+    };
 }

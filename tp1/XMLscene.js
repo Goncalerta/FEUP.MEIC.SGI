@@ -58,7 +58,6 @@ export class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        // TODO should this default still be made?
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
 
@@ -142,17 +141,15 @@ export class XMLscene extends CGFscene {
 
         this.initLights();
 
-        this.interface.gui.add(this, 'selectedView', this.graph.cameraIds)
-                            .name('Selected Camera')
-                            .onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
+        this.interface.gui.add(this, 'selectedView', this.graph.cameraIds).name('Selected Camera').onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
 
         let i = 0;
         for (const lightId in this.graph.lights) {
-            this.interface.gui.add(this, 'light'+ i)
-                                .name(lightId)
-                                .onChange(() => this.updateLights());
+            this.interface.gui.add(this, 'light'+ i).name(lightId).onChange(() => this.updateLights());
             i++;
         }
+
+        this.interface.onClick('KeyM', () => this.graph.toggleMaterial());
   
         this.sceneInited = true;
     }
@@ -194,26 +191,6 @@ export class XMLscene extends CGFscene {
         this.appearanceStack.pop();
         if (this.appearanceStack.length > 0) {
             this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
-        }
-    }
-
-    /**
-     * @method update
-     * Called periodically (as per setUpdatePeriod() in init()).
-     * Updates the objects in the scene and checks input from keys.
-     * @param {Number} - Current time in milliseconds.
-     */
-    update(t) {
-        this.checkKeys();
-    }
-
-    /**
-     * @method checkKeys
-     * Checks for user's input in tge keyboard and acts accordingly.
-     */
-    checkKeys() {
-        if (this.gui.isKeyPressed("KeyM")) {
-            this.graph.toggleMaterial();
         }
     }
 

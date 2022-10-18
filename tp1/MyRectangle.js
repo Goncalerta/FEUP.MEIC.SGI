@@ -15,9 +15,6 @@ export class MyRectangle extends CGFobject {
         this.y1 = y1;
         this.y2 = y2;
 
-        this.length_s = 1.0;
-        this.length_t = 1.0;
-
         this.initBuffers();
     }
     
@@ -43,33 +40,20 @@ export class MyRectangle extends CGFobject {
             0, 0, 1
         ];
         
-        /*
-        Texture coords (s,t)
-        +----------> s
-        |
-        |
-        |
-        v
-        t
-        */
-
+        // No need to divide by this.length_s and length_t since they start as 1.0
         this.texCoords = [
             0, 1,
             1, 1,
             0, 0,
             1, 0
         ]
+        this.baseTexCoords = this.texCoords;
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
-
-    updateTexCoords(new_length_s, new_length_t) {
-        this.texCoords = applyLengthsToTextureCoords(this.texCoords, this.length_s, this.length_t, new_length_s, new_length_t);
-
-        this.length_s = new_length_s;
-        this.length_t = new_length_t;
-
+    
+    updateTexCoords(length_s, length_t) {
+        this.texCoords = applyLengthsToTextureCoords(this.baseTexCoords, length_s, length_t);
         this.updateTexCoordsGLBuffers();
     }
 }
-
