@@ -25,7 +25,17 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
+        // interface variables
         this.selectedView = 0;
+        this.light0 = false;
+        this.light1 = false;
+        this.light2 = false;
+        this.light3 = false;
+        this.light4 = false;
+        this.light5 = false;
+        this.light6 = false;
+        this.light7 = false;
+
 
         this.appearanceStack = [];
 
@@ -52,15 +62,24 @@ export class XMLscene extends CGFscene {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
 
-    updateCamera() {
-
-    }
-
     setCamera(camera) {
         if (camera != null) {
             this.camera = camera;
             if (this.interface)
                 this.interface.setActiveCamera(this.camera);
+        }
+    }
+
+    updateLights() {
+        let i = 0;
+        for (const _ in this.graph.lights) {
+            if (this['light' + i]) {
+                this.lights[i].enable();
+            } else {
+                this.lights[i].disable();
+            }
+            this.lights[i].update();
+            i++;
         }
     }
 
@@ -91,10 +110,12 @@ export class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light[0]) {
                     this.lights[i].enable();
-                else
+                    this['light' + i] = true;
+                } else {
                     this.lights[i].disable();
+                }
 
                 this.lights[i].update();
 
@@ -121,7 +142,17 @@ export class XMLscene extends CGFscene {
 
         this.initLights();
 
-        this.interface.gui.add(this, 'selectedView', this.graph.cameraIds).name('Selected Camera').onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
+        this.interface.gui.add(this, 'selectedView', this.graph.cameraIds)
+                            .name('Selected Camera')
+                            .onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
+
+        let i = 0;
+        for (const lightId in this.graph.lights) {
+            this.interface.gui.add(this, 'light'+ i)
+                                .name(lightId)
+                                .onChange(() => this.updateLights());
+            i++;
+        }
   
         this.sceneInited = true;
     }
@@ -205,11 +236,6 @@ export class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.axis.display();
-
-        for (var i = 0; i < this.lights.length; i++) {
-            this.lights[i].setVisible(true);
-            this.lights[i].enable();
-        }
 
         if (this.sceneInited) {
             // Draw axis
