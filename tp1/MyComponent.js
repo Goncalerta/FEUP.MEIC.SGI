@@ -14,8 +14,8 @@ export class MyComponent extends CGFobject {
         this.transformation = null;
         this.materials = [];
         this.currentMaterialIdx = 0;
+        
         this.texture = "none";
-
         this.length_s = 1.0;
         this.length_t = 1.0;
     }

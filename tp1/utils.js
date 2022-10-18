@@ -11,7 +11,7 @@ export function normalizeVector(vector) {
         normalized.push(v / norm);
     }
 
-    return norm;
+    return normalized;
 }
 
 

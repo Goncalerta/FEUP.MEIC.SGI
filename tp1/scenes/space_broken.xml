@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="root" axis_length="1.0"/>
+    <scene axis_length="1.0"/>
 
     <views default="satelliteOverEarth">
         <perspective id="backEarth" near="0.1" far="5000" angle="22.9">
@@ -28,7 +28,7 @@
          </ortho>
 
          <perspective id="satelliteOverEarth" near="0.1" far="5000" angle="22.9">
-            <from x="30" y="30" z="30" />
+            <froam x="30" y="30" z="30" />
             <to x="0" y="0" z="0" />
         </perspective>
 
@@ -59,7 +59,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.025" g="0.025" b="0.025" a="1.0" />
+        <ambient r="stop" g="0.025" b="none" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
@@ -72,7 +72,7 @@
             <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
         </omni>
         <spot id="spotlight" enabled="0" angle="50" exponent="100">
-            <location x="5.0" y="5.0" z="5.0" w="1.0"/>
+            <location x="5.0" y="5.0" z="5.0" w="wrong"/>
             <target x="0" y="0" z="0" />
             <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />

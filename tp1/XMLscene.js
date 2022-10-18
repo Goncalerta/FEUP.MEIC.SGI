@@ -1,11 +1,6 @@
-import { CGFscene } from '../lib/CGF.js';
+import { CGFscene, CGFtexture } from '../lib/CGF.js';
 import { CGFaxis,CGFcamera } from '../lib/CGF.js';
 import { CGFappearance } from '../lib/CGF.js';
-
-// TODO finish README.md
-// TODO cleanup and document and error handling
-
-var DEGREE_TO_RAD = Math.PI / 180;
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -58,12 +53,15 @@ export class XMLscene extends CGFscene {
     }
 
     /**
-     * Initializes the scene cameras.
+     * Initializes the fallback scene camera when scene file did not correctly declare any.
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
     }
 
+    /**
+     * Changes the camera that is currently active.
+     */
     setCamera(camera) {
         if (camera != null) {
             this.camera = camera;
@@ -72,6 +70,9 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Updates lights according to whether they should be enabled or disabled.
+     */
     updateLights() {
         let i = 0;
         for (const _ in this.graph.lights) {
@@ -89,13 +90,16 @@ export class XMLscene extends CGFscene {
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
-        var i = 0;
         // Lights index.
+        var i = 0;
 
         // Reads the lights from the scene graph.
         for (var key in this.graph.lights) {
-            if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
+            if (i >= 8) {
+                // Only eight lights allowed by WebGL.
+                console.warn("Warning: more than 8 lights defined in the scene. Only the first 8 will be used.");
+                break; 
+            }
 
             if (this.graph.lights.hasOwnProperty(key)) {
                 var light = this.graph.lights[key];
@@ -126,6 +130,9 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Sets the fallback default appearance.
+     */
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
         this.setDiffuse(0.2, 0.4, 0.8, 1.0);
@@ -144,25 +151,40 @@ export class XMLscene extends CGFscene {
 
         this.initLights();
 
+        // Interface controls and key bindings
         this.interface.gui.add(this, 'selectedView', this.graph.cameraIds).name('Selected Camera').onChange(() => this.setCamera(this.graph.cameras[this.selectedView]));
-
         let i = 0;
         for (const lightId in this.graph.lights) {
             this.interface.gui.add(this, 'light'+ i).name(lightId).onChange(() => this.updateLights());
             i++;
         }
-
-        this.interface.onClick('KeyM', () => this.graph.toggleMaterial());
+        this.interface.onClick('KeyM', () => this.toggleMaterial());
   
         this.sceneInited = true;
     }
 
+    /**
+     * Toggles the material of every component in the scene graph.
+     */
+     toggleMaterial() {
+        for (let componentId of this.graph.componentsIds) {
+            this.graph.components[componentId].toggleMaterial();
+        }
+    }
+
+    /**
+     * Adds an appearance to the appearance stack and applies it.
+     * @param material the material properties. May be the string "inherit" or an object with shininess, emission, ambient, diffuse and specular properties.
+     * @param texture the texture to be applied. May be a CGFtexture object, the string "inherit" or the string "none".
+     */
     pushAppearance(material, texture) {
         let newAppearance = new CGFappearance(this);
         if (material == "inherit") {
+            // Inherit means the material is the same as the previous one in the stack.
             material = this.appearanceStack[this.appearanceStack.length - 1].material;
         }
         if (texture == "inherit") {
+            // Inherit means the texture is the same as the previous one in the stack.
             texture = this.appearanceStack[this.appearanceStack.length - 1].texture;
         }
 
@@ -172,13 +194,16 @@ export class XMLscene extends CGFscene {
         newAppearance.setSpecular(...material.specular);
         newAppearance.setShininess(material.shininess);
 
+        // Add texture unless its none.
         if (texture != "none") {
             newAppearance.setTexture(texture);
             newAppearance.setTextureWrap('REPEAT', 'REPEAT');
         }
 
+        // Apply appearance.
         newAppearance.apply();
         
+        // Push appearance and its properties to stack, since it may need to be reused.
         this.appearanceStack.push({
             material: material,
             texture: texture,
@@ -186,6 +211,9 @@ export class XMLscene extends CGFscene {
         });
     }
 
+    /**
+     * Removes an appearance from the appearance stack and applies the previous one if there is any.
+     */
     popAppearance() {
         if (this.appearanceStack.length == 0) {
             console.error("Error: No appearance in stack.");
