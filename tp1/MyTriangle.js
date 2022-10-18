@@ -15,9 +15,6 @@ export class MyTriangle extends CGFobject {
         this.p2 = p2;
         this.p3 = p3;
 
-        this.length_s = 1.0;
-        this.length_t = 1.0;
-
         this.initBuffers();
     }
     
@@ -54,22 +51,19 @@ export class MyTriangle extends CGFobject {
         const sinAlpha = Math.sqrt(1 - cosAlpha**2);
 
         // No need to divide by this.length_s and length_t since they start as 1.0
-        this.texCoords = [
+        this.baseTexCoords = [
             0, 0,
             a, 0,
             (c * cosAlpha), (c * sinAlpha)
         ];
+        this.texCoords = this.baseTexCoords;
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }
 
-    updateTexCoords(new_length_s, new_length_t) {
-        this.texCoords = applyLengthsToTextureCoords(this.texCoords, this.length_s, this.length_t, new_length_s, new_length_t);
-
-        this.length_s = new_length_s;
-        this.length_t = new_length_t;
-
+    updateTexCoords(length_s, length_t) {
+        this.texCoords = applyLengthsToTextureCoords(this.baseTexCoords, length_s, length_t);
         this.updateTexCoordsGLBuffers();
     }
 }

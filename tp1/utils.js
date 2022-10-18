@@ -80,14 +80,12 @@ export function calculateNorm(vector) {
  * @param {float} new_length_t 
  * @returns Modified texture coords
  */
-// TODO instead of doing *current/new, keep a baseTexCoords always and just do /new on the baseTexCoords to create texCoords
-//      this will avoid errors due to float precision
-export function applyLengthsToTextureCoords(textureCoords, current_length_s, current_length_t, new_length_s, new_length_t) {
+export function applyLengthsToTextureCoords(textureCoords, length_s, length_t) {
     const textureCoordsCopy = [...textureCoords];
 
     for (let i = 0; i < textureCoords.length; i+=2) {
-        textureCoordsCopy[i] *= current_length_s / new_length_s;
-        textureCoordsCopy[i + 1] *= current_length_t / new_length_t;
+        textureCoordsCopy[i] /= length_s;
+        textureCoordsCopy[i + 1] /= length_t;
     }
 
     return textureCoordsCopy;
