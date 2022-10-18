@@ -46,17 +46,19 @@ export class MyCylinder extends CGFobject {
                     this.baseRadius +
                     i * ((this.topRadius - this.baseRadius) / this.stacks);
                 const currentAngle = (j % this.slices) * alpha;
+                const cosCurrentAngle = Math.cos(currentAngle);
+                const sinCurrentAngle = Math.sin(currentAngle);
 
                 this.vertices.push(
-                    Math.cos(currentAngle) * currentRadius,
-                    Math.sin(currentAngle) * currentRadius,
+                    cosCurrentAngle * currentRadius,
+                    sinCurrentAngle * currentRadius,
                     i * stackHeight
                 );
 
                 this.normals.push(
                     ...normalizeVector([
-                        cosLeaningAngle * Math.cos(currentAngle),
-                        cosLeaningAngle * Math.sin(currentAngle),
+                        cosLeaningAngle * cosCurrentAngle,
+                        cosLeaningAngle * sinCurrentAngle,
                         sinLeaningAngle,
                     ])
                 );

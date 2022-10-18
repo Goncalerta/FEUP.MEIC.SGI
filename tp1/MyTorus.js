@@ -34,10 +34,12 @@ export class MyTorus extends CGFobject {
         const stepOuter = (Math.PI * 2) / this.loops;
 
         for (let i = 0; i <= this.loops; i++) {
-            // TODO: precompute everything possible only once (cos, sin...) in other primitives also...
             const outerAngle = (i % this.loops) * stepOuter;
-            const displaceX = Math.cos(outerAngle) * this.outerRadius;
-            const displaceY = Math.sin(outerAngle) * this.outerRadius;
+            const cosOuterAngle = Math.cos(outerAngle);
+            const sinOuterAngle = Math.sin(outerAngle);
+
+            const displaceX = cosOuterAngle * this.outerRadius;
+            const displaceY = sinOuterAngle * this.outerRadius;
 
             for (let j = 0; j <= this.slices; j++) {
                 const innerAngle = (j % this.slices) * stepInner;
@@ -46,15 +48,15 @@ export class MyTorus extends CGFobject {
                 const z = Math.sin(innerAngle) * this.innerRadius;
 
                 this.vertices.push(
-                    x * Math.cos(outerAngle) + displaceX,
-                    x * Math.sin(outerAngle) + displaceY,
+                    x * cosOuterAngle + displaceX,
+                    x *sinOuterAngle + displaceY,
                     z
                 );
 
                 this.normals.push(
                     ...normalizeVector([
-                        x * Math.cos(outerAngle),
-                        x * Math.sin(outerAngle),
+                        x * cosOuterAngle,
+                        x * sinOuterAngle,
                         z,
                     ])
                 );
