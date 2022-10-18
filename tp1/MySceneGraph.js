@@ -247,7 +247,6 @@ export class MySceneGraph {
     parseView(viewsNode) {
         this.cameras = {};
         this.cameraIds = [];
-        // TODO are the errors on these function "MinorError"?
 
         //  <views default="ss" >
         //      <perspective id="ss" near="ff" far="ff" angle="ff">
