@@ -72,6 +72,9 @@ export class XMLscene extends CGFscene {
     updateLights() {
         let i = 0;
         for (const _ in this.graph.lights) {
+            if (i >= 8)
+                break;
+
             if (this['light' + i]) {
                 this.lights[i].enable();
             } else {
@@ -108,7 +111,6 @@ export class XMLscene extends CGFscene {
                     this.lights[i].setSpotDirection(light[8][0], light[8][1], light[8][2]);
                 }
 
-                this.lights[i].setVisible(true);
                 if (light[0]) {
                     this.lights[i].enable();
                     this['light' + i] = true;
