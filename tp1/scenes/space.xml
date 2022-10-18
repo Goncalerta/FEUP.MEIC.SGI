@@ -38,6 +38,10 @@
             <from x="15" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
+        <perspective id="satelliteMainPanelBack" near="0.1" far="5000" angle="60">
+            <from x="-2" y="0.5" z="0" />
+            <to x="0" y="1.5" z="0" />
+        </perspective>
 
         <perspective id="satelliteCenter" near="0.1" far="5000" angle="22.9">
             <from x="3" y="1" z="3" />
@@ -71,7 +75,7 @@
         <texture id="sunTexture" file="scenes/images/space/sun.jpg" />
         <texture id="solarPanelTexture" file="scenes/images/space/solar_panel.jpg" />
         <texture id="whiteMetalTexture" file="scenes/images/space/white_metal.jpg" />
-        <texture id="metalTilesTexture" file="scenes/images/space/metal_chains.jpg" />
+        <texture id="metalTilesTexture" file="scenes/images/space/metal_tiles.jpg" />
         <texture id="spaceshipBodyTexture" file="scenes/images/space/spaceship_body.jpg" />
         <texture id="cubemapPositiveXTexture" file="scenes/images/space/stars/px.jpg" />
         <texture id="cubemapNegativeXTexture" file="scenes/images/space/stars/nx.jpg" />
@@ -482,7 +486,7 @@
             <materials>
                 <material id="darkMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="metalTilesTexture" />
             <children>
                 <componentref id="hexagon" />
             </children>
