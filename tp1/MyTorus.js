@@ -1,6 +1,9 @@
-import {CGFobject} from '../lib/CGF.js';
-import { normalizeVector } from './utils.js';
+import { CGFobject } from "../lib/CGF.js";
+import { normalizeVector } from "./utils.js";
 
+/**
+ * MyTorus class, representing a torus.
+ */
 export class MyTorus extends CGFobject {
     /**
      * @method constructor
@@ -20,14 +23,15 @@ export class MyTorus extends CGFobject {
         this.initBuffers();
     }
 
+    // TODO document
     initBuffers() {
         this.vertices = [];
         this.indices = [];
         this.normals = [];
         this.texCoords = [];
 
-        const stepInner = Math.PI*2 / this.slices;
-        const stepOuter = Math.PI*2 / this.loops;
+        const stepInner = (Math.PI * 2) / this.slices;
+        const stepOuter = (Math.PI * 2) / this.loops;
 
         for (let i = 0; i <= this.loops; i++) {
             // TODO: precompute everything possible only once (cos, sin...) in other primitives also...
@@ -46,8 +50,14 @@ export class MyTorus extends CGFobject {
                     x * Math.sin(outerAngle) + displaceY,
                     z
                 );
-                
-                this.normals.push(...normalizeVector([x * Math.cos(outerAngle), x * Math.sin(outerAngle), z]));
+
+                this.normals.push(
+                    ...normalizeVector([
+                        x * Math.cos(outerAngle),
+                        x * Math.sin(outerAngle),
+                        z,
+                    ])
+                );
 
                 this.texCoords.push(j / this.slices, i / this.loops);
             }
@@ -58,8 +68,16 @@ export class MyTorus extends CGFobject {
                 const indexVertex = i * (this.slices + 1) + j;
                 const indexVertexTop = indexVertex + this.slices + 1;
 
-                this.indices.push(indexVertex, indexVertexTop + 1, indexVertex + 1)
-                this.indices.push(indexVertex, indexVertexTop, indexVertexTop + 1)
+                this.indices.push(
+                    indexVertex,
+                    indexVertexTop + 1,
+                    indexVertex + 1
+                );
+                this.indices.push(
+                    indexVertex,
+                    indexVertexTop,
+                    indexVertexTop + 1
+                );
             }
         }
 
@@ -67,7 +85,12 @@ export class MyTorus extends CGFobject {
         this.initGLBuffers();
     }
 
-    updateTexCoords(new_length_s, new_length_t) {
-        // Nao é necessario aplicar fatores de escala em superficies quadricas
+    /**
+     * Updates texture coordinates based on length_s and length_t
+     * @param length_s
+     * @param length_t
+     */
+    updateTexCoords(length_s, length_t) {
+        // We don't need to update tex coords in quadrics
     }
 }

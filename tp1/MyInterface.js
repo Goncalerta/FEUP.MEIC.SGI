@@ -1,9 +1,8 @@
-import { CGFinterface, CGFapplication, dat } from '../lib/CGF.js';
+import { CGFinterface, CGFapplication, dat } from "../lib/CGF.js";
 
 /**
-* MyInterface class, creating a GUI interface.
-*/
-
+ * MyInterface class, creating a GUI interface.
+ */
 export class MyInterface extends CGFinterface {
     /**
      * @constructor
@@ -23,36 +22,55 @@ export class MyInterface extends CGFinterface {
 
         this.gui = new dat.GUI();
 
-        // add a group of controls (and open/expand by defult)
-
+        // Callbacks for when a key is clicked.
         this.clickCallbacks = {};
 
         return true;
     }
 
+    /**
+     * Adds callback for when a key is clicked.
+     * @param {string} keyCode the key that triggers the callback.
+     * @param {Function} callback the callback triggered.
+     */
     onClick(keyCode, callback) {
         if (this.clickCallbacks[keyCode] == null) {
+            // Initialize array
             this.clickCallbacks[keyCode] = [];
         }
 
         this.clickCallbacks[keyCode].push(callback);
     }
 
+    /**
+     * Processes the event of a key being up.
+     * @param event
+     */
     processKeyUp(event) {
-        if (this.clickCallbacks[event.code] === null) {
+        if (!(event.code in this.clickCallbacks)) {
+            // No callbacks for this key code.
             return;
         }
 
+        // Call all callbacks.
         for (let callback of this.clickCallbacks[event.code]) {
             callback();
         }
-    };
+    }
 
+    /**
+     * Processes the event of a key being down.
+     * @param event
+     */
     processKeyDown(event) {
         // Not needed
-    };
+    }
 
+    /**
+     * Processes keyboard events.
+     * @param event
+     */
     processKeyboard(event) {
         // Not needed
-    };
+    }
 }

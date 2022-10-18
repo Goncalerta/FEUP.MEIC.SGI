@@ -2,8 +2,6 @@
     <scene root="root" axis_length="1.0"/>
 
     <views default="satelliteOverEarth">
-        
-
         <perspective id="backEarth" near="0.1" far="5000" angle="22.9">
             <from x="-250" y="-40" z="-80" />
             <to x="0" y="-30" z="0" />
@@ -61,7 +59,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+        <ambient r="0.025" g="0.025" b="0.025" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
