@@ -1,6 +1,9 @@
 import {CGFobject} from '../lib/CGF.js';
 import { normalizeVector } from './utils.js';
 
+/**
+ * MySphere class, representing a sphere.
+ */
 export class MySphere extends CGFobject {
     /**
      * @method constructor
@@ -23,6 +26,7 @@ export class MySphere extends CGFobject {
      * @method initBuffers
      * Initializes the sphere buffers
      */
+    // TODO document
     initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -81,7 +85,12 @@ export class MySphere extends CGFobject {
         this.initGLBuffers();
     }
 
-    updateTexCoords(new_length_s, new_length_t) {
-        // Nao é necessario aplicar fatores de escala em superficies quadricas
+    /**
+     * Updates texture coordinates based on length_s and length_t
+     * @param length_s 
+     * @param length_t 
+     */
+     updateTexCoords(length_s, length_t) {
+        // We don't need to update tex coords in quadrics
     }
 }

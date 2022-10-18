@@ -3,18 +3,12 @@
  * @param {list} vector to normalize
  */
 export function normalizeVector(vector) {
-    let sumSquared = 0;
-    
+    const norm = calculateNorm(vector);
+
+    // Normalized is v divided by norm
+    let normalized = [];
     for (let v of vector) {
-        sumSquared += v*v;
-    }
-
-    const sqrtSumSquared = Math.sqrt(sumSquared);
-
-    let norm = [];
-
-    for (let v of vector) {
-        norm.push(v / sqrtSumSquared);
+        normalized.push(v / norm);
     }
 
     return norm;
@@ -46,8 +40,9 @@ export function subtractVectors(v1, v2) {
         return null;
     }
 
-    const res = [...v1];
+    const res = [...v1]; // copy v1
 
+    // subtract by v2 element wise
     for (let i = 0; i < v1.length; i++) {
         res[i] -= v2[i];
     }
@@ -62,7 +57,6 @@ export function subtractVectors(v1, v2) {
  */
 export function calculateNorm(vector) {
     let sumSquared = 0;
-    
     for (let v of vector) {
         sumSquared += v*v;
     }
@@ -72,17 +66,16 @@ export function calculateNorm(vector) {
 
 
 /**
- * Calculates new texture coords accordingly to length_s and length_t
+ * Calculates texture coords from base coordinates according to length_s and length_t
  * @param {list} textureCoords 
- * @param {float} current_length_s 
- * @param {float} current_length_t 
- * @param {float} new_length_s 
- * @param {float} new_length_t 
+ * @param {float} length_s 
+ * @param {float} length_t 
  * @returns Modified texture coords
  */
 export function applyLengthsToTextureCoords(textureCoords, length_s, length_t) {
     const textureCoordsCopy = [...textureCoords];
 
+    // Divide by length_s and lenght_y accordingly
     for (let i = 0; i < textureCoords.length; i+=2) {
         textureCoordsCopy[i] /= length_s;
         textureCoordsCopy[i + 1] /= length_t;

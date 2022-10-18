@@ -2,6 +2,9 @@ import { CGFscene } from '../lib/CGF.js';
 import { CGFaxis,CGFcamera } from '../lib/CGF.js';
 import { CGFappearance } from '../lib/CGF.js';
 
+// TODO finish README.md
+// TODO cleanup and document and error handling
+
 var DEGREE_TO_RAD = Math.PI / 180;
 
 /**
