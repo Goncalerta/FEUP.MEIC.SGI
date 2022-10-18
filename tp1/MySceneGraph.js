@@ -10,18 +10,18 @@ import { CGFtexture } from "../lib/CGF.js";
 // TODO finish README.md
 // TODO cleanup and document and error handling
 
-var DEGREE_TO_RAD = Math.PI / 180;
+let DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
-var SCENE_INDEX = 0;
-var VIEWS_INDEX = 1;
-var AMBIENT_INDEX = 2;
-var LIGHTS_INDEX = 3;
-var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
-var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+let SCENE_INDEX = 0;
+let VIEWS_INDEX = 1;
+let AMBIENT_INDEX = 2;
+let LIGHTS_INDEX = 3;
+let TEXTURES_INDEX = 4;
+let MATERIALS_INDEX = 5;
+let TRANSFORMATIONS_INDEX = 6;
+let PRIMITIVES_INDEX = 7;
+let COMPONENTS_INDEX = 8;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -62,10 +62,10 @@ export class MySceneGraph {
      */
     onXMLReady() {
         this.log("XML Loading finished.");
-        var rootElement = this.reader.xmlDoc.documentElement;
+        let rootElement = this.reader.xmlDoc.documentElement;
 
-        // Here should go the calls for different functions to parse the various blocks
-        var error = this.parseXMLFile(rootElement);
+        // Here should go the calls for different functions to parse the letious blocks
+        let error = this.parseXMLFile(rootElement);
 
         if (error != null) {
             this.onXMLError(error);
@@ -85,12 +85,12 @@ export class MySceneGraph {
     parseXMLFile(rootElement) {
         if (rootElement.nodeName != "sxs") return "root tag <sxs> missing";
 
-        var nodes = rootElement.children;
+        let nodes = rootElement.children;
 
         // Reads the names of the nodes to an auxiliary buffer.
-        var nodeNames = [];
+        let nodeNames = [];
 
-        for (var i = 0; i < nodes.length; i++) {
+        for (let i = 0; i < nodes.length; i++) {
             nodeNames.push(nodes[i].nodeName);
         }
 
@@ -101,12 +101,12 @@ export class MySceneGraph {
             );
         }
 
-        var error;
+        let error;
 
         // Processes each node, verifying errors.
 
         // <scene>
-        var index;
+        let index;
         if ((index = nodeNames.indexOf("scene")) == -1)
             this.onXMLError("tag <scene> missing");
         else {
@@ -219,13 +219,13 @@ export class MySceneGraph {
      */
     parseScene(sceneNode) {
         // Get root of the scene.
-        var root = this.reader.getString(sceneNode, "root");
+        let root = this.reader.getString(sceneNode, "root");
         if (root == null) this.onXMLError("no root defined for scene");
 
         this.idRoot = root;
 
         // Get axis length
-        var axis_length = this.reader.getFloat(sceneNode, "axis_length");
+        let axis_length = this.reader.getFloat(sceneNode, "axis_length");
         if (axis_length == null) {
             axis_length = 1;
             this.onXMLMinorError(
@@ -267,14 +267,14 @@ export class MySceneGraph {
             this.onXMLError("no default view defined for views");
         }
 
-        var children = viewsNode.children;
-        for (var i = 0; i < children.length; i++) {
+        let children = viewsNode.children;
+        for (let i = 0; i < children.length; i++) {
             if (
                 children[i].nodeName == "perspective" ||
                 children[i].nodeName == "ortho"
             ) {
                 // id
-                var viewId = this.reader.getString(children[i], "id");
+                let viewId = this.reader.getString(children[i], "id");
                 if (viewId == null) {
                     this.onXMLMinorError("unable to parse id for view");
                     continue;
@@ -291,7 +291,7 @@ export class MySceneGraph {
                 }
 
                 // near
-                var near = this.reader.getFloat(children[i], "near");
+                let near = this.reader.getFloat(children[i], "near");
                 if (!(near != null && !isNaN(near))) {
                     this.onXMLMinorError(
                         "unable to parse near attribute of view with ID = " +
@@ -301,7 +301,7 @@ export class MySceneGraph {
                 }
 
                 // far
-                var far = this.reader.getFloat(children[i], "far");
+                let far = this.reader.getFloat(children[i], "far");
                 if (!(far != null && !isNaN(far))) {
                     this.onXMLMinorError(
                         "unable to parse far attribute of view with ID = " +
@@ -310,7 +310,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var grandChildren = children[i].children;
+                let grandChildren = children[i].children;
                 if (grandChildren.length < 2 || grandChildren.length > 3) {
                     this.onXMLMinorError(
                         "unable to parse children nodes of view with ID = " +
@@ -322,18 +322,18 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var nodeNames = [];
-                for (var j = 0; j < grandChildren.length; j++) {
+                let nodeNames = [];
+                for (let j = 0; j < grandChildren.length; j++) {
                     nodeNames.push(grandChildren[j].nodeName);
                 }
 
                 // from & to
-                var fromToPositions = [];
+                let fromToPositions = [];
                 for (const grandChildrenName of ["from", "to"]) {
-                    var attributeIndex = nodeNames.indexOf(grandChildrenName);
+                    let attributeIndex = nodeNames.indexOf(grandChildrenName);
 
                     if (attributeIndex != -1) {
-                        var pos = this.parseCoordinates3D(
+                        let pos = this.parseCoordinates3D(
                             grandChildren[attributeIndex],
                             "view position for ID" + viewId
                         );
@@ -378,7 +378,7 @@ export class MySceneGraph {
                     }
 
                     // angle
-                    var angle = this.reader.getFloat(children[i], "angle");
+                    let angle = this.reader.getFloat(children[i], "angle");
                     if (!(angle != null && !isNaN(angle))) {
                         this.onXMLMinorError(
                             "unable to parse angle attribute of view with ID = " +
@@ -406,7 +406,7 @@ export class MySceneGraph {
                     }
 
                     // left
-                    var left = this.reader.getFloat(children[i], "left");
+                    let left = this.reader.getFloat(children[i], "left");
                     if (!(left != null && !isNaN(left))) {
                         this.onXMLMinorError(
                             "unable to parse left attribute of view with ID = " +
@@ -416,7 +416,7 @@ export class MySceneGraph {
                     }
 
                     // right
-                    var right = this.reader.getFloat(children[i], "right");
+                    let right = this.reader.getFloat(children[i], "right");
                     if (!(right != null && !isNaN(right))) {
                         this.onXMLMinorError(
                             "unable to parse right attribute of view with ID = " +
@@ -426,7 +426,7 @@ export class MySceneGraph {
                     }
 
                     // top
-                    var top = this.reader.getFloat(children[i], "top");
+                    let top = this.reader.getFloat(children[i], "top");
                     if (!(top != null && !isNaN(top))) {
                         this.onXMLMinorError(
                             "unable to parse top attribute of view with ID = " +
@@ -436,7 +436,7 @@ export class MySceneGraph {
                     }
 
                     // bottom
-                    var bottom = this.reader.getFloat(children[i], "bottom");
+                    let bottom = this.reader.getFloat(children[i], "bottom");
                     if (!(bottom != null && !isNaN(bottom))) {
                         this.onXMLMinorError(
                             "unable to parse bottom attribute of view with ID = " +
@@ -446,10 +446,10 @@ export class MySceneGraph {
                     }
 
                     // up
-                    var up = [0, 1, 0]; // default value
-                    var upAttributeIndex = nodeNames.indexOf("up");
+                    let up = [0, 1, 0]; // default value
+                    let upAttributeIndex = nodeNames.indexOf("up");
                     if (upAttributeIndex != -1) {
-                        var pos = this.parseCoordinates3D(
+                        let pos = this.parseCoordinates3D(
                             grandChildren[upAttributeIndex],
                             "view position for ID" + viewId
                         );
@@ -486,7 +486,7 @@ export class MySceneGraph {
             }
         }
 
-        var defaultCamera = this.cameras[this.scene.selectedView];
+        let defaultCamera = this.cameras[this.scene.selectedView];
         if (defaultCamera != null) {
             this.scene.setCamera(defaultCamera);
         } else {
@@ -508,20 +508,20 @@ export class MySceneGraph {
      */
 
     parseAmbient(ambientsNode) {
-        var children = ambientsNode.children;
+        let children = ambientsNode.children;
 
         this.ambient = [];
         this.background = [];
 
-        var nodeNames = [];
+        let nodeNames = [];
 
-        for (var i = 0; i < children.length; i++)
+        for (let i = 0; i < children.length; i++)
             nodeNames.push(children[i].nodeName);
 
-        var ambientIndex = nodeNames.indexOf("ambient");
-        var backgroundIndex = nodeNames.indexOf("background");
+        let ambientIndex = nodeNames.indexOf("ambient");
+        let backgroundIndex = nodeNames.indexOf("background");
 
-        var color = this.parseColor(children[ambientIndex], "ambient");
+        let color = this.parseColor(children[ambientIndex], "ambient");
         if (!Array.isArray(color))
             this.onXMLError("unable to parse ambient color " + color);
         else this.ambient = color;
@@ -542,20 +542,20 @@ export class MySceneGraph {
      */
     // TODO
     parseLights(lightsNode) {
-        var children = lightsNode.children;
+        let children = lightsNode.children;
 
         this.lights = [];
-        var numLights = 0;
+        let numLights = 0;
 
-        var grandChildren = [];
-        var nodeNames = [];
+        let grandChildren = [];
+        let nodeNames = [];
 
         // Any number of lights.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             // Storing light information
-            var global = [];
-            var attributeNames = [];
-            var attributeTypes = [];
+            let global = [];
+            let attributeNames = [];
+            let attributeTypes = [];
 
             //Check type of light
             if (
@@ -574,7 +574,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current light.
-            var lightId = this.reader.getString(children[i], "id");
+            let lightId = this.reader.getString(children[i], "id");
             if (lightId == null) return "no ID defined for light";
 
             // Checks for repeated IDs.
@@ -586,14 +586,14 @@ export class MySceneGraph {
                 );
 
             // Light enable/disable
-            var aux = this.reader.getBoolean(children[i], "enabled");
+            let aux = this.reader.getBoolean(children[i], "enabled");
             if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
                 this.onXMLMinorError(
                     "unable to parse value component of the 'enable light' field for ID = " +
                         lightId +
                         "; assuming 'value = 1'"
                 );
-            var enableLight = aux != null && aux;
+            let enableLight = aux != null && aux;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
@@ -603,21 +603,21 @@ export class MySceneGraph {
             // Specifications for the current light.
 
             nodeNames = [];
-            for (var j = 0; j < grandChildren.length; j++) {
+            for (let j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
             }
 
-            for (var j = 0; j < attributeNames.length; j++) {
-                var attributeIndex = nodeNames.indexOf(attributeNames[j]);
+            for (let j = 0; j < attributeNames.length; j++) {
+                let attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "position")
-                        var aux = this.parseCoordinates4D(
+                        aux = this.parseCoordinates4D(
                             grandChildren[attributeIndex],
                             "light position for ID" + lightId
                         );
                     else
-                        var aux = this.parseColor(
+                        aux = this.parseColor(
                             grandChildren[attributeIndex],
                             attributeNames[j] + " illumination for ID" + lightId
                         );
@@ -636,25 +636,25 @@ export class MySceneGraph {
 
             // Gets the additional attributes of the spot light
             if (children[i].nodeName == "spot") {
-                var angle = this.reader.getFloat(children[i], "angle");
+                let angle = this.reader.getFloat(children[i], "angle");
                 if (!(angle != null && !isNaN(angle)))
                     return (
                         "unable to parse angle of the light for ID = " + lightId
                     );
 
-                var exponent = this.reader.getFloat(children[i], "exponent");
+                let exponent = this.reader.getFloat(children[i], "exponent");
                 if (!(exponent != null && !isNaN(exponent)))
                     return (
                         "unable to parse exponent of the light for ID = " +
                         lightId
                     );
 
-                var targetIndex = nodeNames.indexOf("target");
+                let targetIndex = nodeNames.indexOf("target");
 
                 // Retrieves the light target.
-                var targetLight = [];
+                let targetLight = [];
                 if (targetIndex != -1) {
-                    var aux = this.parseCoordinates3D(
+                    let aux = this.parseCoordinates3D(
                         grandChildren[targetIndex],
                         "target light for ID " + lightId
                     );
@@ -685,12 +685,12 @@ export class MySceneGraph {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-        var children = texturesNode.children;
+        let children = texturesNode.children;
 
         this.textures = [];
 
         // Any number of materials.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "texture") {
                 this.onXMLMinorError(
                     "unknown tag <" + children[i].nodeName + ">"
@@ -699,7 +699,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current material.
-            var textureID = this.reader.getString(children[i], "id");
+            let textureID = this.reader.getString(children[i], "id");
             if (textureID == null) {
                 this.onXMLMinorError("no ID defined for texture");
                 continue;
@@ -735,12 +735,12 @@ export class MySceneGraph {
      * @param {materials block element} materialsNode
      */
     parseMaterials(materialsNode) {
-        var children = materialsNode.children;
+        let children = materialsNode.children;
 
         this.materials = [];
 
         // Any number of materials.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "material") {
                 this.onXMLMinorError(
                     "unknown tag <" + children[i].nodeName + ">"
@@ -749,7 +749,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current material.
-            var materialID = this.reader.getString(children[i], "id");
+            let materialID = this.reader.getString(children[i], "id");
             if (materialID == null) {
                 this.onXMLMinorError("no ID defined for material");
                 continue;
@@ -863,9 +863,10 @@ export class MySceneGraph {
         transformationNode,
         transfMatrix
     ) {
+        let coordinates;
         switch (transformationNode.nodeName) {
             case "translate":
-                var coordinates = this.parseCoordinates3D(
+                coordinates = this.parseCoordinates3D(
                     transformationNode,
                     "translate transformation for ID " + transformationID
                 );
@@ -879,7 +880,7 @@ export class MySceneGraph {
                 mat4.translate(transfMatrix, transfMatrix, coordinates);
                 break;
             case "scale":
-                var coordinates = this.parseCoordinates3D(
+                coordinates = this.parseCoordinates3D(
                     transformationNode,
                     "scale transformation for ID " + transformationID
                 );
@@ -943,14 +944,14 @@ export class MySceneGraph {
      * @param {transformations block element} transformationsNode
      */
     parseTransformations(transformationsNode) {
-        var children = transformationsNode.children;
+        let children = transformationsNode.children;
 
         this.transformations = [];
 
-        var grandChildren = [];
+        let grandChildren = [];
 
         // Any number of transformations.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "transformation") {
                 this.onXMLMinorError(
                     "unknown tag <" + children[i].nodeName + ">"
@@ -959,7 +960,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current transformation.
-            var transformationID = this.reader.getString(children[i], "id");
+            let transformationID = this.reader.getString(children[i], "id");
             if (transformationID == null) {
                 this.onXMLMinorError("no ID defined for transformation");
                 continue;
@@ -978,9 +979,9 @@ export class MySceneGraph {
             grandChildren = children[i].children;
             // Specifications for the current transformation.
 
-            var transfMatrix = mat4.create(); // Creates a 4x4 identity matrix to which transformations will be applied
+            let transfMatrix = mat4.create(); // Creates a 4x4 identity matrix to which transformations will be applied
 
-            for (var j = 0; j < grandChildren.length; j++) {
+            for (let j = 0; j < grandChildren.length; j++) {
                 let error = this.parseSingleTransformation(
                     transformationID,
                     grandChildren[j],
@@ -1003,14 +1004,14 @@ export class MySceneGraph {
      * @param {primitives block element} primitivesNode
      */
     parsePrimitives(primitivesNode) {
-        var children = primitivesNode.children;
+        let children = primitivesNode.children;
 
         this.primitives = [];
 
-        var grandChildren = [];
+        let grandChildren = [];
 
         // Any number of primitives.
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "primitive") {
                 this.onXMLMinorError(
                     "unknown tag <" + children[i].nodeName + ">"
@@ -1019,7 +1020,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current primitive.
-            var primitiveId = this.reader.getString(children[i], "id");
+            let primitiveId = this.reader.getString(children[i], "id");
             if (primitiveId == null) {
                 this.onXMLMinorError("no ID defined for primitive");
                 continue;
@@ -1053,14 +1054,14 @@ export class MySceneGraph {
             }
 
             // Specifications for the current primitive.
-            var primitiveType = grandChildren[0].nodeName;
+            let primitiveType = grandChildren[0].nodeName;
 
             // Retrieves the primitive coordinates.
             if (primitiveType == "rectangle") {
                 // <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
 
                 // x1
-                var x1 = this.reader.getFloat(grandChildren[0], "x1");
+                let x1 = this.reader.getFloat(grandChildren[0], "x1");
                 if (!(x1 != null && !isNaN(x1))) {
                     this.onXMLMinorError(
                         "unable to parse x1 of the primitive coordinates for ID = " +
@@ -1070,7 +1071,7 @@ export class MySceneGraph {
                 }
 
                 // y1
-                var y1 = this.reader.getFloat(grandChildren[0], "y1");
+                let y1 = this.reader.getFloat(grandChildren[0], "y1");
                 if (!(y1 != null && !isNaN(y1))) {
                     this.onXMLMinorError(
                         "unable to parse y1 of the primitive coordinates for ID = " +
@@ -1080,7 +1081,7 @@ export class MySceneGraph {
                 }
 
                 // x2
-                var x2 = this.reader.getFloat(grandChildren[0], "x2");
+                let x2 = this.reader.getFloat(grandChildren[0], "x2");
                 if (!(x2 != null && !isNaN(x2) && x2 > x1)) {
                     this.onXMLMinorError(
                         "unable to parse x2 of the primitive coordinates for ID = " +
@@ -1090,7 +1091,7 @@ export class MySceneGraph {
                 }
 
                 // y2
-                var y2 = this.reader.getFloat(grandChildren[0], "y2");
+                let y2 = this.reader.getFloat(grandChildren[0], "y2");
                 if (!(y2 != null && !isNaN(y2) && y2 > y1)) {
                     this.onXMLMinorError(
                         "unable to parse y2 of the primitive coordinates for ID = " +
@@ -1099,7 +1100,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var rect = new MyRectangle(this.scene, x1, x2, y1, y2);
+                let rect = new MyRectangle(this.scene, x1, x2, y1, y2);
 
                 this.primitives[primitiveId] = rect;
             } else if (primitiveType == "triangle") {
@@ -1108,7 +1109,7 @@ export class MySceneGraph {
                 //           x3="ff" y3="ff" z3="ff" />
 
                 // x1
-                var x1 = this.reader.getFloat(grandChildren[0], "x1");
+                let x1 = this.reader.getFloat(grandChildren[0], "x1");
                 if (!(x1 != null && !isNaN(x1))) {
                     this.onXMLMinorError(
                         "unable to parse x1 of the primitive coordinates for ID = " +
@@ -1118,7 +1119,7 @@ export class MySceneGraph {
                 }
 
                 // y1
-                var y1 = this.reader.getFloat(grandChildren[0], "y1");
+                let y1 = this.reader.getFloat(grandChildren[0], "y1");
                 if (!(y1 != null && !isNaN(y1))) {
                     this.onXMLMinorError(
                         "unable to parse y1 of the primitive coordinates for ID = " +
@@ -1128,7 +1129,7 @@ export class MySceneGraph {
                 }
 
                 // z1
-                var z1 = this.reader.getFloat(grandChildren[0], "z1");
+                let z1 = this.reader.getFloat(grandChildren[0], "z1");
                 if (!(z1 != null && !isNaN(z1))) {
                     this.onXMLMinorError(
                         "unable to parse z1 of the primitive coordinates for ID = " +
@@ -1138,7 +1139,7 @@ export class MySceneGraph {
                 }
 
                 // x2
-                var x2 = this.reader.getFloat(grandChildren[0], "x2");
+                let x2 = this.reader.getFloat(grandChildren[0], "x2");
                 if (!(x2 != null && !isNaN(x2))) {
                     this.onXMLMinorError(
                         "unable to parse x2 of the primitive coordinates for ID = " +
@@ -1148,7 +1149,7 @@ export class MySceneGraph {
                 }
 
                 // y2
-                var y2 = this.reader.getFloat(grandChildren[0], "y2");
+                let y2 = this.reader.getFloat(grandChildren[0], "y2");
                 if (!(y2 != null && !isNaN(y2))) {
                     this.onXMLMinorError(
                         "unable to parse y2 of the primitive coordinates for ID = " +
@@ -1158,7 +1159,7 @@ export class MySceneGraph {
                 }
 
                 // z2
-                var z2 = this.reader.getFloat(grandChildren[0], "z2");
+                let z2 = this.reader.getFloat(grandChildren[0], "z2");
                 if (!(z2 != null && !isNaN(z2))) {
                     this.onXMLMinorError(
                         "unable to parse z2 of the primitive coordinates for ID = " +
@@ -1168,7 +1169,7 @@ export class MySceneGraph {
                 }
 
                 // x3
-                var x3 = this.reader.getFloat(grandChildren[0], "x3");
+                let x3 = this.reader.getFloat(grandChildren[0], "x3");
                 if (!(x3 != null && !isNaN(x3))) {
                     this.onXMLMinorError(
                         "unable to parse x3 of the primitive coordinates for ID = " +
@@ -1178,7 +1179,7 @@ export class MySceneGraph {
                 }
 
                 // y3
-                var y3 = this.reader.getFloat(grandChildren[0], "y3");
+                let y3 = this.reader.getFloat(grandChildren[0], "y3");
                 if (!(y3 != null && !isNaN(y3))) {
                     this.onXMLMinorError(
                         "unable to parse y3 of the primitive coordinates for ID = " +
@@ -1188,7 +1189,7 @@ export class MySceneGraph {
                 }
 
                 // z3
-                var z3 = this.reader.getFloat(grandChildren[0], "z3");
+                let z3 = this.reader.getFloat(grandChildren[0], "z3");
                 if (!(z3 != null && !isNaN(z3))) {
                     this.onXMLMinorError(
                         "unable to parse z3 of the primitive coordinates for ID = " +
@@ -1197,7 +1198,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var triangle = new MyTriangle(
+                let triangle = new MyTriangle(
                     this.scene,
                     [x1, y1, z1],
                     [x2, y2, z2],
@@ -1209,7 +1210,7 @@ export class MySceneGraph {
                 // <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
 
                 // base
-                var base = this.reader.getFloat(grandChildren[0], "base");
+                let base = this.reader.getFloat(grandChildren[0], "base");
                 if (!(base != null && !isNaN(base))) {
                     this.onXMLMinorError(
                         "unable to parse base of the primitive for ID = " +
@@ -1219,7 +1220,7 @@ export class MySceneGraph {
                 }
 
                 // top
-                var top = this.reader.getFloat(grandChildren[0], "top");
+                let top = this.reader.getFloat(grandChildren[0], "top");
                 if (!(top != null && !isNaN(top))) {
                     this.onXMLMinorError(
                         "unable to parse top of the primitive for ID = " +
@@ -1229,7 +1230,7 @@ export class MySceneGraph {
                 }
 
                 // height
-                var height = this.reader.getFloat(grandChildren[0], "height");
+                let height = this.reader.getFloat(grandChildren[0], "height");
                 if (!(height != null && !isNaN(height))) {
                     this.onXMLMinorError(
                         "unable to parse height of the primitive for ID = " +
@@ -1239,7 +1240,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                var slices = this.reader.getInteger(grandChildren[0], "slices");
+                let slices = this.reader.getInteger(grandChildren[0], "slices");
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         "unable to parse slices of the primitive for ID = " +
@@ -1249,7 +1250,7 @@ export class MySceneGraph {
                 }
 
                 // stacks
-                var stacks = this.reader.getInteger(grandChildren[0], "stacks");
+                let stacks = this.reader.getInteger(grandChildren[0], "stacks");
                 if (!(stacks != null && !isNaN(stacks))) {
                     this.onXMLMinorError(
                         "unable to parse stacks of the primitive for ID = " +
@@ -1258,7 +1259,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var cylinder = new MyCylinder(
+                let cylinder = new MyCylinder(
                     this.scene,
                     base,
                     top,
@@ -1272,7 +1273,7 @@ export class MySceneGraph {
                 // <sphere radius="ff" slices="ii" stacks="ii" />
 
                 // radius
-                var radius = this.reader.getFloat(grandChildren[0], "radius");
+                let radius = this.reader.getFloat(grandChildren[0], "radius");
                 if (!(radius != null && !isNaN(radius))) {
                     this.onXMLMinorError(
                         "unable to parse radius of the primitive for ID = " +
@@ -1282,7 +1283,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                var slices = this.reader.getInteger(grandChildren[0], "slices");
+                let slices = this.reader.getInteger(grandChildren[0], "slices");
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         "unable to parse slices of the primitive for ID = " +
@@ -1292,7 +1293,7 @@ export class MySceneGraph {
                 }
 
                 // stacks
-                var stacks = this.reader.getInteger(grandChildren[0], "stacks");
+                let stacks = this.reader.getInteger(grandChildren[0], "stacks");
                 if (!(stacks != null && !isNaN(stacks))) {
                     this.onXMLMinorError(
                         "unable to parse stacks of the primitive for ID = " +
@@ -1301,14 +1302,14 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var sphere = new MySphere(this.scene, radius, slices, stacks);
+                let sphere = new MySphere(this.scene, radius, slices, stacks);
 
                 this.primitives[primitiveId] = sphere;
             } else if (primitiveType == "torus") {
                 // <torus inner="ff" outer="ff" slices="ii" loops="ii" />
 
                 // inner
-                var inner = this.reader.getFloat(grandChildren[0], "inner");
+                let inner = this.reader.getFloat(grandChildren[0], "inner");
                 if (!(inner != null && !isNaN(inner))) {
                     this.onXMLMinorError(
                         "unable to parse inner of the primitive for ID = " +
@@ -1318,7 +1319,7 @@ export class MySceneGraph {
                 }
 
                 // outer
-                var outer = this.reader.getFloat(grandChildren[0], "outer");
+                let outer = this.reader.getFloat(grandChildren[0], "outer");
                 if (!(outer != null && !isNaN(outer))) {
                     this.onXMLMinorError(
                         "unable to parse outer of the primitive for ID = " +
@@ -1328,7 +1329,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                var slices = this.reader.getInteger(grandChildren[0], "slices");
+                let slices = this.reader.getInteger(grandChildren[0], "slices");
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         "unable to parse slices of the primitive for ID = " +
@@ -1338,7 +1339,7 @@ export class MySceneGraph {
                 }
 
                 // loops
-                var loops = this.reader.getInteger(grandChildren[0], "loops");
+                let loops = this.reader.getInteger(grandChildren[0], "loops");
                 if (!(loops != null && !isNaN(loops))) {
                     this.onXMLMinorError(
                         "unable to parse loops of the primitive for ID = " +
@@ -1347,7 +1348,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                var torus = new MyTorus(
+                let torus = new MyTorus(
                     this.scene,
                     inner,
                     outer,
@@ -1370,16 +1371,16 @@ export class MySceneGraph {
      * @param {components block element} componentsNode
      */
     parseComponents(componentsNode) {
-        var children = componentsNode.children;
+        let children = componentsNode.children;
 
         this.components = [];
         this.componentsIds = [];
 
-        var grandChildren = [];
-        var nodeNames = [];
+        let grandChildren = [];
+        let nodeNames = [];
 
         // First get all components before parsing them, to handle any order
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "component") {
                 this.onXMLMinorError(
                     "unknown tag <" + children[i].nodeName + ">"
@@ -1388,7 +1389,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current component.
-            var componentID = this.reader.getString(children[i], "id");
+            let componentID = this.reader.getString(children[i], "id");
             if (componentID == null) {
                 this.onXMLMinorError("no ID defined for component");
                 continue;
@@ -1408,23 +1409,23 @@ export class MySceneGraph {
             this.componentsIds.push(componentID);
         }
 
-        for (var i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName != "component") {
                 continue;
             }
 
-            var componentID = this.reader.getString(children[i], "id");
+            let componentID = this.reader.getString(children[i], "id");
 
             grandChildren = children[i].children;
             nodeNames = [];
-            for (var j = 0; j < grandChildren.length; j++) {
+            for (let j = 0; j < grandChildren.length; j++) {
                 nodeNames.push(grandChildren[j].nodeName);
             }
 
-            var transformationIndex = nodeNames.indexOf("transformation");
-            var materialsIndex = nodeNames.indexOf("materials");
-            var textureIndex = nodeNames.indexOf("texture");
-            var childrenIndex = nodeNames.indexOf("children");
+            let transformationIndex = nodeNames.indexOf("transformation");
+            let materialsIndex = nodeNames.indexOf("materials");
+            let textureIndex = nodeNames.indexOf("texture");
+            let childrenIndex = nodeNames.indexOf("children");
 
             // Transformations
             if (grandChildren[transformationIndex].children.length > 0) {
@@ -1592,10 +1593,10 @@ export class MySceneGraph {
      * @param {message to be displayed in case of error} messageError
      */
     parseCoordinates3D(node, messageError) {
-        var position = [];
+        let position = [];
 
         // x
-        var x = this.reader.getFloat(node, "x");
+        let x = this.reader.getFloat(node, "x");
         if (!(x != null && !isNaN(x))) {
             x = 0;
             this.onXMLError(
@@ -1604,7 +1605,7 @@ export class MySceneGraph {
         }
 
         // y
-        var y = this.reader.getFloat(node, "y");
+        let y = this.reader.getFloat(node, "y");
         if (!(y != null && !isNaN(y))) {
             y = 0;
             this.onXMLError(
@@ -1613,7 +1614,7 @@ export class MySceneGraph {
         }
 
         // z
-        var z = this.reader.getFloat(node, "z");
+        let z = this.reader.getFloat(node, "z");
         if (!(z != null && !isNaN(z))) {
             z = 0;
             this.onXMLError(
@@ -1632,7 +1633,7 @@ export class MySceneGraph {
      * @param {message to be displayed in case of error} messageError
      */
     parseCoordinates4D(node, messageError) {
-        var position = [];
+        let position = [];
 
         //Get x, y, z
         position = this.parseCoordinates3D(node, messageError);
@@ -1640,7 +1641,7 @@ export class MySceneGraph {
         if (!Array.isArray(position)) return position;
 
         // w
-        var w = this.reader.getFloat(node, "w");
+        let w = this.reader.getFloat(node, "w");
         if (!(w != null && !isNaN(w))) {
             w = 0;
             this.onXMLError(
@@ -1659,10 +1660,10 @@ export class MySceneGraph {
      * @param {message to be displayed in case of error} messageError
      */
     parseColor(node, messageError) {
-        var color = [];
+        let color = [];
 
         // R
-        var r = this.reader.getFloat(node, "r");
+        let r = this.reader.getFloat(node, "r");
         if (!(r != null && !isNaN(r) && r >= 0 && r <= 1)) {
             this.onXMLError(
                 "unable to parse R component of the " + messageError
@@ -1671,7 +1672,7 @@ export class MySceneGraph {
         }
 
         // G
-        var g = this.reader.getFloat(node, "g");
+        let g = this.reader.getFloat(node, "g");
         if (!(g != null && !isNaN(g) && g >= 0 && g <= 1)) {
             g = 0;
             this.onXMLError(
@@ -1680,7 +1681,7 @@ export class MySceneGraph {
         }
 
         // B
-        var b = this.reader.getFloat(node, "b");
+        let b = this.reader.getFloat(node, "b");
         if (!(b != null && !isNaN(b) && b >= 0 && b <= 1)) {
             b = 0;
             this.onXMLError(
@@ -1689,7 +1690,7 @@ export class MySceneGraph {
         }
 
         // A
-        var a = this.reader.getFloat(node, "a");
+        let a = this.reader.getFloat(node, "a");
         if (!(a != null && !isNaN(a) && a >= 0 && a <= 1)) {
             a = 0;
             this.onXMLError(

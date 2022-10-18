@@ -3,22 +3,22 @@ import { XMLscene } from "./XMLscene.js";
 import { MyInterface } from "./MyInterface.js";
 import { MySceneGraph } from "./MySceneGraph.js";
 
-function getUrlVars() {
-    var vars = {};
-    var parts = window.location.href.replace(
+function getUrllets() {
+    let lets = {};
+    let parts = window.location.href.replace(
         /[?&]+([^=&]+)=([^&]*)/gi,
         function (m, key, value) {
-            vars[decodeURIComponent(key)] = decodeURIComponent(value);
+            lets[decodeURIComponent(key)] = decodeURIComponent(value);
         }
     );
-    return vars;
+    return lets;
 }
 
 function main() {
     // Standard application, scene and interface setup
-    var app = new CGFapplication(document.body);
-    var myInterface = new MyInterface();
-    var myScene = new XMLscene(myInterface);
+    let app = new CGFapplication(document.body);
+    let myInterface = new MyInterface();
+    let myScene = new XMLscene(myInterface);
 
     app.init();
 
@@ -30,11 +30,11 @@ function main() {
     // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml
     // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor)
 
-    var filename = getUrlVars()["file"] || "demo.xml";
+    let filename = getUrllets()["file"] || "demo.xml";
 
     // create and load graph, and associate it to scene.
     // Check console for loading errors
-    var myGraph = new MySceneGraph(filename, myScene);
+    let myGraph = new MySceneGraph(filename, myScene);
 
     // start
     app.run();

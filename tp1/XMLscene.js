@@ -23,7 +23,7 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        // interface variables
+        // interface letiables
         this.selectedView = 0;
         this.light0 = false;
         this.light1 = false;
@@ -95,10 +95,10 @@ export class XMLscene extends CGFscene {
      */
     initLights() {
         // Lights index.
-        var i = 0;
+        let i = 0;
 
         // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
+        for (let key in this.graph.lights) {
             if (i >= 8) {
                 // Only eight lights allowed by WebGL.
                 console.warn(
@@ -108,7 +108,7 @@ export class XMLscene extends CGFscene {
             }
 
             if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+                let light = this.graph.lights[key];
 
                 this.lights[i].setPosition(
                     light[2][0],

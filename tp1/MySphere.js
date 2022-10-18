@@ -33,8 +33,8 @@ export class MySphere extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        var phi = 0;
-        var theta = 0;
+        let phi = 0;
+        let theta = 0;
         const phiInc = Math.PI / this.latDivs;
         const thetaInc = (2 * Math.PI) / this.longDivs;
         const latVertices = this.longDivs + 1;
