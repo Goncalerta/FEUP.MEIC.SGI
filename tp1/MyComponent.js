@@ -1,4 +1,4 @@
-import { CGFobject } from '../lib/CGF.js';
+import { CGFobject } from "../lib/CGF.js";
 
 /**
  * MyComponent class, representing a component that contains primitives and other components
@@ -14,7 +14,7 @@ export class MyComponent extends CGFobject {
         this.transformation = null;
         this.materials = [];
         this.currentMaterialIdx = 0;
-        
+
         this.texture = "none";
         this.length_s = 1.0;
         this.length_t = 1.0;
@@ -46,7 +46,7 @@ export class MyComponent extends CGFobject {
      * @param length_s factor of scaling s
      * @param lenght_t factor of scaling t
      */
-    setTexture(texture, length_s=1.0, length_t=1.0) {
+    setTexture(texture, length_s = 1.0, length_t = 1.0) {
         this.texture = texture;
         this.length_s = length_s;
         this.length_t = length_t;
@@ -63,7 +63,8 @@ export class MyComponent extends CGFobject {
      * Changes the current material to the next one in the list.
      */
     toggleMaterial() {
-        this.currentMaterialIdx = (this.currentMaterialIdx + 1) % this.materials.length;
+        this.currentMaterialIdx =
+            (this.currentMaterialIdx + 1) % this.materials.length;
     }
 
     /**
@@ -81,7 +82,7 @@ export class MyComponent extends CGFobject {
     setTransformation(transformation) {
         this.transformation = transformation;
     }
-    
+
     /**
      * Displays this component in the scene.
      */
@@ -91,7 +92,7 @@ export class MyComponent extends CGFobject {
         if (currentMaterial != "inherit" || this.texture != "inherit") {
             this.scene.pushAppearance(currentMaterial, this.texture);
         }
-        
+
         // Apply transformation if there is one
         if (this.transformation != null) {
             this.scene.pushMatrix();

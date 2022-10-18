@@ -1,5 +1,5 @@
-import {CGFobject} from '../lib/CGF.js';
-import { normalizeVector } from './utils.js';
+import { CGFobject } from "../lib/CGF.js";
+import { normalizeVector } from "./utils.js";
 
 /**
  * MyCylinder class, representing a cylinder, cone or part of a cone.
@@ -31,32 +31,37 @@ export class MyCylinder extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
-        const alpha = Math.PI*2 / this.slices;
-        const stackHeight = this.height/this.stacks;
+        const alpha = (Math.PI * 2) / this.slices;
+        const stackHeight = this.height / this.stacks;
 
-        const hypo = Math.sqrt((this.baseRadius - this.topRadius)**2 + this.height**2);
+        const hypo = Math.sqrt(
+            (this.baseRadius - this.topRadius) ** 2 + this.height ** 2
+        );
         const sinLeaningAngle = (this.baseRadius - this.topRadius) / hypo;
         const cosLeaningAngle = this.height / hypo;
 
         for (let i = 0; i <= this.stacks; i++) {
             for (let j = 0; j <= this.slices; j++) {
-                const currentRadius = this.baseRadius + i * ((this.topRadius - this.baseRadius)/this.stacks)
+                const currentRadius =
+                    this.baseRadius +
+                    i * ((this.topRadius - this.baseRadius) / this.stacks);
                 const currentAngle = (j % this.slices) * alpha;
 
                 this.vertices.push(
                     Math.cos(currentAngle) * currentRadius,
                     Math.sin(currentAngle) * currentRadius,
-                    i*stackHeight
+                    i * stackHeight
                 );
-                
-                this.normals.push(...normalizeVector([
-                    cosLeaningAngle * Math.cos(currentAngle),
-                    cosLeaningAngle * Math.sin(currentAngle),
-                    sinLeaningAngle
-                ]));
 
+                this.normals.push(
+                    ...normalizeVector([
+                        cosLeaningAngle * Math.cos(currentAngle),
+                        cosLeaningAngle * Math.sin(currentAngle),
+                        sinLeaningAngle,
+                    ])
+                );
 
-                this.texCoords.push(j/this.slices, i/this.stacks);
+                this.texCoords.push(j / this.slices, i / this.stacks);
             }
         }
 
@@ -65,8 +70,16 @@ export class MyCylinder extends CGFobject {
                 const indexVertex = i * (this.slices + 1) + j;
                 const indexVertexTop = indexVertex + this.slices + 1;
 
-                this.indices.push(indexVertex, indexVertex + 1, indexVertexTop + 1)
-                this.indices.push(indexVertex, indexVertexTop + 1, indexVertexTop)
+                this.indices.push(
+                    indexVertex,
+                    indexVertex + 1,
+                    indexVertexTop + 1
+                );
+                this.indices.push(
+                    indexVertex,
+                    indexVertexTop + 1,
+                    indexVertexTop
+                );
             }
         }
 
@@ -76,8 +89,8 @@ export class MyCylinder extends CGFobject {
 
     /**
      * Updates texture coordinates based on length_s and length_t
-     * @param length_s 
-     * @param length_t 
+     * @param length_s
+     * @param length_t
      */
     updateTexCoords(length_s, length_t) {
         // We don't need to update tex coords in quadrics

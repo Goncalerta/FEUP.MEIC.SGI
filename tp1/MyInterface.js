@@ -1,8 +1,8 @@
-import { CGFinterface, CGFapplication, dat } from '../lib/CGF.js';
+import { CGFinterface, CGFapplication, dat } from "../lib/CGF.js";
 
 /**
-* MyInterface class, creating a GUI interface.
-*/
+ * MyInterface class, creating a GUI interface.
+ */
 export class MyInterface extends CGFinterface {
     /**
      * @constructor
@@ -44,7 +44,7 @@ export class MyInterface extends CGFinterface {
 
     /**
      * Processes the event of a key being up.
-     * @param event 
+     * @param event
      */
     processKeyUp(event) {
         if (!(event.code in this.clickCallbacks)) {
@@ -56,21 +56,21 @@ export class MyInterface extends CGFinterface {
         for (let callback of this.clickCallbacks[event.code]) {
             callback();
         }
-    };
+    }
 
     /**
      * Processes the event of a key being down.
-     * @param event 
+     * @param event
      */
     processKeyDown(event) {
         // Not needed
-    };
+    }
 
     /**
      * Processes keyboard events.
-     * @param event 
+     * @param event
      */
     processKeyboard(event) {
         // Not needed
-    };
+    }
 }

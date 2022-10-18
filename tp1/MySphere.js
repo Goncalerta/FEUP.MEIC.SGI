@@ -1,5 +1,5 @@
-import {CGFobject} from '../lib/CGF.js';
-import { normalizeVector } from './utils.js';
+import { CGFobject } from "../lib/CGF.js";
+import { normalizeVector } from "./utils.js";
 
 /**
  * MySphere class, representing a sphere.
@@ -51,11 +51,15 @@ export class MySphere extends CGFobject {
                 const [x, y, z] = normalizeVector([
                     Math.sin(-theta) * sinPhi,
                     Math.cos(theta) * sinPhi,
-                    cosPhi
+                    cosPhi,
                 ]);
 
-                this.vertices.push(x * this.radius, y * this.radius, z * this.radius);
-                
+                this.vertices.push(
+                    x * this.radius,
+                    y * this.radius,
+                    z * this.radius
+                );
+
                 //--- Indices
                 if (latitude < this.latDivs && longitude < this.longDivs) {
                     const current = latitude * latVertices + longitude;
@@ -63,19 +67,22 @@ export class MySphere extends CGFobject {
                     // pushing two triangles using indices from this round (current, current+1)
                     // and the ones directly south (next, next+1)
                     // (i.e. one full round of slices ahead)
-                    
+
                     this.indices.push(current + 1, current, next);
                     this.indices.push(current + 1, next, next + 1);
                 }
-                
+
                 //--- Normals
-                // at each vertex, the direction of the normal is equal to 
+                // at each vertex, the direction of the normal is equal to
                 // the vector from the center of the sphere to the vertex.
                 this.normals.push(x, y, z);
                 theta += thetaInc;
-                
+
                 //--- Texture Coordinates
-                this.texCoords.push(longitude * 1/this.longDivs, latitude * 1/this.latDivs);
+                this.texCoords.push(
+                    (longitude * 1) / this.longDivs,
+                    (latitude * 1) / this.latDivs
+                );
             }
 
             phi += phiInc;
@@ -87,10 +94,10 @@ export class MySphere extends CGFobject {
 
     /**
      * Updates texture coordinates based on length_s and length_t
-     * @param length_s 
-     * @param length_t 
+     * @param length_s
+     * @param length_t
      */
-     updateTexCoords(length_s, length_t) {
+    updateTexCoords(length_s, length_t) {
         // We don't need to update tex coords in quadrics
     }
 }
