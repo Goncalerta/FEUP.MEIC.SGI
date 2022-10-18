@@ -26,7 +26,6 @@ export class MySphere extends CGFobject {
      * @method initBuffers
      * Initializes the sphere buffers
      */
-    // TODO document
     initBuffers() {
         this.vertices = [];
         this.indices = [];
@@ -47,7 +46,7 @@ export class MySphere extends CGFobject {
             // in each stack, build all the slices around, starting on longitude 0
             theta = 0;
             for (let longitude = 0; longitude <= this.longDivs; longitude++) {
-                //--- Vertices coordinates
+                // Vertices coordinates (unit radius)
                 const [x, y, z] = normalizeVector([
                     Math.sin(-theta) * sinPhi,
                     Math.cos(theta) * sinPhi,
@@ -60,7 +59,7 @@ export class MySphere extends CGFobject {
                     z * this.radius
                 );
 
-                //--- Indices
+                // Indices
                 if (latitude < this.latDivs && longitude < this.longDivs) {
                     const current = latitude * latVertices + longitude;
                     const next = current + latVertices;
@@ -72,13 +71,13 @@ export class MySphere extends CGFobject {
                     this.indices.push(current + 1, next, next + 1);
                 }
 
-                //--- Normals
+                // Normals
                 // at each vertex, the direction of the normal is equal to
                 // the vector from the center of the sphere to the vertex.
                 this.normals.push(x, y, z);
                 theta += thetaInc;
 
-                //--- Texture Coordinates
+                // Texture Coordinates
                 this.texCoords.push(
                     (longitude * 1) / this.longDivs,
                     (latitude * 1) / this.latDivs

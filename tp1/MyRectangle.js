@@ -39,10 +39,10 @@ export class MyRectangle extends CGFobject {
             0,
         ];
 
-        //Counter-clockwise reference of vertices
+        // Counter-clockwise reference of vertices
         this.indices = [0, 1, 2, 1, 3, 2];
 
-        //Facing Z positive
+        // Facing Z positive
         this.normals = [0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1];
 
         // No need to divide by this.length_s and length_t since they start as 1.0
