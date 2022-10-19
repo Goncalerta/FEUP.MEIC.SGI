@@ -529,7 +529,6 @@ export class MySceneGraph {
      * Parses the <light> node.
      * @param {lights block element} lightsNode
      */
-    // TODO parse attenuation and check if more things are missing
     parseLights(lightsNode) {
         let children = lightsNode.children;
 
@@ -557,9 +556,9 @@ export class MySceneGraph {
                 continue;
             } else {
                 attributeNames.push(
-                    ...["location", "ambient", "diffuse", "specular"]
+                    ...["location", "ambient", "diffuse", "specular", "attenuation"]
                 );
-                attributeTypes.push(...["position", "color", "color", "color"]);
+                attributeTypes.push(...["position", "color", "color", "color", "attenuation"]);
             }
 
             // Get id of the current light.
@@ -580,7 +579,7 @@ export class MySceneGraph {
                 this.onXMLMinorError(
                     "unable to parse value component of the 'enable light' field for ID = " +
                         lightId +
-                        "; assuming 'value = 1'"
+                        "; assuming 'value = 0'"
                 );
             let enableLight = aux != null && aux;
 
@@ -600,16 +599,46 @@ export class MySceneGraph {
                 let attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
                 if (attributeIndex != -1) {
-                    if (attributeTypes[j] == "position")
+                    if (attributeTypes[j] == "position") {
                         aux = this.parseCoordinates4D(
                             grandChildren[attributeIndex],
                             "light position for ID" + lightId
                         );
-                    else
+                    } else if (attributeTypes[j] == "attenuation") {
+                        let constant = this.reader.getFloat(grandChildren[attributeIndex], "constant");
+                        let linear = this.reader.getFloat(grandChildren[attributeIndex], "linear");
+                        let quadratic = this.reader.getFloat(grandChildren[attributeIndex], "quadratic");
+
+                        const sortedValues = [constant, linear, quadratic].sort();
+
+                        if (!(constant != null && !isNaN(constant) &&
+                            linear != null && !isNaN(linear) &&
+                            quadratic != null && !isNaN(quadratic))) {
+
+                            this.onXMLMinorError(
+                                "unable to parse 'attenuation' for ID = " +
+                                    lightId + "; assuming constant = 1.0; linear = 0.0; quadratic = 0.0;"
+                            );
+                            constant = 1.0;
+                            linear = 0.0;
+                            quadratic = 0.0;
+                        } else if (!(sortedValues[0] == 0.0 && sortedValues[1] == 0.0 && sortedValues[2] == 1.0)) {
+                            this.onXMLMinorError(
+                                "invalid values for attenuation (only one is \"1.0\", the others are \"0.0\") for ID = " +
+                                    lightId + "; assuming constant = 1.0; linear = 0.0; quadratic = 0.0;"
+                            );
+                            constant = 1.0;
+                            linear = 0.0;
+                            quadratic = 0.0;
+                        }
+
+                        aux = [constant, linear, quadratic];
+                    } else {
                         aux = this.parseColor(
                             grandChildren[attributeIndex],
                             attributeNames[j] + " illumination for ID" + lightId
                         );
+                    }
 
                     if (!Array.isArray(aux)) return aux;
 
