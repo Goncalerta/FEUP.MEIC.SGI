@@ -529,7 +529,7 @@ export class MySceneGraph {
      * Parses the <light> node.
      * @param {lights block element} lightsNode
      */
-    // TODO
+    // TODO parse attenuation and check if more things are missing
     parseLights(lightsNode) {
         let children = lightsNode.children;
 
