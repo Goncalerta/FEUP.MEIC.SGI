@@ -27,6 +27,9 @@ export class MyTriangle extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initializes the triangle buffers
+     */
     initBuffers() {
         this.vertices = [...this.p1, ...this.p2, ...this.p3];
 

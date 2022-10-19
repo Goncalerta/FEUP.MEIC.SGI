@@ -23,7 +23,6 @@ export class MySphere extends CGFobject {
     }
 
     /**
-     * @method initBuffers
      * Initializes the sphere buffers
      */
     initBuffers() {

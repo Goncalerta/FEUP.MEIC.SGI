@@ -1394,7 +1394,7 @@ export class MySceneGraph {
                 continue;
             }
 
-            this.components[componentID] = new MyComponent(this.scene);
+            this.components[componentID] = new MyComponent(this.scene, componentID);
             this.componentsIds.push(componentID);
         }
 
@@ -1574,6 +1574,54 @@ export class MySceneGraph {
                 }
             }
         }
+
+        if (this.hasCycle()) {
+            return "Scene graph has a cycle.";
+        }
+    }
+
+    /**
+     * Checks if this scene graph has a cycle
+     */
+    hasCycle() {
+        const visited = {};
+        const recStack = {};
+        for (let componentId in this.components) {
+            visited[componentId] = false;
+            recStack[componentId] = false;
+        }
+
+        if (this.dfsCycleDetection(this.idRoot, visited, recStack)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks for cycles based on a dfs
+     * @param {string} id - id of the node to process
+     * @param {Object} visited - which nodes have been visited
+     * @param {Object} recStack - which nodes are currently "on the stack"
+     */
+    dfsCycleDetection(id, visited, recStack) {
+        if (recStack[id]) return true;
+        if (visited[id]) return false;
+
+        visited[id] = true;
+        recStack[id] = true;
+
+        for (let adjComponent of this.components[id].getChildren()) {
+            // if adj is not a primitive
+            if (typeof adjComponent.getChildren === "function") {
+                if (this.dfsCycleDetection(adjComponent.getId(), visited, recStack)) {
+                    return true;
+                }
+            }
+        }
+
+        recStack[id] = false;
+        return false;
     }
 
     /**

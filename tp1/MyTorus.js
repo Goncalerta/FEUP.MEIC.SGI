@@ -23,6 +23,9 @@ export class MyTorus extends CGFobject {
         this.initBuffers();
     }
 
+    /**
+     * Initializes the torus buffers
+     */
     initBuffers() {
         this.vertices = [];
         this.indices = [];

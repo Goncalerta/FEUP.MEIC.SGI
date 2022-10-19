@@ -7,9 +7,12 @@ export class MyComponent extends CGFobject {
     /**
      * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
+     * @param {string} id - Id of the component
      */
-    constructor(scene) {
+    constructor(scene, id) {
         super(scene);
+
+        this.id = id;
         this.children = [];
         this.transformation = null;
         this.materials = [];
@@ -18,6 +21,13 @@ export class MyComponent extends CGFobject {
         this.texture = "none";
         this.length_s = 1.0;
         this.length_t = 1.0;
+    }
+
+    /**
+     * Gets the id of the component
+     */
+    getId() {
+        return this.id;
     }
 
     /**
@@ -73,6 +83,13 @@ export class MyComponent extends CGFobject {
      */
     addChild(child) {
         this.children.push(child);
+    }
+
+    /**
+     * Gets the current children of the component
+     */
+    getChildren() {
+        return this.children;
     }
 
     /**
