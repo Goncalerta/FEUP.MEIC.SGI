@@ -646,7 +646,7 @@ export class MySceneGraph {
                 } else
                     return (
                         "light " +
-                        attributeNames[i] +
+                        attributeNames[j] +
                         " undefined for ID = " +
                         lightId
                     );
