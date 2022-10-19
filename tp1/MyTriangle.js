@@ -52,7 +52,11 @@ export class MyTriangle extends CGFobject {
         const sinAlpha = Math.sqrt(1 - cosAlpha ** 2);
 
         // No need to divide by this.length_s and length_t since they start as 1.0
-        this.baseTexCoords = [0, 0, a, 0, c * cosAlpha, c * sinAlpha];
+        this.baseTexCoords = [
+            0, 0, 
+            a, 0, 
+            c * cosAlpha, c * sinAlpha
+        ];
         this.texCoords = this.baseTexCoords;
 
         this.primitiveType = this.scene.gl.TRIANGLES;

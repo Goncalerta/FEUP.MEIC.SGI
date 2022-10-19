@@ -388,11 +388,8 @@ export class MySceneGraph {
 
                     // Add the new perspective camera
                     this.cameras[viewId] = new CGFcamera(
-                        angle * DEGREE_TO_RAD,
-                        near,
-                        far,
-                        fromToPositions[0],
-                        fromToPositions[1]
+                        angle * DEGREE_TO_RAD, near, far,
+                        fromToPositions[0], fromToPositions[1]
                     );
                 } else {
                     // == "ortho"
@@ -465,15 +462,8 @@ export class MySceneGraph {
 
                     // Add the new ortho camera
                     this.cameras[viewId] = new CGFcameraOrtho(
-                        left,
-                        right,
-                        bottom,
-                        top,
-                        near,
-                        far,
-                        fromToPositions[0],
-                        fromToPositions[1],
-                        up
+                        left, right, bottom, top, near, far,
+                        fromToPositions[0], fromToPositions[1], up
                     );
                 }
                 this.cameraIds.push(viewId);
