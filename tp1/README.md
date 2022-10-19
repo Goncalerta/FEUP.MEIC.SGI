@@ -25,5 +25,4 @@
 ## Issues/Problems
 
 -   Since the XML format specified doesn't allow setting the position relative to the camera, the cubemap is static and won't move when the camera moves. However, this is a limitation from the assignment.
--   
 -   There are no unimplemented features or bugs that we are aware of.
