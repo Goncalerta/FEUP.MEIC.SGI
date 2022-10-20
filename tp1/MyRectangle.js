@@ -49,11 +49,13 @@ export class MyRectangle extends CGFobject {
         ];
 
         // No need to divide by this.length_s and length_t since they start as 1.0
+        const dx = Math.abs(this.x1-this.x2);
+        const dy = Math.abs(this.y1-this.y2);
         this.texCoords = [
-            0, 1,
-            1, 1,
+            0, dy,
+            dx, dy,
             0, 0,
-            1, 0
+            dx, 0
         ];
         this.baseTexCoords = this.texCoords;
         this.primitiveType = this.scene.gl.TRIANGLES;
