@@ -563,15 +563,16 @@ export class MySceneGraph {
 
             // Get id of the current light.
             let lightId = this.reader.getString(children[i], "id");
-            if (lightId == null) return "no ID defined for light";
+            if (lightId == null) {
+                this.onXMLMinorError("no ID defined for light");
+                continue;
+            }
 
             // Checks for repeated IDs.
-            if (this.lights[lightId] != null)
-                return (
-                    "ID must be unique for each light (conflict: ID = " +
-                    lightId +
-                    ")"
-                );
+            if (this.lights[lightId] != null) {
+                this.onXMLMinorError("ID must be unique for each light (conflict: ID = " + lightId + ")");
+                continue;
+            }
 
             // Light enable/disable
             let aux = this.reader.getBoolean(children[i], "enabled");
@@ -598,13 +599,18 @@ export class MySceneGraph {
             for (let j = 0; j < attributeNames.length; j++) {
                 let attributeIndex = nodeNames.indexOf(attributeNames[j]);
 
-                if (attributeIndex != -1) {
-                    if (attributeTypes[j] == "position") {
+                if (attributeTypes[j] == "position") {
+                    if (attributeIndex != -1) {
                         aux = this.parseCoordinates4D(
                             grandChildren[attributeIndex],
                             "light position for ID" + lightId
                         );
-                    } else if (attributeTypes[j] == "attenuation") {
+                    } else {
+                        aux = [0, 0, 0, 1];
+                        this.onXMLMinorError("light " + attributeNames[j] + " undefined for ID = " + lightId + "\nassuming " + aux);
+                    }
+                } else if (attributeTypes[j] == "attenuation") {
+                    if (attributeIndex != -1) {
                         let constant = this.reader.getFloat(grandChildren[attributeIndex], "constant");
                         let linear = this.reader.getFloat(grandChildren[attributeIndex], "linear");
                         let quadratic = this.reader.getFloat(grandChildren[attributeIndex], "quadratic");
@@ -634,38 +640,39 @@ export class MySceneGraph {
 
                         aux = [constant, linear, quadratic];
                     } else {
+                        aux = [1, 0, 0];
+                        this.onXMLMinorError("light " + attributeNames[j] + " undefined for ID = " + lightId + "\nassuming " + aux);
+                    }
+                } else {
+                    if (attributeIndex != -1) {
                         aux = this.parseColor(
                             grandChildren[attributeIndex],
                             attributeNames[j] + " illumination for ID" + lightId
                         );
+                    } else {
+                        aux = [1, 1, 1, 1];
+                        this.onXMLMinorError("light " + attributeNames[j] + " undefined for ID = " + lightId + "\nassuming " + aux);
                     }
+                }
 
-                    if (!Array.isArray(aux)) return aux;
+                if (!Array.isArray(aux)) return aux;
 
-                    global.push(aux);
-                } else
-                    return (
-                        "light " +
-                        attributeNames[j] +
-                        " undefined for ID = " +
-                        lightId
-                    );
+                global.push(aux);
             }
 
             // Gets the additional attributes of the spot light
             if (children[i].nodeName == "spot") {
                 let angle = this.reader.getFloat(children[i], "angle");
-                if (!(angle != null && !isNaN(angle)))
-                    return (
-                        "unable to parse angle of the light for ID = " + lightId
-                    );
+                if (!(angle != null && !isNaN(angle))) {
+                    angle = 45;
+                    this.onXMLMinorError("unable to parse angle of the light for ID = " + lightId + "\nassuming angle = " + angle);
+                }
 
                 let exponent = this.reader.getFloat(children[i], "exponent");
-                if (!(exponent != null && !isNaN(exponent)))
-                    return (
-                        "unable to parse exponent of the light for ID = " +
-                        lightId
-                    );
+                if (!(exponent != null && !isNaN(exponent))) {
+                    exponent = 1;
+                    this.onXMLMinorError("unable to parse exponent of the light for ID = " + lightId + "\nassuming exponent = " + exponent);
+                }
 
                 let targetIndex = nodeNames.indexOf("target");
 
@@ -679,7 +686,10 @@ export class MySceneGraph {
                     if (!Array.isArray(aux)) return aux;
 
                     targetLight = aux;
-                } else return "light target undefined for ID = " + lightId;
+                } else {
+                    targetLight = [0, 0, 0];
+                    this.onXMLMinorError("light target undefined for ID = " + lightId + "\nassuming target = " + targetLight);
+                }
 
                 global.push(...[angle, exponent, targetLight]);
             }
@@ -688,8 +698,9 @@ export class MySceneGraph {
             numLights++;
         }
 
-        if (numLights == 0) return "at least one light must be defined";
-        else if (numLights > 8)
+        if (numLights == 0) {
+            return "at least one light must be defined";
+        } else if (numLights > 8)
             this.onXMLMinorError(
                 "too many lights defined; WebGL imposes a limit of 8 lights"
             );
