@@ -582,7 +582,7 @@ export class MySceneGraph {
                         lightId +
                         "; assuming 'value = 0'"
                 );
-            let enableLight = aux != null && aux;
+            let enableLight = aux;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
