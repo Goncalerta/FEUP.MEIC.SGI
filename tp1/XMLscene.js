@@ -1,6 +1,7 @@
 import { CGFscene, CGFtexture } from "../lib/CGF.js";
 import { CGFaxis, CGFcamera } from "../lib/CGF.js";
 import { CGFappearance } from "../lib/CGF.js";
+import { subtractVectors } from "./utils.js";
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -144,11 +145,9 @@ export class XMLscene extends CGFscene {
                 if (light[1] == "spot") {
                     this.lights[i].setSpotCutOff(light[7]);
                     this.lights[i].setSpotExponent(light[8]);
-                    this.lights[i].setSpotDirection(
-                        light[9][0],
-                        light[9][1],
-                        light[9][2]
-                    );
+
+                    const dir = subtractVectors(light[9], light[2].slice(0,3));
+                    this.lights[i].setSpotDirection(...dir);
                 }
 
                 if (light[0]) {
