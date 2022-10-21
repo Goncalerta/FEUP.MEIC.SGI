@@ -1,4 +1,4 @@
-import { CGFobject } from "../lib/CGF.js";
+import {CGFobject} from '../lib/CGF.js';
 
 /**
  * MyComponent class, representing a component that contains primitives and other components
@@ -18,9 +18,9 @@ export class MyComponent extends CGFobject {
         this.materials = [];
         this.currentMaterialIdx = 0; // Currently selected material, changes when pressing 'M'
 
-        this.texture = "none";
-        this.length_s = 1.0;
-        this.length_t = 1.0;
+        this.texture = 'none';
+        this.lengthS = 1.0;
+        this.lengthT = 1.0;
     }
 
     /**
@@ -34,7 +34,7 @@ export class MyComponent extends CGFobject {
      * Adds a material to this component that inherits from parent.
      */
     inheritMaterial() {
-        this.materials.push("inherit");
+        this.materials.push('inherit');
     }
 
     /**
@@ -53,20 +53,20 @@ export class MyComponent extends CGFobject {
     /**
      * Sets the texture of this component.
      * @param {CGFtexture} texture the texture to set.
-     * @param length_s factor of scaling s
+     * @param lengthS factor of scaling s
      * @param lenght_t factor of scaling t
      */
-    setTexture(texture, length_s = 1.0, length_t = 1.0) {
+    setTexture(texture, lengthS = 1.0, lengthT = 1.0) {
         this.texture = texture;
-        this.length_s = length_s;
-        this.length_t = length_t;
+        this.lengthS = lengthS;
+        this.lengthT = lengthT;
     }
 
     /**
      * Sets the texture of this component to inherit its father.
      */
     inheritTexture() {
-        this.texture = "inherit";
+        this.texture = 'inherit';
     }
 
     /**
@@ -105,8 +105,8 @@ export class MyComponent extends CGFobject {
      */
     display() {
         // Only adds a new appearance to the scene if different from its father, for efficiency purposes.
-        let currentMaterial = this.materials[this.currentMaterialIdx];
-        if (currentMaterial != "inherit" || this.texture != "inherit") {
+        const currentMaterial = this.materials[this.currentMaterialIdx];
+        if (currentMaterial != 'inherit' || this.texture != 'inherit') {
             this.scene.pushAppearance(currentMaterial, this.texture);
         }
 
@@ -117,8 +117,8 @@ export class MyComponent extends CGFobject {
         }
 
         // Display all children
-        for (let child of this.children) {
-            child.updateTexCoords(this.length_s, this.length_t);
+        for (const child of this.children) {
+            child.updateTexCoords(this.lengthS, this.lengthT);
             child.display();
         }
 
@@ -128,16 +128,16 @@ export class MyComponent extends CGFobject {
         }
 
         // Remove the appearance if it was added
-        if (currentMaterial != "inherit" || this.texture != "inherit") {
+        if (currentMaterial != 'inherit' || this.texture != 'inherit') {
             this.scene.popAppearance();
         }
     }
 
     // Updates TexCoords by its father component. Only relevant in inherit textures.
-    updateTexCoords(parent_length_s, parent_length_t) {
-        if (this.texture == "inherit") {
-            this.length_s = parent_length_s;
-            this.length_t = parent_length_t;
+    updateTexCoords(parentLengthS, parentLengthT) {
+        if (this.texture == 'inherit') {
+            this.lengthS = parentLengthS;
+            this.lengthT = parentLengthT;
         }
     }
 }

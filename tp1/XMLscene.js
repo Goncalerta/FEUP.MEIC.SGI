@@ -1,7 +1,7 @@
-import { CGFscene, CGFtexture } from "../lib/CGF.js";
-import { CGFaxis, CGFcamera } from "../lib/CGF.js";
-import { CGFappearance } from "../lib/CGF.js";
-import { subtractVectors } from "./utils.js";
+import {CGFscene, CGFtexture} from '../lib/CGF.js';
+import {CGFaxis, CGFcamera} from '../lib/CGF.js';
+import {CGFappearance} from '../lib/CGF.js';
+import {subtractVectors} from './utils.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -81,8 +81,9 @@ export class XMLscene extends CGFscene {
     updateLights() {
         let i = 0;
         for (const _ in this.graph.lights) {
-            if (i >= 8)
+            if (i >= 8) {
                 break;
+            }
 
             if (this['light' + i]) {
                 this.lights[i].enable();
@@ -102,17 +103,17 @@ export class XMLscene extends CGFscene {
         let i = 0;
 
         // Reads the lights from the scene graph.
-        for (let key in this.graph.lights) {
+        for (const key in this.graph.lights) {
             if (i >= 8) {
                 // Only eight lights allowed by WebGL.
                 console.warn(
-                    "Warning: more than 8 lights defined in the scene. Only the first 8 will be used."
+                    'Warning: more than 8 lights defined in the scene. Only the first 8 will be used.'
                 );
                 break;
             }
 
             if (this.graph.lights.hasOwnProperty(key)) {
-                let light = this.graph.lights[key];
+                const light = this.graph.lights[key];
 
                 this.lights[i].setPosition(
                     light[2][0],
@@ -142,17 +143,17 @@ export class XMLscene extends CGFscene {
                 this.lights[i].setLinearAttenuation(light[6][1]);
                 this.lights[i].setQuadraticAttenuation(light[6][2]);
 
-                if (light[1] == "spot") {
+                if (light[1] == 'spot') {
                     this.lights[i].setSpotCutOff(light[7]);
                     this.lights[i].setSpotExponent(light[8]);
 
-                    const dir = subtractVectors(light[9], light[2].slice(0,3));
+                    const dir = subtractVectors(light[9], light[2].slice(0, 3));
                     this.lights[i].setSpotDirection(...dir);
                 }
 
                 if (light[0]) {
                     this.lights[i].enable();
-                    this["light" + i] = true;
+                    this['light' + i] = true;
                 } else {
                     this.lights[i].disable();
                 }
@@ -197,20 +198,20 @@ export class XMLscene extends CGFscene {
 
         // Interface controls and key bindings
         this.interface.gui
-            .add(this, "selectedView", this.graph.cameraIds)
-            .name("Selected Camera")
+            .add(this, 'selectedView', this.graph.cameraIds)
+            .name('Selected Camera')
             .onChange(() =>
                 this.setCamera(this.graph.cameras[this.selectedView])
             );
         let i = 0;
         for (const lightId in this.graph.lights) {
             this.interface.gui
-                .add(this, "light" + i)
+                .add(this, 'light' + i)
                 .name(lightId)
                 .onChange(() => this.updateLights());
             i++;
         }
-        this.interface.onClick("KeyM", () => this.toggleMaterial());
+        this.interface.onClick('KeyM', () => this.toggleMaterial());
 
         this.sceneInited = true;
     }
@@ -219,27 +220,50 @@ export class XMLscene extends CGFscene {
      * Toggles the material of every component in the scene graph.
      */
     toggleMaterial() {
-        for (let componentId of this.graph.componentsIds) {
+        for (const componentId of this.graph.componentsIds) {
             this.graph.components[componentId].toggleMaterial();
         }
     }
 
     /**
      * Adds an appearance to the appearance stack and applies it.
-     * @param material the material properties. May be the string "inherit" or an object with shininess, emission, ambient, diffuse and specular properties.
+     * @param material the material properties.
+     * May be the string "inherit" or an object with shininess, emission, ambient, diffuse and specular properties.
      * @param texture the texture to be applied. May be a CGFtexture object, the string "inherit" or the string "none".
      */
     pushAppearance(material, texture) {
-        let newAppearance = new CGFappearance(this);
-        if (material == "inherit") {
-            // Inherit means the material is the same as the previous one in the stack.
-            material =
-                this.appearanceStack[this.appearanceStack.length - 1].material;
+        const newAppearance = new CGFappearance(this);
+        if (material == null) {
+            material = 'inherit';
         }
-        if (texture == "inherit") {
-            // Inherit means the texture is the same as the previous one in the stack.
-            texture =
-                this.appearanceStack[this.appearanceStack.length - 1].texture;
+        if (texture == null) {
+            texture = 'none';
+        }
+        if (material == 'inherit') {
+            if (this.appearanceStack.length == 0) {
+                // Inherit means the material is the same as the previous one in the stack.
+                material =
+                    this.appearanceStack[this.appearanceStack.length - 1].material;
+            } else {
+                // No previous material, so fallback to a default one.
+                material = {
+                    shininess: 10,
+                    emission: [0.0, 0.0, 0.0, 1.0],
+                    ambient: [0.8, 0.8, 0.8, 1.0],
+                    diffuse: [1.0, 1.0, 1.0, 1.0],
+                    specular: [0.0, 0.0, 0.0, 1.0],
+                };
+            }
+        }
+        if (texture == 'inherit') {
+            if (this.appearanceStack.length > 0) {
+                // Inherit means the texture is the same as the previous one in the stack.
+                texture =
+                    this.appearanceStack[this.appearanceStack.length - 1].texture;
+            } else {
+                // If the stack is empty, inherit no texture.
+                texture = 'none';
+            }
         }
 
         newAppearance.setEmission(...material.emission);
@@ -249,9 +273,9 @@ export class XMLscene extends CGFscene {
         newAppearance.setShininess(material.shininess);
 
         // Add texture unless its none.
-        if (texture != "none") {
+        if (texture != 'none') {
             newAppearance.setTexture(texture);
-            newAppearance.setTextureWrap("REPEAT", "REPEAT");
+            newAppearance.setTextureWrap('REPEAT', 'REPEAT');
         }
 
         // Apply appearance.
@@ -270,7 +294,7 @@ export class XMLscene extends CGFscene {
      */
     popAppearance() {
         if (this.appearanceStack.length == 0) {
-            console.error("Error: No appearance in stack.");
+            console.error('Error: No appearance in stack.');
             return;
         }
         this.appearanceStack.pop();
@@ -301,7 +325,7 @@ export class XMLscene extends CGFscene {
         this.pushMatrix();
         this.axis.display();
 
-        for (var i = 0; i < this.lights.length; i++) {
+        for (let i = 0; i < this.lights.length; i++) {
             this.lights[i].setVisible(true);
             this.lights[i].update();
         }

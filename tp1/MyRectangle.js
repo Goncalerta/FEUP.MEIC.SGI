@@ -1,5 +1,5 @@
-import { CGFobject } from "../lib/CGF.js";
-import { applyLengthsToTextureCoords } from "./utils.js";
+import {CGFobject} from '../lib/CGF.js';
+import {applyLengthsToTextureCoords} from './utils.js';
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
@@ -64,14 +64,14 @@ export class MyRectangle extends CGFobject {
 
     /**
      * Updates texture coordinates based on length_s and length_t
-     * @param length_s
-     * @param length_t
+     * @param lengthS
+     * @param lengthT
      */
-    updateTexCoords(length_s, length_t) {
+    updateTexCoords(lengthS, lengthT) {
         this.texCoords = applyLengthsToTextureCoords(
             this.baseTexCoords,
-            length_s,
-            length_t
+            lengthS,
+            lengthT
         );
         this.updateTexCoordsGLBuffers();
     }

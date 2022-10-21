@@ -1,5 +1,5 @@
-import { CGFobject } from "../lib/CGF.js";
-import { normalizeVector } from "./utils.js";
+import {CGFobject} from '../lib/CGF.js';
+import {normalizeVector} from './utils.js';
 
 /**
  * MyCylinder class, representing a cylinder, cone or part of a cone.
@@ -107,10 +107,10 @@ export class MyCylinder extends CGFobject {
 
     /**
      * Updates texture coordinates based on length_s and length_t
-     * @param length_s
-     * @param length_t
+     * @param lengthS
+     * @param lengthT
      */
-    updateTexCoords(length_s, length_t) {
+    updateTexCoords(lengthS, lengthT) {
         // We don't need to update tex coords in quadrics
     }
 }

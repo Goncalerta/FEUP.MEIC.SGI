@@ -6,8 +6,8 @@ export function normalizeVector(vector) {
     const norm = calculateNorm(vector);
 
     // Normalized is v divided by norm
-    let normalized = [];
-    for (let v of vector) {
+    const normalized = [];
+    for (const v of vector) {
         normalized.push(v / norm);
     }
 
@@ -30,7 +30,7 @@ export function crossProduct([a1, a2, a3], [b1, b2, b3]) {
  */
 export function subtractVectors(v1, v2) {
     if (v1 == null || v2 == null || v1.length != v2.length) {
-        console.log("Subtracting invalid vectors.");
+        console.log('Subtracting invalid vectors.');
         return null;
     }
 
@@ -50,7 +50,7 @@ export function subtractVectors(v1, v2) {
  */
 export function calculateNorm(vector) {
     let sumSquared = 0;
-    for (let v of vector) {
+    for (const v of vector) {
         sumSquared += v * v;
     }
 
@@ -60,17 +60,17 @@ export function calculateNorm(vector) {
 /**
  * Calculates texture coords from base coordinates according to length_s and length_t
  * @param {list} textureCoords
- * @param {float} length_s
- * @param {float} length_t
- * @returns Modified texture coords
+ * @param {float} lengthS
+ * @param {float} lengthT
+ * @return Modified texture coords
  */
-export function applyLengthsToTextureCoords(textureCoords, length_s, length_t) {
+export function applyLengthsToTextureCoords(textureCoords, lengthS, lengthT) {
     const textureCoordsCopy = [...textureCoords];
 
     // Divide by length_s and lenght_y accordingly
     for (let i = 0; i < textureCoords.length; i += 2) {
-        textureCoordsCopy[i] /= length_s;
-        textureCoordsCopy[i + 1] /= length_t;
+        textureCoordsCopy[i] /= lengthS;
+        textureCoordsCopy[i + 1] /= lengthT;
     }
 
     return textureCoordsCopy;

@@ -1,4 +1,4 @@
-import { CGFinterface, CGFapplication, dat } from "../lib/CGF.js";
+import {CGFinterface, CGFapplication, dat} from '../lib/CGF.js';
 
 /**
  * MyInterface class, creating a GUI interface.
@@ -53,7 +53,7 @@ export class MyInterface extends CGFinterface {
         }
 
         // Call all callbacks.
-        for (let callback of this.clickCallbacks[event.code]) {
+        for (const callback of this.clickCallbacks[event.code]) {
             callback();
         }
     }

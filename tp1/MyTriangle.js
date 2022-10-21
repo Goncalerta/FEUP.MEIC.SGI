@@ -1,11 +1,11 @@
-import { CGFobject } from "../lib/CGF.js";
+import {CGFobject} from '../lib/CGF.js';
 import {
     applyLengthsToTextureCoords,
     calculateNorm,
     crossProduct,
     normalizeVector,
     subtractVectors,
-} from "./utils.js";
+} from './utils.js';
 
 /**
  * MyTriangle class, representing a triangle.
@@ -56,8 +56,8 @@ export class MyTriangle extends CGFobject {
 
         // No need to divide by this.length_s and length_t since they start as 1.0
         this.baseTexCoords = [
-            0, 0, 
-            a, 0, 
+            0, 0,
+            a, 0,
             c * cosAlpha, c * sinAlpha
         ];
         this.texCoords = this.baseTexCoords;
@@ -68,14 +68,14 @@ export class MyTriangle extends CGFobject {
 
     /**
      * Updates texture coordinates based on length_s and length_t
-     * @param length_s
-     * @param length_t
+     * @param lengthS
+     * @param lengthT
      */
-    updateTexCoords(length_s, length_t) {
+    updateTexCoords(lengthS, lengthT) {
         this.texCoords = applyLengthsToTextureCoords(
             this.baseTexCoords,
-            length_s,
-            length_t
+            lengthS,
+            lengthT
         );
         this.updateTexCoordsGLBuffers();
     }

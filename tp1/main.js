@@ -1,13 +1,13 @@
-import { CGFapplication } from "../lib/CGF.js";
-import { XMLscene } from "./XMLscene.js";
-import { MyInterface } from "./MyInterface.js";
-import { MySceneGraph } from "./MySceneGraph.js";
+import {CGFapplication} from '../lib/CGF.js';
+import {XMLscene} from './XMLscene.js';
+import {MyInterface} from './MyInterface.js';
+import {MySceneGraph} from './MySceneGraph.js';
 
 function getUrllets() {
-    let lets = {};
-    let parts = window.location.href.replace(
+    const lets = {};
+    const parts = window.location.href.replace(
         /[?&]+([^=&]+)=([^&]*)/gi,
-        function (m, key, value) {
+        function(m, key, value) {
             lets[decodeURIComponent(key)] = decodeURIComponent(value);
         }
     );
@@ -16,9 +16,9 @@ function getUrllets() {
 
 function main() {
     // Standard application, scene and interface setup
-    let app = new CGFapplication(document.body);
-    let myInterface = new MyInterface();
-    let myScene = new XMLscene(myInterface);
+    const app = new CGFapplication(document.body);
+    const myInterface = new MyInterface();
+    const myScene = new XMLscene(myInterface);
 
     app.init();
 
@@ -30,11 +30,11 @@ function main() {
     // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml
     // or use "demo.xml" as default (assumes files in subfolder "scenes", check MySceneGraph constructor)
 
-    let filename = getUrllets()["file"] || "demo.xml";
+    const filename = getUrllets()['file'] || 'demo.xml';
 
     // create and load graph, and associate it to scene.
     // Check console for loading errors
-    let myGraph = new MySceneGraph(filename, myScene);
+    const myGraph = new MySceneGraph(filename, myScene);
 
     // start
     app.run();
