@@ -240,7 +240,7 @@ export class XMLscene extends CGFscene {
             texture = 'none';
         }
         if (material == 'inherit') {
-            if (this.appearanceStack.length == 0) {
+            if (this.appearanceStack.length > 0) {
                 // Inherit means the material is the same as the previous one in the stack.
                 material =
                     this.appearanceStack[this.appearanceStack.length - 1].material;
