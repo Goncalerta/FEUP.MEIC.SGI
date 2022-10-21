@@ -7,9 +7,6 @@ import {MyTriangle} from './MyTriangle.js';
 import {MyComponent} from './MyComponent.js';
 import {CGFtexture} from '../lib/CGF.js';
 
-// TODO finish README.md
-// TODO cleanup and document and error handling
-
 const DEGREE_TO_RAD = Math.PI / 180;
 
 // Order of the groups in the XML document.
