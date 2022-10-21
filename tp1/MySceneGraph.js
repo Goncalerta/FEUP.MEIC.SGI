@@ -1591,13 +1591,7 @@ export class MySceneGraph {
             if (this.components[componentID].materials.length == 0) {
                 this.onXMLMinorError('no materials defined for ' + componentID);
                 // fallback to a default material
-                this.components[componentID].addMaterial({
-                    shininess: 10,
-                    emission: [0.0, 0.0, 0.0, 1.0],
-                    ambient: [0.8, 0.8, 0.8, 1.0],
-                    diffuse: [1.0, 1.0, 1.0, 1.0],
-                    specular: [0.0, 0.0, 0.0, 1.0],
-                });
+                this.components[componentID].addMaterial(this.scene.fallbackMaterial);
             }
 
             // Texture

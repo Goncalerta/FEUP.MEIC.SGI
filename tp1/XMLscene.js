@@ -36,6 +36,13 @@ export class XMLscene extends CGFscene {
         this.light7 = false;
 
         this.appearanceStack = [];
+        this.fallbackMaterial = {
+            shininess: 10,
+            emission: [0.0, 0.0, 0.0, 1.0],
+            ambient: [0.8, 0.8, 0.8, 1.0],
+            diffuse: [1.0, 1.0, 1.0, 1.0],
+            specular: [0.0, 0.0, 0.0, 1.0],
+        };
 
         this.sceneInited = false;
 
@@ -246,13 +253,7 @@ export class XMLscene extends CGFscene {
                     this.appearanceStack[this.appearanceStack.length - 1].material;
             } else {
                 // No previous material, so fallback to a default one.
-                material = {
-                    shininess: 10,
-                    emission: [0.0, 0.0, 0.0, 1.0],
-                    ambient: [0.8, 0.8, 0.8, 1.0],
-                    diffuse: [1.0, 1.0, 1.0, 1.0],
-                    specular: [0.0, 0.0, 0.0, 1.0],
-                };
+                material = this.fallbackMaterial;
             }
         }
         if (texture == 'inherit') {
