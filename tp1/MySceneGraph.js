@@ -242,13 +242,13 @@ export class MySceneGraph {
      */
     parseScene(sceneNode) {
         // Get root of the scene.
-        const root = this.reader.getString(sceneNode, 'root');
+        const root = this.reader.getString(sceneNode, 'root', false);
         if (root == null) this.onXMLError('no root defined for scene');
 
         this.idRoot = root;
 
         // Get axis length
-        let axisLength = this.reader.getFloat(sceneNode, 'axis_length');
+        let axisLength = this.reader.getFloat(sceneNode, 'axis_length', false);
         if (axisLength == null) {
             axisLength = 1;
             this.onXMLMinorError(
@@ -284,7 +284,7 @@ export class MySceneGraph {
         //  </views>
 
         // default
-        this.scene.selectedView = this.reader.getString(viewsNode, 'default');
+        this.scene.selectedView = this.reader.getString(viewsNode, 'default', false);
         if (this.scene.selectedView == null) {
             this.onXMLError('no default view defined for views');
         }
@@ -296,7 +296,7 @@ export class MySceneGraph {
                 children[i].nodeName == 'ortho'
             ) {
                 // id
-                const viewId = this.reader.getString(children[i], 'id');
+                const viewId = this.reader.getString(children[i], 'id', false);
                 if (viewId == null) {
                     this.onXMLMinorError('unable to parse id for view');
                     continue;
@@ -313,7 +313,7 @@ export class MySceneGraph {
                 }
 
                 // near
-                const near = this.reader.getFloat(children[i], 'near');
+                const near = this.reader.getFloat(children[i], 'near', false);
                 if (!(near != null && !isNaN(near))) {
                     this.onXMLMinorError(
                         'unable to parse near attribute of view with ID = ' +
@@ -323,7 +323,7 @@ export class MySceneGraph {
                 }
 
                 // far
-                const far = this.reader.getFloat(children[i], 'far');
+                const far = this.reader.getFloat(children[i], 'far', false);
                 if (!(far != null && !isNaN(far))) {
                     this.onXMLMinorError(
                         'unable to parse far attribute of view with ID = ' +
@@ -400,7 +400,7 @@ export class MySceneGraph {
                     }
 
                     // angle
-                    const angle = this.reader.getFloat(children[i], 'angle');
+                    const angle = this.reader.getFloat(children[i], 'angle', false);
                     if (!(angle != null && !isNaN(angle))) {
                         this.onXMLMinorError(
                             'unable to parse angle attribute of view with ID = ' +
@@ -425,7 +425,7 @@ export class MySceneGraph {
                     }
 
                     // left
-                    const left = this.reader.getFloat(children[i], 'left');
+                    const left = this.reader.getFloat(children[i], 'left', false);
                     if (!(left != null && !isNaN(left))) {
                         this.onXMLMinorError(
                             'unable to parse left attribute of view with ID = ' +
@@ -435,7 +435,7 @@ export class MySceneGraph {
                     }
 
                     // right
-                    const right = this.reader.getFloat(children[i], 'right');
+                    const right = this.reader.getFloat(children[i], 'right', false);
                     if (!(right != null && !isNaN(right))) {
                         this.onXMLMinorError(
                             'unable to parse right attribute of view with ID = ' +
@@ -445,7 +445,7 @@ export class MySceneGraph {
                     }
 
                     // top
-                    const top = this.reader.getFloat(children[i], 'top');
+                    const top = this.reader.getFloat(children[i], 'top', false);
                     if (!(top != null && !isNaN(top))) {
                         this.onXMLMinorError(
                             'unable to parse top attribute of view with ID = ' +
@@ -455,7 +455,7 @@ export class MySceneGraph {
                     }
 
                     // bottom
-                    const bottom = this.reader.getFloat(children[i], 'bottom');
+                    const bottom = this.reader.getFloat(children[i], 'bottom', false);
                     if (!(bottom != null && !isNaN(bottom))) {
                         this.onXMLMinorError(
                             'unable to parse bottom attribute of view with ID = ' +
@@ -586,7 +586,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current light.
-            const lightId = this.reader.getString(children[i], 'id');
+            const lightId = this.reader.getString(children[i], 'id', false);
             if (lightId == null) {
                 this.onXMLMinorError('no ID defined for light');
                 continue;
@@ -599,7 +599,7 @@ export class MySceneGraph {
             }
 
             // Light enable/disable
-            let aux = this.reader.getBoolean(children[i], 'enabled');
+            let aux = this.reader.getBoolean(children[i], 'enabled', false);
             if (!(aux != null && !isNaN(aux) && (aux == true || aux == false))) {
                 this.onXMLMinorError(
                     'unable to parse value component of the \'enable light\' field for ID = ' +
@@ -638,9 +638,9 @@ export class MySceneGraph {
                     }
                 } else if (attributeTypes[j] == 'attenuation') {
                     if (attributeIndex != -1) {
-                        let constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant');
-                        let linear = this.reader.getFloat(grandChildren[attributeIndex], 'linear');
-                        let quadratic = this.reader.getFloat(grandChildren[attributeIndex], 'quadratic');
+                        let constant = this.reader.getFloat(grandChildren[attributeIndex], 'constant', false);
+                        let linear = this.reader.getFloat(grandChildren[attributeIndex], 'linear', false);
+                        let quadratic = this.reader.getFloat(grandChildren[attributeIndex], 'quadratic', false);
 
                         const sortedValues = [constant, linear, quadratic].sort();
 
@@ -692,7 +692,7 @@ export class MySceneGraph {
 
             // Gets the additional attributes of the spot light
             if (children[i].nodeName == 'spot') {
-                let angle = this.reader.getFloat(children[i], 'angle');
+                let angle = this.reader.getFloat(children[i], 'angle', false);
                 if (!(angle != null && !isNaN(angle))) {
                     angle = 45;
                     this.onXMLMinorError(
@@ -700,7 +700,7 @@ export class MySceneGraph {
                     );
                 }
 
-                let exponent = this.reader.getFloat(children[i], 'exponent');
+                let exponent = this.reader.getFloat(children[i], 'exponent', false);
                 if (!(exponent != null && !isNaN(exponent))) {
                     exponent = 1;
                     this.onXMLMinorError(
@@ -769,7 +769,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current material.
-            const textureID = this.reader.getString(children[i], 'id');
+            const textureID = this.reader.getString(children[i], 'id', false);
             if (textureID == null) {
                 this.onXMLMinorError('no ID defined for texture');
                 continue;
@@ -785,7 +785,7 @@ export class MySceneGraph {
                 continue;
             }
 
-            const filename = this.reader.getString(children[i], 'file');
+            const filename = this.reader.getString(children[i], 'file', false);
             if (filename == null) {
                 this.onXMLMinorError(
                     'unable to parse file of the texture for ID = ' + textureID
@@ -819,7 +819,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current material.
-            const materialID = this.reader.getString(children[i], 'id');
+            const materialID = this.reader.getString(children[i], 'id', false);
             if (materialID == null) {
                 this.onXMLMinorError('no ID defined for material');
                 continue;
@@ -835,7 +835,7 @@ export class MySceneGraph {
                 continue;
             }
 
-            let shininess = this.reader.getFloat(children[i], 'shininess');
+            let shininess = this.reader.getFloat(children[i], 'shininess', false);
             if (!(shininess != null && !isNaN(shininess))) {
                 this.onXMLMinorError(
                     'unable to parse shininess of the material for ID = ' +
@@ -965,7 +965,7 @@ export class MySceneGraph {
             mat4.scale(transfMatrix, transfMatrix, coordinates);
             break;
         case 'rotate':
-            const axis = this.reader.getString(transformationNode, 'axis');
+            const axis = this.reader.getString(transformationNode, 'axis', false);
             let axisVector;
             if (axis == 'x') {
                 axisVector = [1, 0, 0];
@@ -983,7 +983,7 @@ export class MySceneGraph {
                 return null;
             }
 
-            const angle = this.reader.getFloat(transformationNode, 'angle');
+            const angle = this.reader.getFloat(transformationNode, 'angle', false);
             if (!(angle != null && !isNaN(angle))) {
                 this.onXMLMinorError(
                     'unable to parse angle of the rotation for ID = ' +
@@ -1031,7 +1031,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current transformation.
-            const transformationID = this.reader.getString(children[i], 'id');
+            const transformationID = this.reader.getString(children[i], 'id', false);
             if (transformationID == null) {
                 this.onXMLMinorError('no ID defined for transformation');
                 continue;
@@ -1092,7 +1092,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current primitive.
-            const primitiveId = this.reader.getString(children[i], 'id');
+            const primitiveId = this.reader.getString(children[i], 'id', false);
             if (primitiveId == null) {
                 this.onXMLMinorError('no ID defined for primitive');
                 continue;
@@ -1133,7 +1133,7 @@ export class MySceneGraph {
                 // <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
 
                 // x1
-                const x1 = this.reader.getFloat(grandChildren[0], 'x1');
+                const x1 = this.reader.getFloat(grandChildren[0], 'x1', false);
                 if (!(x1 != null && !isNaN(x1))) {
                     this.onXMLMinorError(
                         'unable to parse x1 of the primitive coordinates for ID = ' +
@@ -1143,7 +1143,7 @@ export class MySceneGraph {
                 }
 
                 // y1
-                const y1 = this.reader.getFloat(grandChildren[0], 'y1');
+                const y1 = this.reader.getFloat(grandChildren[0], 'y1', false);
                 if (!(y1 != null && !isNaN(y1))) {
                     this.onXMLMinorError(
                         'unable to parse y1 of the primitive coordinates for ID = ' +
@@ -1153,7 +1153,7 @@ export class MySceneGraph {
                 }
 
                 // x2
-                const x2 = this.reader.getFloat(grandChildren[0], 'x2');
+                const x2 = this.reader.getFloat(grandChildren[0], 'x2', false);
                 if (!(x2 != null && !isNaN(x2) && x2 > x1)) {
                     this.onXMLMinorError(
                         'unable to parse x2 of the primitive coordinates for ID = ' +
@@ -1163,7 +1163,7 @@ export class MySceneGraph {
                 }
 
                 // y2
-                const y2 = this.reader.getFloat(grandChildren[0], 'y2');
+                const y2 = this.reader.getFloat(grandChildren[0], 'y2', false);
                 if (!(y2 != null && !isNaN(y2) && y2 > y1)) {
                     this.onXMLMinorError(
                         'unable to parse y2 of the primitive coordinates for ID = ' +
@@ -1181,7 +1181,7 @@ export class MySceneGraph {
                 //           x3="ff" y3="ff" z3="ff" />
 
                 // x1
-                const x1 = this.reader.getFloat(grandChildren[0], 'x1');
+                const x1 = this.reader.getFloat(grandChildren[0], 'x1', false);
                 if (!(x1 != null && !isNaN(x1))) {
                     this.onXMLMinorError(
                         'unable to parse x1 of the primitive coordinates for ID = ' +
@@ -1191,7 +1191,7 @@ export class MySceneGraph {
                 }
 
                 // y1
-                const y1 = this.reader.getFloat(grandChildren[0], 'y1');
+                const y1 = this.reader.getFloat(grandChildren[0], 'y1', false);
                 if (!(y1 != null && !isNaN(y1))) {
                     this.onXMLMinorError(
                         'unable to parse y1 of the primitive coordinates for ID = ' +
@@ -1201,7 +1201,7 @@ export class MySceneGraph {
                 }
 
                 // z1
-                const z1 = this.reader.getFloat(grandChildren[0], 'z1');
+                const z1 = this.reader.getFloat(grandChildren[0], 'z1', false);
                 if (!(z1 != null && !isNaN(z1))) {
                     this.onXMLMinorError(
                         'unable to parse z1 of the primitive coordinates for ID = ' +
@@ -1211,7 +1211,7 @@ export class MySceneGraph {
                 }
 
                 // x2
-                const x2 = this.reader.getFloat(grandChildren[0], 'x2');
+                const x2 = this.reader.getFloat(grandChildren[0], 'x2', false);
                 if (!(x2 != null && !isNaN(x2))) {
                     this.onXMLMinorError(
                         'unable to parse x2 of the primitive coordinates for ID = ' +
@@ -1221,7 +1221,7 @@ export class MySceneGraph {
                 }
 
                 // y2
-                const y2 = this.reader.getFloat(grandChildren[0], 'y2');
+                const y2 = this.reader.getFloat(grandChildren[0], 'y2', false);
                 if (!(y2 != null && !isNaN(y2))) {
                     this.onXMLMinorError(
                         'unable to parse y2 of the primitive coordinates for ID = ' +
@@ -1231,7 +1231,7 @@ export class MySceneGraph {
                 }
 
                 // z2
-                const z2 = this.reader.getFloat(grandChildren[0], 'z2');
+                const z2 = this.reader.getFloat(grandChildren[0], 'z2', false);
                 if (!(z2 != null && !isNaN(z2))) {
                     this.onXMLMinorError(
                         'unable to parse z2 of the primitive coordinates for ID = ' +
@@ -1241,7 +1241,7 @@ export class MySceneGraph {
                 }
 
                 // x3
-                const x3 = this.reader.getFloat(grandChildren[0], 'x3');
+                const x3 = this.reader.getFloat(grandChildren[0], 'x3', false);
                 if (!(x3 != null && !isNaN(x3))) {
                     this.onXMLMinorError(
                         'unable to parse x3 of the primitive coordinates for ID = ' +
@@ -1251,7 +1251,7 @@ export class MySceneGraph {
                 }
 
                 // y3
-                const y3 = this.reader.getFloat(grandChildren[0], 'y3');
+                const y3 = this.reader.getFloat(grandChildren[0], 'y3', false);
                 if (!(y3 != null && !isNaN(y3))) {
                     this.onXMLMinorError(
                         'unable to parse y3 of the primitive coordinates for ID = ' +
@@ -1261,7 +1261,7 @@ export class MySceneGraph {
                 }
 
                 // z3
-                const z3 = this.reader.getFloat(grandChildren[0], 'z3');
+                const z3 = this.reader.getFloat(grandChildren[0], 'z3', false);
                 if (!(z3 != null && !isNaN(z3))) {
                     this.onXMLMinorError(
                         'unable to parse z3 of the primitive coordinates for ID = ' +
@@ -1282,7 +1282,7 @@ export class MySceneGraph {
                 // <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
 
                 // base
-                const base = this.reader.getFloat(grandChildren[0], 'base');
+                const base = this.reader.getFloat(grandChildren[0], 'base', false);
                 if (!(base != null && !isNaN(base))) {
                     this.onXMLMinorError(
                         'unable to parse base of the primitive for ID = ' +
@@ -1292,7 +1292,7 @@ export class MySceneGraph {
                 }
 
                 // top
-                const top = this.reader.getFloat(grandChildren[0], 'top');
+                const top = this.reader.getFloat(grandChildren[0], 'top', false);
                 if (!(top != null && !isNaN(top))) {
                     this.onXMLMinorError(
                         'unable to parse top of the primitive for ID = ' +
@@ -1302,7 +1302,7 @@ export class MySceneGraph {
                 }
 
                 // height
-                const height = this.reader.getFloat(grandChildren[0], 'height');
+                const height = this.reader.getFloat(grandChildren[0], 'height', false);
                 if (!(height != null && !isNaN(height))) {
                     this.onXMLMinorError(
                         'unable to parse height of the primitive for ID = ' +
@@ -1312,7 +1312,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                const slices = this.reader.getInteger(grandChildren[0], 'slices');
+                const slices = this.reader.getInteger(grandChildren[0], 'slices', false);
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         'unable to parse slices of the primitive for ID = ' +
@@ -1322,7 +1322,7 @@ export class MySceneGraph {
                 }
 
                 // stacks
-                const stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+                const stacks = this.reader.getInteger(grandChildren[0], 'stacks', false);
                 if (!(stacks != null && !isNaN(stacks))) {
                     this.onXMLMinorError(
                         'unable to parse stacks of the primitive for ID = ' +
@@ -1345,7 +1345,7 @@ export class MySceneGraph {
                 // <sphere radius="ff" slices="ii" stacks="ii" />
 
                 // radius
-                const radius = this.reader.getFloat(grandChildren[0], 'radius');
+                const radius = this.reader.getFloat(grandChildren[0], 'radius', false);
                 if (!(radius != null && !isNaN(radius))) {
                     this.onXMLMinorError(
                         'unable to parse radius of the primitive for ID = ' +
@@ -1355,7 +1355,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                const slices = this.reader.getInteger(grandChildren[0], 'slices');
+                const slices = this.reader.getInteger(grandChildren[0], 'slices', false);
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         'unable to parse slices of the primitive for ID = ' +
@@ -1365,7 +1365,7 @@ export class MySceneGraph {
                 }
 
                 // stacks
-                const stacks = this.reader.getInteger(grandChildren[0], 'stacks');
+                const stacks = this.reader.getInteger(grandChildren[0], 'stacks', false);
                 if (!(stacks != null && !isNaN(stacks))) {
                     this.onXMLMinorError(
                         'unable to parse stacks of the primitive for ID = ' +
@@ -1381,7 +1381,7 @@ export class MySceneGraph {
                 // <torus inner="ff" outer="ff" slices="ii" loops="ii" />
 
                 // inner
-                const inner = this.reader.getFloat(grandChildren[0], 'inner');
+                const inner = this.reader.getFloat(grandChildren[0], 'inner', false);
                 if (!(inner != null && !isNaN(inner))) {
                     this.onXMLMinorError(
                         'unable to parse inner of the primitive for ID = ' +
@@ -1391,7 +1391,7 @@ export class MySceneGraph {
                 }
 
                 // outer
-                const outer = this.reader.getFloat(grandChildren[0], 'outer');
+                const outer = this.reader.getFloat(grandChildren[0], 'outer', false);
                 if (!(outer != null && !isNaN(outer))) {
                     this.onXMLMinorError(
                         'unable to parse outer of the primitive for ID = ' +
@@ -1401,7 +1401,7 @@ export class MySceneGraph {
                 }
 
                 // slices
-                const slices = this.reader.getInteger(grandChildren[0], 'slices');
+                const slices = this.reader.getInteger(grandChildren[0], 'slices', false);
                 if (!(slices != null && !isNaN(slices))) {
                     this.onXMLMinorError(
                         'unable to parse slices of the primitive for ID = ' +
@@ -1411,7 +1411,7 @@ export class MySceneGraph {
                 }
 
                 // loops
-                const loops = this.reader.getInteger(grandChildren[0], 'loops');
+                const loops = this.reader.getInteger(grandChildren[0], 'loops', false);
                 if (!(loops != null && !isNaN(loops))) {
                     this.onXMLMinorError(
                         'unable to parse loops of the primitive for ID = ' +
@@ -1461,7 +1461,7 @@ export class MySceneGraph {
             }
 
             // Get id of the current component.
-            const componentID = this.reader.getString(children[i], 'id');
+            const componentID = this.reader.getString(children[i], 'id', false);
             if (componentID == null) {
                 this.onXMLMinorError('no ID defined for component');
                 continue;
@@ -1486,7 +1486,7 @@ export class MySceneGraph {
                 continue;
             }
 
-            const componentID = this.reader.getString(children[i], 'id');
+            const componentID = this.reader.getString(children[i], 'id', false);
 
             grandChildren = children[i].children;
             nodeNames = [];
@@ -1506,10 +1506,7 @@ export class MySceneGraph {
                     grandChildren[transformationIndex].children[0];
                 if (firstTransformation.nodeName == 'transformationref') {
                     // transformationref detected; should be the only transformation
-                    let transformationID = this.reader.getString(
-                        firstTransformation,
-                        'id'
-                    );
+                    let transformationID = this.reader.getString(firstTransformation, 'id', false);
                     if (transformationID == null) {
                         this.onXMLMinorError(
                             'no ID defined for transformation in ' + componentID
@@ -1568,7 +1565,7 @@ export class MySceneGraph {
                     continue;
                 }
 
-                const materialID = this.reader.getString(child, 'id');
+                const materialID = this.reader.getString(child, 'id', false);
                 if (materialID == null) {
                     this.onXMLMinorError('no ID defined for materialID in ' + componentID);
                     continue;
@@ -1595,28 +1592,17 @@ export class MySceneGraph {
             }
 
             // Texture
-            const textureID = this.reader.getString(
-                grandChildren[textureIndex],
-                'id'
-            );
+            const textureID = this.reader.getString(grandChildren[textureIndex], 'id', false);
             if (textureID == null) {
                 this.onXMLMinorError('no ID defined for textureID in ' + componentID);
             } else {
-                let lengthS = this.reader.getFloat(
-                    grandChildren[textureIndex],
-                    'length_s',
-                    false
-                );
-                let lengthT = this.reader.getFloat(
-                    grandChildren[textureIndex],
-                    'length_t',
-                    false
-                );
+                let lengthS = this.reader.getFloat(grandChildren[textureIndex], 'length_s', false);
+                let lengthT = this.reader.getFloat(grandChildren[textureIndex], 'length_t', false);
 
                 if (textureID == 'inherit') {
                     if (lengthS != null || lengthT != null) {
                         this.onXMLMinorError(
-                            'length_s and length_t should not be defined for textureID none in ' + componentID
+                            'length_s and length_t should not be defined for textureID inherit in ' + componentID
                         );
                     }
                     this.components[componentID].inheritTexture();
@@ -1637,11 +1623,15 @@ export class MySceneGraph {
                         lengthT = 1.0;
                     }
 
-                    this.components[componentID].setTexture(
-                        this.textures[textureID],
-                        lengthS,
-                        lengthT
-                    );
+                    if (this.textures[textureID] == null) {
+                        this.onXMLMinorError('no texture with ID ' + textureID + ' defined');
+                    } else {
+                        this.components[componentID].setTexture(
+                            this.textures[textureID],
+                            lengthS,
+                            lengthT
+                        );
+                    }
                 }
             }
 
@@ -1649,7 +1639,7 @@ export class MySceneGraph {
             for (const child of grandChildren[childrenIndex].children) {
                 if (child.nodeName == 'componentref') {
                     // Add a new component to the component
-                    const componentref = this.reader.getString(child, 'id');
+                    const componentref = this.reader.getString(child, 'id', false);
 
                     if (this.components[componentref] == null) {
                         this.onXMLError(
@@ -1663,7 +1653,7 @@ export class MySceneGraph {
                     );
                 } else if (child.nodeName == 'primitiveref') {
                     // Add a new primitive to the component
-                    const primitiveref = this.reader.getString(child, 'id');
+                    const primitiveref = this.reader.getString(child, 'id', false);
 
                     if (this.primitives[primitiveref] == null) {
                         this.onXMLError(
@@ -1744,7 +1734,7 @@ export class MySceneGraph {
         const position = [];
 
         // x
-        let x = this.reader.getFloat(node, 'x');
+        let x = this.reader.getFloat(node, 'x', false);
         if (!(x != null && !isNaN(x))) {
             x = 0;
             this.onXMLError(
@@ -1753,7 +1743,7 @@ export class MySceneGraph {
         }
 
         // y
-        let y = this.reader.getFloat(node, 'y');
+        let y = this.reader.getFloat(node, 'y', false);
         if (!(y != null && !isNaN(y))) {
             y = 0;
             this.onXMLError(
@@ -1762,7 +1752,7 @@ export class MySceneGraph {
         }
 
         // z
-        let z = this.reader.getFloat(node, 'z');
+        let z = this.reader.getFloat(node, 'z', false);
         if (!(z != null && !isNaN(z))) {
             z = 0;
             this.onXMLError(
@@ -1789,7 +1779,7 @@ export class MySceneGraph {
         if (!Array.isArray(position)) return position;
 
         // w
-        let w = this.reader.getFloat(node, 'w');
+        let w = this.reader.getFloat(node, 'w', false);
         if (!(w != null && !isNaN(w))) {
             w = 0;
             this.onXMLError(
@@ -1811,7 +1801,7 @@ export class MySceneGraph {
         const color = [];
 
         // R
-        let r = this.reader.getFloat(node, 'r');
+        let r = this.reader.getFloat(node, 'r', false);
         if (!(r != null && !isNaN(r) && r >= 0 && r <= 1)) {
             this.onXMLError(
                 'unable to parse R component of the ' + messageError
@@ -1820,7 +1810,7 @@ export class MySceneGraph {
         }
 
         // G
-        let g = this.reader.getFloat(node, 'g');
+        let g = this.reader.getFloat(node, 'g', false);
         if (!(g != null && !isNaN(g) && g >= 0 && g <= 1)) {
             g = 0;
             this.onXMLError(
@@ -1829,7 +1819,7 @@ export class MySceneGraph {
         }
 
         // B
-        let b = this.reader.getFloat(node, 'b');
+        let b = this.reader.getFloat(node, 'b', false);
         if (!(b != null && !isNaN(b) && b >= 0 && b <= 1)) {
             b = 0;
             this.onXMLError(
@@ -1838,7 +1828,7 @@ export class MySceneGraph {
         }
 
         // A
-        let a = this.reader.getFloat(node, 'a');
+        let a = this.reader.getFloat(node, 'a', false);
         if (!(a != null && !isNaN(a) && a >= 0 && a <= 1)) {
             a = 0;
             this.onXMLError(
