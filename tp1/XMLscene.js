@@ -249,8 +249,7 @@ export class XMLscene extends CGFscene {
         if (material == 'inherit') {
             if (this.appearanceStack.length > 0) {
                 // Inherit means the material is the same as the previous one in the stack.
-                material =
-                    this.appearanceStack[this.appearanceStack.length - 1].material;
+                material = this.appearanceStack[this.appearanceStack.length - 1].material;
             } else {
                 // No previous material, so fallback to a default one.
                 material = this.fallbackMaterial;
@@ -259,8 +258,7 @@ export class XMLscene extends CGFscene {
         if (texture == 'inherit') {
             if (this.appearanceStack.length > 0) {
                 // Inherit means the texture is the same as the previous one in the stack.
-                texture =
-                    this.appearanceStack[this.appearanceStack.length - 1].texture;
+                texture = this.appearanceStack[this.appearanceStack.length - 1].texture;
             } else {
                 // If the stack is empty, inherit no texture.
                 texture = 'none';
@@ -300,9 +298,7 @@ export class XMLscene extends CGFscene {
         }
         this.appearanceStack.pop();
         if (this.appearanceStack.length > 0) {
-            this.appearanceStack[
-                this.appearanceStack.length - 1
-            ].appearance.apply();
+            this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
         }
     }
 
