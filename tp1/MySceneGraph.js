@@ -1548,24 +1548,34 @@ export class MySceneGraph {
             if (textureID == null) {
                 this.onXMLMinorError("no ID defined for textureID");
             } else {
+                let length_s = this.reader.getFloat(
+                    grandChildren[textureIndex],
+                    "length_s",
+                    false
+                );
+                let length_t = this.reader.getFloat(
+                    grandChildren[textureIndex],
+                    "length_t",
+                    false
+                );
+
                 if (textureID == "inherit") {
+                    if (length_s != null || length_t != null) {
+                        this.onXMLMinorError("length_s and length_t should not be defined for textureID none");
+                    }
                     this.components[componentID].inheritTexture();
-                } else if (textureID != "none") {
-                    // Parse optional length_s and length_t only if textureID is not "none" nor "inherit"
-                    let length_s = this.reader.getFloat(
-                        grandChildren[textureIndex],
-                        "length_s",
-                        false
-                    );
+                } else if (textureID == "none") {
+                    if (length_s != null || length_t != null) {
+                        this.onXMLMinorError("length_s and length_t should not be defined for textureID none");
+                    }
+                } else {
+                    // textureID is a texture, so length_s and length_t are mandatory
                     if (length_s == null) {
+                        this.onXMLMinorError("no length_s defined for textureID");
                         length_s = 1.0;
                     }
-                    let length_t = this.reader.getFloat(
-                        grandChildren[textureIndex],
-                        "length_t",
-                        false
-                    );
                     if (length_t == null) {
+                        this.onXMLMinorError("no length_s defined for textureID");
                         length_t = 1.0;
                     }
 

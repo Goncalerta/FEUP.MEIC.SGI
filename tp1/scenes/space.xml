@@ -238,7 +238,7 @@
             <materials>
                 <material id="defaultMaterial" />
             </materials>
-            <texture id="metalTilesTexture" />
+            <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="spacestation" />
                 <componentref id="sun" />
@@ -257,7 +257,7 @@
             <materials>
                 <material id="sunMaterial" />
             </materials>
-            <texture id="sunTexture"/>
+            <texture id="sunTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -271,7 +271,7 @@
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="earthDayTexture"/>
+            <texture id="earthDayTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -286,7 +286,7 @@
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="moonTexture"/>
+            <texture id="moonTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -326,7 +326,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="spaceshipBodyTexture" />
+            <texture id="spaceshipBodyTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="spacestationBody" />
             </children>
@@ -340,7 +340,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="whiteMetalTexture"/>
+            <texture id="whiteMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="spacestationCenter" />
                 <componentref id="spacestationCenterComponentTop" />
@@ -355,7 +355,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="whiteMetalTexture"/>
+            <texture id="whiteMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -367,7 +367,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="whiteMetalTexture"/>
+            <texture id="whiteMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -425,7 +425,7 @@
             <materials>
                 <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="2" length_t="8.0"/>
+            <texture id="solarPanelTexture" length_s="2" length_t="8.0" />
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
@@ -457,7 +457,7 @@
             <materials>
                 <material id="reflectiveMaterial" />
             </materials>
-            <texture id="solarPanelTexture" length_s="1.0" length_t="8.0"/>
+            <texture id="solarPanelTexture" length_s="1.0" length_t="8.0" />
             <children>
                 <componentref id="doubleSidedSquare" />
             </children>
@@ -471,7 +471,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="spacestationMainMirrorPanel" />
                 <componentref id="spacestationMainMirrorPanelBack" />
@@ -505,7 +505,7 @@
             <materials>
                 <material id="darkMaterial" />
             </materials>
-            <texture id="metalTilesTexture" />
+            <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="hexagon" />
             </children>
@@ -603,7 +603,7 @@
                 <material id="yellowSpaceshipMaterial" />
                 <material id="cyanSpaceshipMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="spacestationArmBase" />
             </children>
@@ -623,7 +623,7 @@
                 <material id="cyanSpaceshipMaterial" />
                 <material id="yellowSpaceshipMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="spacestationArmBase" />
             </children>
@@ -643,7 +643,7 @@
                 <material id="cyanSpaceshipMaterial" />
                 <material id="greenSpaceshipMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="spacestationArmBase" />
             </children>
@@ -663,7 +663,7 @@
                 <material id="shinySpaceshipMaterial" />
                 <material id="redSpaceshipMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="spacestationArmBase" />
             </children>
@@ -683,7 +683,7 @@
                 <material id="shinySpaceshipMaterial" />
                 <material id="yellowSpaceshipMaterial" />
             </materials>
-            <texture id="none"/>
+            <texture id="none" />
             <children>
                 <componentref id="spacestationArmBase" />
             </children>
@@ -698,7 +698,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="cubeFace1" />
                 <componentref id="cubeFace2" />
@@ -716,7 +716,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -730,7 +730,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -742,7 +742,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -754,7 +754,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -766,7 +766,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -779,7 +779,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -793,7 +793,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="hexagonPart1" />
                 <componentref id="hexagonPart2" />
@@ -810,7 +810,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -822,7 +822,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -834,7 +834,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -846,7 +846,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -858,7 +858,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -869,7 +869,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="equilateralTriangle" />
             </children>
@@ -883,7 +883,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
                 <componentref id="squareBack" />
@@ -897,7 +897,7 @@
             <materials>
                 <material id="darkMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -913,7 +913,7 @@
                 <material id="cubemapMaterial" />
                 <material id="redCubemapMaterial" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="inherit" />
             <children>
                 <componentref id="cubemapPositiveX" />
                 <componentref id="cubemapNegativeX" />
@@ -931,7 +931,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapPositiveXTexture"/>
+            <texture id="cubemapPositiveXTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -944,7 +944,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapNegativeXTexture"/>
+            <texture id="cubemapNegativeXTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -958,7 +958,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapPositiveYTexture"/>
+            <texture id="cubemapPositiveYTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -972,7 +972,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapNegativeYTexture"/>
+            <texture id="cubemapNegativeYTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -985,7 +985,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapPositiveZTexture"/>
+            <texture id="cubemapPositiveZTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -997,7 +997,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="cubemapNegativeZTexture"/>
+            <texture id="cubemapNegativeZTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>

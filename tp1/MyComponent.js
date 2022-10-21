@@ -16,7 +16,7 @@ export class MyComponent extends CGFobject {
         this.children = [];
         this.transformation = null;
         this.materials = [];
-        this.currentMaterialIdx = 0;
+        this.currentMaterialIdx = 0; // Currently selected material, changes when pressing 'M'
 
         this.texture = "none";
         this.length_s = 1.0;
