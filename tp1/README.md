@@ -27,3 +27,16 @@
 
 -   Since the XML format specified doesn't allow setting the position relative to the camera, the cubemap is static and won't move when the camera moves. However, this is a limitation from the assignment.
 -   There are no unimplemented features or bugs that we are aware of.
+
+---
+
+## Screenshots
+
+![](./screenshots/1.jpg)
+![](./screenshots/2.jpg)
+![](./screenshots/3.jpg)
+![](./screenshots/4.jpg)
+![](./screenshots/5.jpg)
+![](./screenshots/6.jpg)
+![](./screenshots/7.jpg)
+![](./screenshots/8.jpg)
