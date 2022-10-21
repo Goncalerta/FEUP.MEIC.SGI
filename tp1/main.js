@@ -29,7 +29,7 @@ function main() {
 
     // get file name provided in URL, e.g. http://localhost/myproj/?file=myfile.xml
 
-    let filename = getUrllets()["file"] || "space.xml";
+    const filename = getUrllets()['file'] || 'space.xml';
 
     // create and load graph, and associate it to scene.
     // Check console for loading errors
