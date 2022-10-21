@@ -187,6 +187,18 @@
             <diffuse r="1.0" g="0.843" b="0.0" a="1.0" />
             <specular r="1.0" g="0.95" b="0.7" a="1.0" />
         </material>
+        <material id="brownDarkMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.3" g="0.15" b="0.08" a="1.0" />
+            <diffuse r="0.862" g="0.408" b="0.286" a="1.0" />
+            <specular r="0.862" g="0.408" b="0.286" a="1.0" />
+        </material>
+        <material id="goldenDarkMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.7" g="0.558" b="0.0" a="1.0" />
+            <diffuse r="0.9" g="0.843" b="0.0" a="1.0" />
+            <specular r="0.9" g="0.95" b="0.7" a="1.0" />
+        </material>
 
         <material id="redCubemapMaterial" shininess="1">
             <emission r="0.6" g="0.4" b="0.4" a="1.0" />
@@ -504,6 +516,8 @@
             </transformation>
             <materials>
                 <material id="darkMaterial" />
+                <material id="brownDarkMaterial" />
+                <material id="goldenDarkMaterial" />
             </materials>
             <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
