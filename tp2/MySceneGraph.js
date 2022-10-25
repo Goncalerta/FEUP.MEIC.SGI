@@ -5,6 +5,7 @@ import {MySphere} from './MySphere.js';
 import {MyTorus} from './MyTorus.js';
 import {MyTriangle} from './MyTriangle.js';
 import {MyComponent} from './MyComponent.js';
+import {MyPatch} from './MyPatch.js';
 import {CGFtexture} from '../lib/CGF.js';
 
 const DEGREE_TO_RAD = Math.PI / 180;
@@ -1072,10 +1073,11 @@ export class MySceneGraph {
                     grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' &&
                     grandChildren[0].nodeName != 'sphere' &&
-                    grandChildren[0].nodeName != 'torus')
+                    grandChildren[0].nodeName != 'torus' &&
+                    grandChildren[0].nodeName != 'patch')
             ) {
                 this.onXMLMinorError(
-                    'There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus)'
+                    'There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, patch)'
                 );
                 continue;
             }
@@ -1405,9 +1407,14 @@ export class MySceneGraph {
 
                 const controlPointsNodes = grandChildren[0].children;
 
-                for (let j = 0; j < controlPointsNodes.length; j++) {
-                    const controlPoint = parseCoordinates3D(controlPointsNodes[j], "controlpoint " + j + " for ID = " + primitiveId);
-                    controlPoints.push(controlPoint);
+                for (let i = 0; i < degree_u + 1; i++) {
+                    const controlPointsRow = []
+                    for (let j = 0; j < degree_v + 1; j++) {
+                        const controlPoint = this.parseCoordinates3D(controlPointsNodes[i*(degree_v+1)+j], "controlpoint " + j + " for ID = " + primitiveId);
+                        controlPoint.push(1);
+                        controlPointsRow.push(controlPoint);
+                    }
+                    controlPoints.push(controlPointsRow);
                 }
 
                 const patch = new MyPatch(
