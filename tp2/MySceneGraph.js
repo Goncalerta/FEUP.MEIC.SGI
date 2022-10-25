@@ -1343,6 +1343,67 @@ export class MySceneGraph {
                 );
 
                 this.primitives[primitiveId] = torus;
+            } else if (primitiveType == 'patch') {
+                // <patch degree_u="ii" parts_u="ii" degree_v="ii" parts_v="ii" >
+                //     <controlpoint x="ff" y="ff" z="ff" />
+                //     ...
+                // </patch>
+
+                // degree_u
+                const degree_u = this.reader.getInteger(grandChildren[0], 'degree_u', false);
+                if (!(degree_u != null && !isNaN(degree_u))) {
+                    this.onXMLMinorError(
+                        'unable to parse degree_u of the primitive for ID = ' + primitiveId
+                    );
+                    continue;
+                }
+
+                // parts_u
+                const parts_u = this.reader.getInteger(grandChildren[0], 'parts_u', false);
+                if (!(parts_u != null && !isNaN(parts_u))) {
+                    this.onXMLMinorError(
+                        'unable to parse parts_u of the primitive for ID = ' + primitiveId
+                    );
+                    continue;
+                }
+
+                // degree_v
+                const degree_v = this.reader.getInteger(grandChildren[0], 'degree_v', false);
+                if (!(degree_v != null && !isNaN(degree_v))) {
+                    this.onXMLMinorError(
+                        'unable to parse degree_v of the primitive for ID = ' + primitiveId
+                    );
+                    continue;
+                }
+
+                // parts_v
+                const parts_v = this.reader.getInteger(grandChildren[0], 'parts_v', false);
+                if (!(parts_v != null && !isNaN(parts_v))) {
+                    this.onXMLMinorError(
+                        'unable to parse parts_v of the primitive for ID = ' + primitiveId
+                    );
+                    continue;
+                }
+
+                const controlPoints = [];
+
+                const controlPointsNodes = grandChildren[0].children;
+
+                for (let j = 0; j < controlPointsNodes.length; j++) {
+                    const controlPoint = parseCoordinates3D(controlPointsNodes[j], "controlpoint " + j + " for ID = " + primitiveId);
+                    controlPoints.push(controlPoint);
+                }
+
+                const patch = new MyPatch(
+                    this.scene,
+                    degree_u,
+                    parts_u,
+                    degree_v,
+                    parts_v,
+                    controlPoints
+                );
+
+                this.primitives[primitiveId] = patch;
             } else {
                 this.onXMLMinorError('unknown tag <' + primitiveType + '>');
             }
@@ -1611,7 +1672,7 @@ export class MySceneGraph {
         }
 
         // Check if there are cyclic references
-        if (this.idRoot != null && this.components.length > 0 && this.hasCycle()) {
+        if (this.idRoot != null && this.componentsIds.length > 0 && this.hasCycle()) {
             return 'Scene graph has a cycle.';
         }
     }
