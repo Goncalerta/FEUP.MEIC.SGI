@@ -18,7 +18,8 @@ const TEXTURES_INDEX = 4;
 const MATERIALS_INDEX = 5;
 const TRANSFORMATIONS_INDEX = 6;
 const PRIMITIVES_INDEX = 7;
-const COMPONENTS_INDEX = 8;
+const ANIMATIONS_INDEX = 8;
+const COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -210,6 +211,21 @@ export class MySceneGraph {
 
             // Parse primitives block
             if ((error = this.parsePrimitives(nodes[index])) != null) {
+                return error;
+            }
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf('animations')) == -1) {
+            this.onXMLError('tag <animations> missing');
+            this.animations = [];
+        } else {
+            if (index != ANIMATIONS_INDEX) {
+                this.onXMLMinorError('tag <animations> out of order ' + index);
+            }
+
+            // Parse animations block
+            if ((error = this.parseAnimations(nodes[index])) != null) {
                 return error;
             }
         }
@@ -1411,6 +1427,76 @@ export class MySceneGraph {
 
         this.log('Parsed primitives');
         return null;
+    }
+
+    /**
+     * Parses the <animations> block.
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+        this.animations = [];
+
+        const keyframeAnims = animationsNode.children;
+        for (let i = 0; i < keyframeAnims.length; i++) {
+            if (keyframeAnims[i].nodeName != 'keyframeanim') {
+                this.onXMLMinorError(
+                    'unknown tag <' + children[i].nodeName + '>'
+                );
+                continue;
+            }
+
+            if ((error = this.parseAnimation(keyframeAnims[i])) != null) {
+                return error;
+            }
+        }
+    }
+
+    /**
+     * Parses a <keyframeanim> block.
+     * @param {keyframeanim block element} keyframeanimNode
+     */
+    parseAnimation(keyframeanimNode) {
+        // Get id of the current animation.
+        const animationID = this.reader.getString(keyframeanimNode, 'id', false);
+        if (animationID == null) {
+            this.onXMLMinorError('no ID defined for animation');
+            return;
+        }
+
+        // Checks for repeated IDs.
+        if (this.animations[animationID] != null) {
+            this.onXMLMinorError(
+                'ID must be unique for each animation (conflict: ID = ' + animationID + ')'
+            );
+            return;
+        }
+
+        const keyframes = [];
+        const keyframesNodes = keyframeanimNode.children;
+        let last_inst = -1;
+        for (let i = 0; keyframesNodes.length; i++) {
+            // Get instant of the current keyframe.
+            const keyframeInstant = this.reader.getString(keyframesNodes[i], 'instant', false);
+            if (keyframeInstant == null) {
+                this.onXMLMinorError('no instant defined for keyframe');
+                continue;
+            }
+
+            // if instant order is not increasing
+            if (keyframeInstant <= last_inst) {
+                this.onXMLMinorError('instant order of keyframes is not increasing');
+                continue;
+            }
+
+            last_inst = keyframeInstant;
+
+            // TODO parse transformations...
+        }
+
+        if (keyframes.length > 0) {
+            // TODO add keyframeanimation
+        }
+        // otherwise not, since its mandatory to have 1
     }
 
     /**
