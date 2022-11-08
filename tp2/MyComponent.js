@@ -136,7 +136,7 @@ export class MyComponent extends CGFobject {
             child.display();
         }
 
-        // Pop matrices and appearances
+        // Pop animation matrices
         if (this.animation != null) {
             this.scene.popMatrix();
         }
@@ -160,13 +160,15 @@ export class MyComponent extends CGFobject {
         }
     }
 
-    computeAnimation(deltaTime) {
+    update(t) {
         if (this.animation != null) {
-            this.animation.update(deltaTime);
+            this.animation.update(t);
+        }
 
-            for (const child of this.children) {
-                // TODO do not call for primitives
-                child.computeAnimation(deltaTime);
+        for (const child of this.children) {
+            // if adj is not a primitive
+            if (typeof child.getChildren === 'function') {
+                child.update(t);
             }
         }
     }

@@ -1,28 +1,32 @@
+import { MyAnimation } from "./MyAnimation.js";
 
-export class MyKeyframeAnimation {
+export class MyKeyframeAnimation extends MyAnimation {
     /**
      * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
      * @param {string} id - Id of the animation
      */
     constructor(scene, id) {
-        this.scene = scene;
-        this.id = id;
+        super(scene, id);
+
         this.matrix = mat4.create();
         this.keyFrames = [];
-        this.time = 0; // TODO component should be invisible until the first keyframe instant
     }
 
-    addKeyFrame(keyFrame) {
+    addKeyframe(keyFrame) {
         this.keyFrames.push(keyFrame);
+    }
+
+    getKeyFrames() {
+        return this.keyFrames;
     }
 
     apply() {
         this.scene.multMatrix(this.matrix);
     }
 
-    computeAnimation(deltaTime) {
-        this.time += deltaTime;
+    update(t) {
+        this.time = t;
 
         if (this.time > this.keyFrames[this.keyFrames.length - 1].getInstant()) {
             this.time = this.keyFrames[this.keyFrames.length - 1].getInstant();
@@ -38,7 +42,7 @@ export class MyKeyframeAnimation {
         }
 
         if (i == this.keyFrames.length) {
-            this.matrix = keyFrame.matrix;
+            this.matrix = keyFrame.calculateMatrix();
         } else {
             const ratio = (this.time - keyFrame.getInstant()) / (this.keyFrames[i].getInstant() - keyFrame.getInstant());
 

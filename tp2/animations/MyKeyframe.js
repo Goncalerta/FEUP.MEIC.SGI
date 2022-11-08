@@ -1,4 +1,7 @@
-import { MyTransformation } from "./MyTransformation";
+import { MyTransformation } from "./MyTransformation.js";
+
+const DEGREE_TO_RAD = Math.PI / 180;
+
 
 export class MyKeyframe {
     /**

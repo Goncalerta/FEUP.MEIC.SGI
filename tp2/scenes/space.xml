@@ -243,6 +243,26 @@
         </primitive>
     </primitives>
 
+    <animations>
+        <keyframeanim id="earthRotation">
+            <keyframe instant="946684800"> <!-- epoch == 1/1/2000-->
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="32503680000"> <!-- epoch == 1/1/3000-->
+                <translation x="0" y="0" z="0" />
+                <!-- <rotation axis="z" angle="131487480" /> --> <!-- num_days(365243) * 360-->
+                <rotation axis="z" angle="13148748000" /> <!-- correct * 100 so that the rotation is clearly visible -->
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+    </animations>
+
     <components>
         <component id="root">
             <transformation>
@@ -287,6 +307,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="earthRotation" />
         </component>
         <component id="moon">
             <transformation>

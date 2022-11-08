@@ -1,4 +1,4 @@
-const Transformations = {
+export const Transformations = {
     Translation: 0,
     RotationZ: 1,
     RotationY: 2,

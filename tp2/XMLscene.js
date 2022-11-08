@@ -344,16 +344,15 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
-    update(time) {
+    update(t) {
         if (this.sceneInited) {
             if (this.startTime != null) {
-                this.startTime = time;
+                this.startTime = t;
             }
             
             // traverse scene graph and, for nodes having animation,
             // compute the animation matrix
-            const deltaTime = time - this.startTime;
-            this.graph.computeAnimation(deltaTime);
+            this.graph.update(t);
         }
     }
 }
