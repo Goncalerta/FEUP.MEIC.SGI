@@ -232,12 +232,60 @@
     </transformations>
 
     <primitives>
-        <primitive id="spacestationBody">
+        <primitive id="rectanglePatch">
             <patch degree_u="1" parts_u="50" degree_v="1" parts_v="50">
-                <controlpoint x="-20" y="-20" z="0" />
-                <controlpoint x="-20" y="20" z="0" />
-                <controlpoint x="20" y="-20" z="0" />
-                <controlpoint x="20" y="20" z="0" />
+                <controlpoint x="-0.5" y="-0.5" z="0" />
+                <controlpoint x="-0.5" y="0.5" z="0" />
+                <controlpoint x="0.5" y="-0.5" z="0" />
+                <controlpoint x="0.5" y="0.5" z="0" />
+            </patch>
+        </primitive>
+        <primitive id="tentInnerPatch">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="0.5" y="0" z="0.5" />
+                <controlpoint x="0.5" y="1" z="0" />
+                <controlpoint x="0.5" y="0" z="-0.5" />
+            </patch>
+        </primitive>
+        <primitive id="tentOuterPatch">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="0.5" y="0" z="-0.5" />
+                <controlpoint x="0.5" y="1" z="0" />
+                <controlpoint x="0.5" y="0" z="0.5" />
+            </patch>
+        </primitive>
+        <primitive id="semicirclePatch">
+            <patch degree_u="1" parts_u="50" degree_v="3" parts_v="50">
+                <controlpoint x="0.75" y="0" z="0" />
+                <controlpoint x="0.75" y="0" z="1" />
+                <controlpoint x="-0.75" y="0" z="1" />
+                <controlpoint x="-0.75" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+            </patch>
+        </primitive>
+        <primitive id="barrelSidePatch">
+            <patch degree_u="2" parts_u="50" degree_v="3" parts_v="50">
+                <controlpoint x="0.75" y="-1" z="0" />
+                <controlpoint x="0.75" y="-1" z="1" />
+                <controlpoint x="-0.75" y="-1" z="1" />
+                <controlpoint x="-0.75" y="-1" z="0" />
+                <controlpoint x="1.125" y="0" z="0" />
+                <controlpoint x="1.125" y="0" z="1.5" />
+                <controlpoint x="-1.125" y="0" z="1.5" />
+                <controlpoint x="-1.125" y="0" z="0" />
+                <controlpoint x="0.75" y="1" z="0" />
+                <controlpoint x="0.75" y="1" z="1" />
+                <controlpoint x="-0.75" y="1" z="1" />
+                <controlpoint x="-0.75" y="1" z="0" />
             </patch>
         </primitive>
     </primitives>
@@ -251,7 +299,109 @@
             </materials>
             <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
-                <primitiveref id="spacestationBody" />
+                <!--<componentref id="rectangle" />-->
+                <!--<componentref id="tent" />-->
+                <!--<componentref id="circle" />-->
+                <componentref id="barrel" />
+            </children>
+        </component>
+        <component id="rectangle">
+            <transformation>
+                <scale x="40" y="40" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="tentInnerPatch" />
+                <primitiveref id="tentOuterPatch" />
+            </children>
+        </component>
+        <component id="circle">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="semicirclePatch" />
+                <componentref id="semicircleComplement" />
+            </children>
+        </component>
+        <component id="semicircleComplement">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="semicirclePatch" />
+            </children>
+        </component>
+        <component id="barrel">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="barrelSidePatch" />
+                <componentref id="barrelSideComplement" />
+                <componentref id="barrelTop" />
+                <componentref id="barrelBottom" /> 
+            </children>
+        </component>
+        <component id="barrelSideComplement">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="barrelSidePatch" />
+            </children>
+        </component>
+        <component id="barrelTop">
+            <transformation>
+                <translate x="0" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="circle" />
+            </children>
+        </component>
+        <component id="barrelBottom">
+            <transformation>
+                <translate x="0" y="-1" z="0" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="circle" />
             </children>
         </component>
     </components>
