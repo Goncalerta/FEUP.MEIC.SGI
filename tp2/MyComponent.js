@@ -13,7 +13,8 @@ export class MyComponent extends CGFobject {
         super(scene);
 
         this.id = id;
-        this.children = [];
+        this.componentChildren = [];
+        this.primitiveChildren = [];
         this.transformation = null;
         this.materials = [];
         this.currentMaterialIdx = 0; // Currently selected material, changes when pressing 'M'
@@ -21,6 +22,11 @@ export class MyComponent extends CGFobject {
         this.texture = 'none';
         this.lengthS = 1.0;
         this.lengthT = 1.0;
+
+        this.highlightable = false;
+        this.highlightedColor = null;
+        this.highlightedScale = null;
+        this.highlighted = false;
     }
 
     /**
@@ -78,18 +84,26 @@ export class MyComponent extends CGFobject {
     }
 
     /**
-     * Appends a new child to the component.
-     * @param child a component or primitive to append.
+     * Appends a new primitive child to the component.
+     * @param {CGFobject} child the primitive to append.
      */
-    addChild(child) {
-        this.children.push(child);
+    addPrimitiveChild(child) {
+        this.primitiveChildren.push(child);
+    }
+
+    /**
+     * Appends a new component child to the component.
+     * @param {MyComponent} child the component to append.
+     */
+    addComponentChild(child) {
+        this.componentChildren.push(child);
     }
 
     /**
      * Gets the current children of the component
      */
-    getChildren() {
-        return this.children;
+    getComponentChildren() {
+        return this.componentChildren;
     }
 
     /**
@@ -98,6 +112,34 @@ export class MyComponent extends CGFobject {
      */
     setTransformation(transformation) {
         this.transformation = transformation;
+    }
+
+    /**
+     * Sets the highlight properties of this component.
+     * @param {Float32Array} color the color of the highlight
+     * @param scale_h the scale factor in the extreme state of the pulsing
+     */
+    setHighlighting(color, scale_h) {
+        this.highlightable = true;
+        this.highlightedColor = color;
+        this.highlightedScale = scale_h;
+    }
+
+    /**
+     * Sets whether this component is highlighted or not.
+     * @param {boolean} highlighted whether this component is highlighted or not.
+     */
+    setHighlighted(highlighted) {
+        this.highlighted = highlighted;
+    }
+
+    /**
+     * Returns whether this component is highlightable, that is, if it has highlighting properties
+     * and at least one direct primitive child.
+     * @returns {boolean} whether this component is highlightable or not.
+     */
+    isHighlightable() {
+        return this.highlightable && this.primitiveChildren.length > 0;
     }
 
     /**
@@ -116,10 +158,26 @@ export class MyComponent extends CGFobject {
             this.scene.multMatrix(this.transformation);
         }
 
-        // Display all children
-        for (const child of this.children) {
+        // Display all component children
+        for (const child of this.componentChildren) {
             child.updateTexCoords(this.lengthS, this.lengthT);
             child.display();
+        }
+
+        // Activate highlight shader to display highlighted primitives
+        if (this.highlighted) {
+            // TODO activate shader
+        }
+        
+        // Display all direct primitive children
+        for (const child of this.primitiveChildren) {
+            child.updateTexCoords(this.lengthS, this.lengthT);
+            child.display();
+        }
+
+        // Return to normal shader
+        if (this.highlighted) {
+            // TODO deactivate shader
         }
 
         // Undo transformation if it was applied

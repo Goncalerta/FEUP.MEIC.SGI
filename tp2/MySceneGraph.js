@@ -1564,6 +1564,7 @@ export class MySceneGraph {
             const materialsIndex = nodeNames.indexOf('materials');
             const textureIndex = nodeNames.indexOf('texture');
             const childrenIndex = nodeNames.indexOf('children');
+            const highlightedIndex = nodeNames.indexOf('highlighted');
 
             // Transformations
             if (grandChildren[transformationIndex] == null) {
@@ -1734,7 +1735,7 @@ export class MySceneGraph {
                             continue;
                         }
 
-                        this.components[componentID].addChild(
+                        this.components[componentID].addComponentChild(
                             this.components[componentref]
                         );
                     } else if (child.nodeName == 'primitiveref') {
@@ -1748,7 +1749,7 @@ export class MySceneGraph {
                             continue;
                         }
 
-                        this.components[componentID].addChild(
+                        this.components[componentID].addPrimitiveChild(
                             this.primitives[primitiveref]
                         );
                     } else {
@@ -1760,6 +1761,28 @@ export class MySceneGraph {
 
                 if (this.components[componentID].children.length == 0) {
                     this.onXMLMinorError('no children defined for ' + componentID);
+                }
+            }
+
+            // Highlighted
+            // TODO a ordem tem de ser esta no xml ou e' opcional?
+            if (grandChildren[highlightedIndex] != null) {
+                // <highlighted r="ff" g="ff" b="ff" scale_h="ff" />
+                let highlightedError = false;
+                const color = this.parseColor(grandChildren[highlightedIndex], 'ambient', false);
+                if (!Array.isArray(color)) {
+                    highlightedError = true;
+                    this.onXMLError('unable to parse highlighted color ' + color + " for component " + componentID);
+                }
+                
+                const scale_h = this.reader.getFloat(grandChildren[highlightedIndex], 'scale_h', false);
+                if (scale_h == null) {
+                    highlightedError = true;
+                    this.onXMLError('unable to parse highlighted scale_h ' + scale_h + " for component " + componentID);
+                }
+
+                if (!highlightedError) {
+                    this.components[componentID].setHighlighting(color, scale_h);
                 }
             }
         }
@@ -1803,12 +1826,9 @@ export class MySceneGraph {
         visited[id] = true;
         recStack[id] = true;
 
-        for (const adjComponent of this.components[id].getChildren()) {
-            // if adj is not a primitive
-            if (typeof adjComponent.getChildren === 'function') {
-                if (this.dfsCycleDetection(adjComponent.getId(), visited, recStack)) {
-                    return true;
-                }
+        for (const adjComponent of this.components[id].getComponentChildren()) {
+            if (this.dfsCycleDetection(adjComponent.getId(), visited, recStack)) {
+                return true;
             }
         }
 
@@ -1888,7 +1908,7 @@ export class MySceneGraph {
      * @param {block element} node
      * @param {message to be displayed in case of error} messageError
      */
-    parseColor(node, messageError) {
+    parseColor(node, messageError, parseAlpha=true) {
         const color = [];
 
         // R
@@ -1919,16 +1939,20 @@ export class MySceneGraph {
         }
 
         // A
-        let a = this.reader.getFloat(node, 'a', false);
-        if (!(a != null && !isNaN(a) && a >= 0 && a <= 1)) {
-            a = 0;
-            this.onXMLError(
-                'unable to parse A component of the ' + messageError
-            );
+        if (parseAlpha) {
+            let a = this.reader.getFloat(node, 'a', false);
+            if (!(a != null && !isNaN(a) && a >= 0 && a <= 1)) {
+                a = 0;
+                this.onXMLError(
+                    'unable to parse A component of the ' + messageError
+                );
+            }
+
+            color.push(...[r, g, b, a]);
+        } else {
+            color.push(...[r, g, b]);
         }
-
-        color.push(...[r, g, b, a]);
-
+        
         return color;
     }
 

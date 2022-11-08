@@ -103,6 +103,19 @@ export class XMLscene extends CGFscene {
     }
 
     /**
+     * Updates the highlighted state of the given component.
+     * @param {MyComponent} component the component to update
+     * @param {String} checkboxVariableName the name of the variable that controls the checkbox state
+     */
+    updateHighlights(highlightableComponent, checkboxVariableName) {
+        if (this[checkboxVariableName]) {
+            highlightableComponent.setHighlighted(true);
+        } else {
+            highlightableComponent.setHighlighted(false);
+        }
+    }
+
+    /**
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
@@ -204,6 +217,7 @@ export class XMLscene extends CGFscene {
         this.initLights();
 
         // Interface controls and key bindings
+        // Cameras
         this.interface.gui
             .add(this, 'selectedView', this.graph.cameraIds)
             .name('Selected Camera')
@@ -211,6 +225,7 @@ export class XMLscene extends CGFscene {
                 this.setCamera(this.graph.cameras[this.selectedView])
             );
         let i = 0;
+        // Lights
         for (const lightId in this.graph.lights) {
             this.interface.gui
                 .add(this, 'light' + i)
@@ -218,7 +233,18 @@ export class XMLscene extends CGFscene {
                 .onChange(() => this.updateLights());
             i++;
         }
+        // Materials
         this.interface.onClick('KeyM', () => this.toggleMaterial());
+        // Highlights
+        i = 0;
+        for (const highlightableComponent of this.graph.getHighlightableComponents()) {
+            this['highlight' + i] = false;
+            this.interface.gui
+                .add(this, 'highlight' + i)
+                .name(highlightableComponent.id)
+                .onChange(() => this.updateHighlights(highlightableComponent, 'highlight' + i));
+            i++;
+        }
 
         this.sceneInited = true;
     }
