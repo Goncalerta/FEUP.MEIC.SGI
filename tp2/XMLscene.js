@@ -220,6 +220,11 @@ export class XMLscene extends CGFscene {
         }
         this.interface.onClick('KeyM', () => this.toggleMaterial());
 
+        // set the update call every 100ms
+        // zero to disable it
+        this.setUpdatePeriod(100);
+        this.startTime = null;
+
         this.sceneInited = true;
     }
 
@@ -337,5 +342,18 @@ export class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    update(time) {
+        if (this.sceneInited) {
+            if (this.startTime != null) {
+                this.startTime = time;
+            }
+            
+            // traverse scene graph and, for nodes having animation,
+            // compute the animation matrix
+            const deltaTime = time - this.startTime;
+            this.graph.computeAnimation(deltaTime);
+        }
     }
 }

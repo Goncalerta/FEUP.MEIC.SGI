@@ -7,6 +7,7 @@ import {MyTriangle} from './MyTriangle.js';
 import {MyComponent} from './MyComponent.js';
 import {MyPatch} from './MyPatch.js';
 import {CGFtexture} from '../lib/CGF.js';
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 
 const DEGREE_TO_RAD = Math.PI / 180;
 
@@ -1456,6 +1457,9 @@ export class MySceneGraph {
                 return error;
             }
         }
+
+        this.log('Parsed animations');
+        return null;
     }
 
     /**
@@ -1478,7 +1482,8 @@ export class MySceneGraph {
             return;
         }
 
-        const keyframes = [];
+        const animation = new MyKeyframeAnimation(this.scene, animationID);
+
         const keyframesNodes = keyframeanimNode.children;
         let last_inst = -1;
         for (let i = 0; keyframesNodes.length; i++) {
@@ -1496,12 +1501,27 @@ export class MySceneGraph {
             }
 
             last_inst = keyframeInstant;
+            const keyFrameTransformations = keyframesNodes[i].children;
+            // Creates a 4x4 identity matrix to which transformations will be applied
+            const transfMatrix = mat4.create();
 
-            // TODO parse transformations...
+            for (let j = 0; j < keyFrameTransformations.length; j++) {
+                // TODO check for order of transformations and number of transformations, and ask
+                const error = this.parseSingleTransformation(
+                    animationID,
+                    keyFrameTransformations[j],
+                    transfMatrix
+                );
+                if (error != null) {
+                    this.onXMLMinorError(error);
+                    break;
+                }
+            }
+            animation.addKeyframe(keyframeInstant, transfMatrix);
         }
 
         if (keyframes.length > 0) {
-            // TODO add keyframeanimation
+            this.animations[animationID] = animation;
         }
         // otherwise not, since its mandatory to have 1
     }
@@ -1564,6 +1584,7 @@ export class MySceneGraph {
             const materialsIndex = nodeNames.indexOf('materials');
             const textureIndex = nodeNames.indexOf('texture');
             const childrenIndex = nodeNames.indexOf('children');
+            const animationIndex = nodeNames.indexOf('animation');
 
             // Transformations
             if (grandChildren[transformationIndex] == null) {
@@ -1760,6 +1781,21 @@ export class MySceneGraph {
 
                 if (this.components[componentID].children.length == 0) {
                     this.onXMLMinorError('no children defined for ' + componentID);
+                }
+            }
+
+            // Animation
+            // optional
+            if (grandChildren[animationIndex] != null) {
+                const animationID = this.reader.getString(grandChildren[animationIndex], 'id', true);
+                if (animationID == null) {
+                    this.onXMLMinorError('no ID defined for animationID in ' + componentID);
+                } else {
+                    if (this.animations[animationID] == null) {
+                        this.onXMLMinorError('no animation with ID ' + animationID + ' defined');
+                    } else {
+                        this.components[componentID].setAnimation(this.animations[animationID]);
+                    }
                 }
             }
         }
@@ -1963,6 +1999,16 @@ export class MySceneGraph {
     displayScene() {
         if (this.components[this.idRoot] != null) {
             this.components[this.idRoot].display();
+        }
+    }
+
+    /**
+     * Computes the animation matrix for all the components recursively
+     * @param {double} deltaTime - Time since last update
+     */
+    computeAnimation(deltaTime) {
+        if (this.components[this.idRoot] != null) {
+            this.components[this.idRoot].computeAnimation(deltaTime);
         }
     }
 }
