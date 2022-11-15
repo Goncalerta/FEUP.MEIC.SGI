@@ -57,6 +57,19 @@ export class MySceneGraph {
     }
 
     /*
+     * Returns a list with all highlitable components in this scene graph.
+     */
+    getHighlightableComponents() {
+        let highlitableComponents = [];
+        for (let componentId of this.componentsIds) {
+            if (this.components[componentId].isHighlightable()) {
+                highlitableComponents.push(this.components[componentId]);
+            }
+        }
+        return highlitableComponents;
+    }
+
+    /*
      * Callback to be executed after successful reading
      */
     onXMLReady() {
@@ -1759,7 +1772,7 @@ export class MySceneGraph {
                     }
                 }
 
-                if (this.components[componentID].children.length == 0) {
+                if (!this.components[componentID].hasChildren()) {
                     this.onXMLMinorError('no children defined for ' + componentID);
                 }
             }
@@ -1769,7 +1782,7 @@ export class MySceneGraph {
             if (grandChildren[highlightedIndex] != null) {
                 // <highlighted r="ff" g="ff" b="ff" scale_h="ff" />
                 let highlightedError = false;
-                const color = this.parseColor(grandChildren[highlightedIndex], 'ambient', false);
+                const color = this.parseColor(grandChildren[highlightedIndex], 'highlighted color for component ' + componentID, false);
                 if (!Array.isArray(color)) {
                     highlightedError = true;
                     this.onXMLError('unable to parse highlighted color ' + color + " for component " + componentID);

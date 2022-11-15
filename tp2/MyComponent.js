@@ -107,6 +107,13 @@ export class MyComponent extends CGFobject {
     }
 
     /**
+     * Returns whether this component has children or not.
+     */
+    hasChildren() {
+        return this.componentChildren.length > 0 || this.primitiveChildren.length > 0
+    }
+
+    /**
      * Sets the transformation of this component.
      * @param transformation the transformation to set.
      */

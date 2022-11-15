@@ -289,7 +289,8 @@
             </patch>
         </primitive>
     </primitives>
-
+    <animations>
+    </animations>
     <components>
         <component id="root">
             <transformation>
@@ -366,6 +367,7 @@
                 <componentref id="barrelTop" />
                 <componentref id="barrelBottom" /> 
             </children>
+            <highlighted r="1" g="1" b="1" scale_h="5" />
         </component>
         <component id="barrelSideComplement">
             <transformation>

@@ -24,7 +24,7 @@ export class XMLscene extends CGFscene {
     init(application) {
         super.init(application);
 
-        // interface letiables
+        // interface variables
         this.selectedView = 0;
         this.light0 = false;
         this.light1 = false;
@@ -224,10 +224,11 @@ export class XMLscene extends CGFscene {
             .onChange(() =>
                 this.setCamera(this.graph.cameras[this.selectedView])
             );
-        let i = 0;
         // Lights
+        let i = 0;
+        const lightsFolder = this.interface.gui.addFolder('Lights');
         for (const lightId in this.graph.lights) {
-            this.interface.gui
+            lightsFolder
                 .add(this, 'light' + i)
                 .name(lightId)
                 .onChange(() => this.updateLights());
@@ -237,9 +238,10 @@ export class XMLscene extends CGFscene {
         this.interface.onClick('KeyM', () => this.toggleMaterial());
         // Highlights
         i = 0;
+        const highlightsFolder = this.interface.gui.addFolder('Highlights');
         for (const highlightableComponent of this.graph.getHighlightableComponents()) {
             this['highlight' + i] = false;
-            this.interface.gui
+            highlightsFolder
                 .add(this, 'highlight' + i)
                 .name(highlightableComponent.id)
                 .onChange(() => this.updateHighlights(highlightableComponent, 'highlight' + i));
