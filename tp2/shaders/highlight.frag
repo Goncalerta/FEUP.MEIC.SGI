@@ -4,6 +4,7 @@ precision highp float;
 
 varying vec4 coords;
 varying vec4 normal;
+uniform float timeFactor;
 
 void main() {
 	if (coords.x > 0.0)

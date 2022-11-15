@@ -44,6 +44,8 @@ export class XMLscene extends CGFscene {
 
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
         this.isHighlightActive = false;
+        this.highlightColor = [0.0, 0.0, 0.0, 1.0];
+        this.highlightScale = 1.0;
 
         this.sceneInited = false;
 
@@ -261,13 +263,15 @@ export class XMLscene extends CGFscene {
      * Activates or deactivates the highlight shader.
      * @param {Boolean} activateHighlight Wheter to activate or deactivate the highlight
      */
-    toggleHighlightShader(activateHighlight) {
+    toggleHighlightShader(activateHighlight, highlightColor, highlightScale) {
         // For efficiency purposes this function is a no-op if the the active state
         // is the same as the one that is being requested.
         if (activateHighlight != this.isHighlightActive) {
             this.isHighlightActive = activateHighlight;
             if (activateHighlight) {
                 this.setActiveShader(this.highlightShader);
+                this.highlightColor = highlightColor;
+                this.highlightScale = highlightScale;
             } else {
                 this.setActiveShader(this.defaultShader);
             }
@@ -396,6 +400,12 @@ export class XMLscene extends CGFscene {
             if (this.startTime === null) {
                 this.startTime = t;
             }
+
+            this.highlightShader.setUniformsValues({ 
+                timeFactor: Math.abs(Math.cos(t)), 
+                highlightColor: this.highlightColor, 
+                highlightScale: this.highlightScale
+            });
 
             // traverse scene graph and, for nodes having animation,
             // compute the animation matrix

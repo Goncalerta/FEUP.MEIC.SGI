@@ -167,53 +167,44 @@ export class MyComponent extends CGFobject {
             this.scene.pushAppearance(currentMaterial, this.texture);
         }
 
+        // Save current transformation matrix state if this component has transformations
+        if (this.animation != null || this.transformation != null) {
+            this.scene.pushMatrix();
+        }
+
         // Apply transformation if there is one
         if (this.transformation != null) {
-            this.scene.pushMatrix();
             this.scene.multMatrix(this.transformation);
         }
 
-<<<<<<< HEAD
-        // Display all component children
-        for (const child of this.componentChildren) {
-            child.updateTexCoords(this.lengthS, this.lengthT);
-            child.display();
-        }
-
-        // Activate or deactivate highlight shader to display highlighted primitives.
-        // For efficiency purposes, the shader does not change if the component does
-        // not have any primitive children.
-        if (this.primitiveChildren.length > 0) {
-            this.scene.toggleHighlightShader(this.highlighted);
-        }
-
-        // Display all direct primitive children
-        for (const child of this.primitiveChildren) {
-            child.updateTexCoords(this.lengthS, this.lengthT);
-            child.display();
-=======
         // Apply animation if there is one
         if (this.animation != null) {
-            this.scene.pushMatrix();
             this.animation.apply();
         }
 
-        if (this.animation == null || (this.animation != null && this.animation.isVisible())) {
-            // Display all children
-            for (const child of this.children) {
+        if (this.animation == null || this.animation.isVisible()) {
+            // Display all component children
+            for (const child of this.componentChildren) {
+                child.updateTexCoords(this.lengthS, this.lengthT);
+                child.display();
+            }
+
+            // Activate or deactivate highlight shader to display highlighted primitives.
+            // For efficiency purposes, the shader does not change if the component does
+            // not have any primitive children.
+            if (this.primitiveChildren.length > 0) {
+                this.scene.toggleHighlightShader(this.highlighted);
+            }
+
+            // Display all direct primitive children
+            for (const child of this.primitiveChildren) {
                 child.updateTexCoords(this.lengthS, this.lengthT);
                 child.display();
             }
         }
-
-        // Pop animation matrices
-        if (this.animation != null) {
-            this.scene.popMatrix();
->>>>>>> e2fe394d28c76926df2e339edcd4885135a744e4
-        }
-
+        
         // Undo transformation if it was applied
-        if (this.transformation != null) {
+        if (this.animation != null || this.transformation != null) {
             this.scene.popMatrix();
         }
 
@@ -236,11 +227,8 @@ export class MyComponent extends CGFobject {
             this.animation.update(t);
         }
 
-        for (const child of this.children) {
-            // if adj is not a primitive
-            if (typeof child.getChildren === 'function') {
-                child.update(t);
-            }
+        for (const child of this.componentChildren) {
+            child.update(t);
         }
     }
 }
