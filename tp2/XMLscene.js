@@ -1,6 +1,4 @@
-import {CGFscene, CGFtexture} from '../lib/CGF.js';
-import {CGFaxis, CGFcamera} from '../lib/CGF.js';
-import {CGFappearance} from '../lib/CGF.js';
+import {CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance} from '../lib/CGF.js';
 import {subtractVectors} from './utils.js';
 
 /**
@@ -243,21 +241,32 @@ export class XMLscene extends CGFscene {
         i = 0;
         const highlightsFolder = this.interface.gui.addFolder('Highlights');
         for (const highlightableComponent of this.graph.getHighlightableComponents()) {
-            this['highlight' + i] = false;
+            const checkboxVariableName = 'highlight' + i;
+            this[checkboxVariableName] = false;
             highlightsFolder
-                .add(this, 'highlight' + i)
+                .add(this, checkboxVariableName)
                 .name(highlightableComponent.id)
-                .onChange(() => this.updateHighlights(highlightableComponent, 'highlight' + i));
+                .onChange(() => this.updateHighlights(highlightableComponent, checkboxVariableName));
             i++;
         }
 
         this.sceneInited = true;
     }
 
+    /**
+     * Activates or deactivates the highlight shader.
+     * @param {Boolean} activateHighlight Wheter to activate or deactivate the highlight
+     */
     toggleHighlightShader(activateHighlight) {
-        // For efficiency purpo
+        // For efficiency purposes this function is a no-op if the the active state
+        // is the same as the one that is being requested.
         if (activateHighlight != this.isHighlightActive) {
-            this.setActiveShader(this.testShaders[this.selectedExampleShader]);
+            this.isHighlightActive = activateHighlight;
+            if (activateHighlight) {
+                this.setActiveShader(this.highlightShader);
+            } else {
+                this.setActiveShader(this.defaultShader);
+            }
         }
     }
 
@@ -358,6 +367,7 @@ export class XMLscene extends CGFscene {
         this.applyViewMatrix();
 
         this.pushMatrix();
+        this.toggleHighlightShader(false);
         this.axis.display();
 
         for (let i = 0; i < this.lights.length; i++) {
