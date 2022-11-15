@@ -44,6 +44,9 @@ export class XMLscene extends CGFscene {
             specular: [0.0, 0.0, 0.0, 1.0],
         };
 
+        this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
+        this.isHighlightActive = false;
+
         this.sceneInited = false;
 
         this.initCameras();
@@ -249,6 +252,13 @@ export class XMLscene extends CGFscene {
         }
 
         this.sceneInited = true;
+    }
+
+    toggleHighlightShader(activateHighlight) {
+        // For efficiency purpo
+        if (activateHighlight != this.isHighlightActive) {
+            this.setActiveShader(this.testShaders[this.selectedExampleShader]);
+        }
     }
 
     /**

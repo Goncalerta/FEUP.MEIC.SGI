@@ -171,20 +171,17 @@ export class MyComponent extends CGFobject {
             child.display();
         }
 
-        // Activate highlight shader to display highlighted primitives
-        if (this.highlighted) {
-            // TODO activate shader
+        // Activate or deactivate highlight shader to display highlighted primitives.
+        // For efficiency purposes, the shader does not change if the component does
+        // not have any primitive children.
+        if (this.primitiveChildren.length > 0) {
+            this.scene.toggleHighlightShader(this.highlighted);
         }
-        
+
         // Display all direct primitive children
         for (const child of this.primitiveChildren) {
             child.updateTexCoords(this.lengthS, this.lengthT);
             child.display();
-        }
-
-        // Return to normal shader
-        if (this.highlighted) {
-            // TODO deactivate shader
         }
 
         // Undo transformation if it was applied
