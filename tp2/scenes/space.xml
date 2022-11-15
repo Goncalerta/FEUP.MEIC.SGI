@@ -244,18 +244,48 @@
     </primitives>
 
     <animations>
-        <keyframeanim id="earthRotation">
-            <keyframe instant="946684800"> <!-- epoch == 1/1/2000-->
+        <keyframeanim id="simpleRotation">
+            <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="32503680000"> <!-- epoch == 1/1/3000-->
+            <keyframe instant="400000">
                 <translation x="0" y="0" z="0" />
-                <!-- <rotation axis="z" angle="131487480" /> --> <!-- num_days(365243) * 360-->
-                <rotation axis="z" angle="13148748000" /> <!-- correct * 100 so that the rotation is clearly visible -->
+                <rotation axis="z" angle="360000" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="upAndDownSpaceStation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="-0.5" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
@@ -293,6 +323,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="simpleRotation" />
         </component>
         <component id="earth">
             <transformation>
@@ -307,7 +338,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <animation id="earthRotation" />
+            <animation id="simpleRotation" />
         </component>
         <component id="moon">
             <transformation>
@@ -323,6 +354,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="simpleRotation" />
         </component>
 
         <!-- ============ -->
@@ -350,6 +382,7 @@
                 <componentref id="spacestationArm5" />
                 <componentref id="spacestationArm6" />
             </children>
+            <animation id="simpleRotation" />
         </component>
 
         <!-- Space station torus component-->
@@ -512,6 +545,7 @@
                 <componentref id="spacestationMainMirrorSupport1" />
                 <componentref id="spacestationMainMirrorSupport2" />
             </children>
+            <animation id="upAndDownSpaceStation" />
         </component>
         <component id="spacestationMainMirrorPanel">
             <transformation>

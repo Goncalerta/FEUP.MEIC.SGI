@@ -130,10 +130,12 @@ export class MyComponent extends CGFobject {
             this.animation.apply();
         }
 
-        // Display all children
-        for (const child of this.children) {
-            child.updateTexCoords(this.lengthS, this.lengthT);
-            child.display();
+        if (this.animation == null || (this.animation != null && this.animation.isVisible())) {
+            // Display all children
+            for (const child of this.children) {
+                child.updateTexCoords(this.lengthS, this.lengthT);
+                child.display();
+            }
         }
 
         // Pop animation matrices

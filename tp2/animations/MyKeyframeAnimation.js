@@ -11,31 +11,53 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         this.matrix = mat4.create();
         this.keyFrames = [];
+        this.elapsedTime = null;
     }
 
+    /**
+     * Checks if the animation has already started (is visible).
+     */
+    isVisible() {
+        return this.elapsedTime != null && this.elapsedTime > this.keyFrames[0].getInstant();
+    }
+
+    /**
+     * Adds a keyframe to the animation.
+     * @param {MyKeyframe} keyFrame - The keyframe to add.
+     */
     addKeyframe(keyFrame) {
         this.keyFrames.push(keyFrame);
     }
 
+    /**
+     * Gets the keyFrames
+     */
     getKeyFrames() {
         return this.keyFrames;
     }
 
+    /**
+     * Applies the animation.
+     */
     apply() {
         this.scene.multMatrix(this.matrix);
     }
 
+    /**
+     * Updates the animation.
+     * @param {number} t - Current time in milliseconds.
+     */
     update(t) {
-        this.time = t;
+        this.elapsedTime = t - this.scene.startTime;
 
-        if (this.time > this.keyFrames[this.keyFrames.length - 1].getInstant()) {
-            this.time = this.keyFrames[this.keyFrames.length - 1].getInstant();
+        if (this.elapsedTime > this.keyFrames[this.keyFrames.length - 1].getInstant()) {
+            this.elapsedTime = this.keyFrames[this.keyFrames.length - 1].getInstant();
         }
 
         let keyFrame = this.keyFrames[0];
         let i = 1;
         for (; i < this.keyFrames.length; i++) {
-            if (this.time < this.keyFrames[i].getInstant()) {
+            if (this.elapsedTime < this.keyFrames[i].getInstant()) {
                 break;
             }
             keyFrame = this.keyFrames[i];
@@ -44,7 +66,7 @@ export class MyKeyframeAnimation extends MyAnimation {
         if (i == this.keyFrames.length) {
             this.matrix = keyFrame.calculateMatrix();
         } else {
-            const ratio = (this.time - keyFrame.getInstant()) / (this.keyFrames[i].getInstant() - keyFrame.getInstant());
+            const ratio = (this.elapsedTime - keyFrame.getInstant()) / (this.keyFrames[i].getInstant() - keyFrame.getInstant());
 
             const interpolatedKeyFrame = keyFrame.interpolate(this.keyFrames[i], ratio);
             this.matrix = interpolatedKeyFrame.calculateMatrix();

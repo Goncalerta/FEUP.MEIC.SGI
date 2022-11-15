@@ -11,14 +11,20 @@ export class MyAnimation {
 
         this.scene = scene;
         this.id = id;
-        this.time = 0; // TODO component should be invisible until the first keyframe instant
     }
 
+    /**
+     * Updates the animation.
+     * @param {number} t - Current time in milliseconds.
+     */
     update(t) {
         throw new Error("Method 'update(t)' must be implemented.");
-    };
+    }
 
+    /**
+     * Applies the animation.
+     */
     apply() {
         throw new Error("Method 'apply()' must be implemented.");
-    };
+    }
 }

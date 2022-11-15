@@ -22,6 +22,10 @@ export class MyKeyframe {
         this.scaling = scaling;
     }
 
+    /**
+     * Gets the instant of the keyframe.
+     * @returns {number} Instant of the keyframe
+     */
     getInstant() {
         return this.instant;
     }
