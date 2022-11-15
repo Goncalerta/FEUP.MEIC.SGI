@@ -101,6 +101,14 @@ export class MyComponent extends CGFobject {
     }
 
     /**
+     * Sets the animation of this component.
+     * @param animation the animation to set.
+     */
+    setAnimation(animation) {
+        this.animation = animation;
+    }
+
+    /**
      * Displays this component in the scene.
      */
     display() {
@@ -116,10 +124,23 @@ export class MyComponent extends CGFobject {
             this.scene.multMatrix(this.transformation);
         }
 
-        // Display all children
-        for (const child of this.children) {
-            child.updateTexCoords(this.lengthS, this.lengthT);
-            child.display();
+        // Apply animation if there is one
+        if (this.animation != null) {
+            this.scene.pushMatrix();
+            this.animation.apply();
+        }
+
+        if (this.animation == null || (this.animation != null && this.animation.isVisible())) {
+            // Display all children
+            for (const child of this.children) {
+                child.updateTexCoords(this.lengthS, this.lengthT);
+                child.display();
+            }
+        }
+
+        // Pop animation matrices
+        if (this.animation != null) {
+            this.scene.popMatrix();
         }
 
         // Undo transformation if it was applied
@@ -138,6 +159,19 @@ export class MyComponent extends CGFobject {
         if (this.texture == 'inherit') {
             this.lengthS = parentLengthS;
             this.lengthT = parentLengthT;
+        }
+    }
+
+    update(t) {
+        if (this.animation != null) {
+            this.animation.update(t);
+        }
+
+        for (const child of this.children) {
+            // if adj is not a primitive
+            if (typeof child.getChildren === 'function') {
+                child.update(t);
+            }
         }
     }
 }

@@ -7,8 +7,12 @@ import {MyTriangle} from './MyTriangle.js';
 import {MyComponent} from './MyComponent.js';
 import {MyPatch} from './MyPatch.js';
 import {CGFtexture} from '../lib/CGF.js';
+import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
+import { MyTransformation, Transformations } from './animations/MyTransformation.js';
+import { MyKeyframe } from './animations/MyKeyframe.js';
 
 const DEGREE_TO_RAD = Math.PI / 180;
+const SECONDS_TO_MILLISECONDS = 1000;
 
 // Order of the groups in the XML document.
 const SCENE_INDEX = 0;
@@ -889,6 +893,33 @@ export class MySceneGraph {
         return null;
     }
 
+    parseRotation(transformationNode, transformationID) {
+        const axis = this.reader.getString(transformationNode, 'axis', false);
+        let axisVector;
+        if (axis == 'x') {
+            axisVector = [1, 0, 0];
+        } else if (axis == 'y') {
+            axisVector = [0, 1, 0];
+        } else if (axis == 'z') {
+            axisVector = [0, 0, 1];
+        } else {
+            this.onXMLMinorError(
+                'Invalid axis \'' + axis + '\' for rotate transformation for ID ' + transformationID
+            );
+            return null;
+        }
+
+        const angle = this.reader.getFloat(transformationNode, 'angle', false);
+        if (!(angle != null && !isNaN(angle))) {
+            this.onXMLMinorError(
+                'unable to parse angle of the rotation for ID = ' + transformationID
+            );
+            return null;
+        }
+
+        return {angle: angle, axisVector: axisVector, axis: axis};
+    }
+
     /**
      * Parses a single translation/rotation/scaling block.
      * @param transformationID the ID of the transformation, for debugging messages.
@@ -932,34 +963,16 @@ export class MySceneGraph {
             mat4.scale(transfMatrix, transfMatrix, coordinates);
             break;
         case 'rotate':
-            const axis = this.reader.getString(transformationNode, 'axis', false);
-            let axisVector;
-            if (axis == 'x') {
-                axisVector = [1, 0, 0];
-            } else if (axis == 'y') {
-                axisVector = [0, 1, 0];
-            } else if (axis == 'z') {
-                axisVector = [0, 0, 1];
-            } else {
-                this.onXMLMinorError(
-                    'Invalid axis \'' + axis + '\' for rotate transformation for ID ' + transformationID
-                );
-                return null;
-            }
-
-            const angle = this.reader.getFloat(transformationNode, 'angle', false);
-            if (!(angle != null && !isNaN(angle))) {
-                this.onXMLMinorError(
-                    'unable to parse angle of the rotation for ID = ' + transformationID
-                );
+            const angleAndAxis = this.parseRotation(transformationNode, transformationID);
+            if (angleAndAxis == null) {
                 return null;
             }
 
             mat4.rotate(
                 transfMatrix,
                 transfMatrix,
-                angle * DEGREE_TO_RAD,
-                axisVector
+                angleAndAxis.angle * DEGREE_TO_RAD,
+                angleAndAxis.axisVector
             );
             break;
         default:
@@ -1451,11 +1464,15 @@ export class MySceneGraph {
                 );
                 continue;
             }
-
+            
+            let error;
             if ((error = this.parseAnimation(keyframeAnims[i])) != null) {
                 return error;
             }
         }
+
+        this.log('Parsed animations');
+        return null;
     }
 
     /**
@@ -1467,7 +1484,7 @@ export class MySceneGraph {
         const animationID = this.reader.getString(keyframeanimNode, 'id', false);
         if (animationID == null) {
             this.onXMLMinorError('no ID defined for animation');
-            return;
+            return null;
         }
 
         // Checks for repeated IDs.
@@ -1475,19 +1492,23 @@ export class MySceneGraph {
             this.onXMLMinorError(
                 'ID must be unique for each animation (conflict: ID = ' + animationID + ')'
             );
-            return;
+            return null;
         }
 
-        const keyframes = [];
+        const animation = new MyKeyframeAnimation(this.scene, animationID);
+
         const keyframesNodes = keyframeanimNode.children;
         let last_inst = -1;
-        for (let i = 0; keyframesNodes.length; i++) {
+        for (let i = 0; i < keyframesNodes.length; i++) {
             // Get instant of the current keyframe.
-            const keyframeInstant = this.reader.getString(keyframesNodes[i], 'instant', false);
+            let keyframeInstant = this.reader.getFloat(keyframesNodes[i], 'instant', false);
             if (keyframeInstant == null) {
                 this.onXMLMinorError('no instant defined for keyframe');
                 continue;
             }
+
+            // convert seconds to milliseconds
+            keyframeInstant *= SECONDS_TO_MILLISECONDS;
 
             // if instant order is not increasing
             if (keyframeInstant <= last_inst) {
@@ -1496,14 +1517,80 @@ export class MySceneGraph {
             }
 
             last_inst = keyframeInstant;
+            const keyFrameTransformations = keyframesNodes[i].children;
 
-            // TODO parse transformations...
+            if (keyFrameTransformations.length != 5) {
+                this.onXMLMinorError('keyframe must have 5 transformations: translation, rotation-z, rotation-y, rotation-x, scaling');
+                continue;
+            }
+
+            // translation
+            const translation = this.parseCoordinates3D(keyFrameTransformations[0], 'translation for animation ' + animationID);
+            if (!Array.isArray(translation)) {
+                this.onXMLMinorError(
+                    'unable to parse translation for animation ' + animationID
+                );
+                return null;
+            }
+            const transfTranslation = new MyTransformation(Transformations.Translation, translation);
+
+            // rotation z
+            const angleAndAxisZ = this.parseRotation(keyFrameTransformations[1], 'rotation for animation ' + animationID);
+            if (angleAndAxisZ == null) {
+                this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
+                return null;
+            }
+            if (angleAndAxisZ.axis != 'z') {
+                this.onXMLMinorError('rotation for animation ' + animationID + ' must be around z axis');
+                continue;
+            }
+            const transfRotationZ = new MyTransformation(Transformations.RotationZ, [angleAndAxisZ.angle]);
+
+            // rotation y
+            const angleAndAxisY = this.parseRotation(keyFrameTransformations[2], 'rotation for animation ' + animationID);
+            if (angleAndAxisY == null) {
+                this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
+                return null;
+            }
+            if (angleAndAxisY.axis != 'y') {
+                this.onXMLMinorError('rotation for animation ' + animationID + ' must be around y axis');
+                continue;
+            }
+            const transfRotationY = new MyTransformation(Transformations.RotationY, [angleAndAxisY.angle]);
+
+            // rotation x
+            const angleAndAxisX = this.parseRotation(keyFrameTransformations[3], 'rotation for animation ' + animationID);
+            if (angleAndAxisX == null) {
+                this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
+                return null;
+            }
+            if (angleAndAxisX.axis != 'x') {
+                this.onXMLMinorError('rotation for animation ' + animationID + ' must be around x axis');
+                continue;
+            }
+            const transfRotationX = new MyTransformation(Transformations.RotationX, [angleAndAxisX.angle]);
+
+            // scaling
+            const scaling = this.parseCoordinates3D(keyFrameTransformations[4], 'scaling for animation ' + animationID);
+            if (!Array.isArray(scaling)) {
+                this.onXMLMinorError(
+                    'unable to parse scaling for animation ' + animationID
+                );
+                return null;
+            }
+            const transfScaling = new MyTransformation(Transformations.Scaling, scaling);
+
+            const keyframe = new MyKeyframe(keyframeInstant, transfTranslation, transfRotationZ, transfRotationY, transfRotationX, transfScaling);
+
+            animation.addKeyframe(keyframe);
         }
 
-        if (keyframes.length > 0) {
-            // TODO add keyframeanimation
+        if (animation.getKeyFrames().length > 0) {
+            this.animations[animationID] = animation;
         }
         // otherwise not, since its mandatory to have 1
+
+        return null;
     }
 
     /**
@@ -1564,6 +1651,7 @@ export class MySceneGraph {
             const materialsIndex = nodeNames.indexOf('materials');
             const textureIndex = nodeNames.indexOf('texture');
             const childrenIndex = nodeNames.indexOf('children');
+            const animationIndex = nodeNames.indexOf('animation');
 
             // Transformations
             if (grandChildren[transformationIndex] == null) {
@@ -1760,6 +1848,21 @@ export class MySceneGraph {
 
                 if (this.components[componentID].children.length == 0) {
                     this.onXMLMinorError('no children defined for ' + componentID);
+                }
+            }
+
+            // Animation
+            // optional
+            if (grandChildren[animationIndex] != null) {
+                const animationID = this.reader.getString(grandChildren[animationIndex], 'id', true);
+                if (animationID == null) {
+                    this.onXMLMinorError('no ID defined for animationID in ' + componentID);
+                } else {
+                    if (this.animations[animationID] == null) {
+                        this.onXMLMinorError('no animation with ID ' + animationID + ' defined');
+                    } else {
+                        this.components[componentID].setAnimation(this.animations[animationID]);
+                    }
                 }
             }
         }
@@ -1963,6 +2066,16 @@ export class MySceneGraph {
     displayScene() {
         if (this.components[this.idRoot] != null) {
             this.components[this.idRoot].display();
+        }
+    }
+
+    /**
+     * Updates the animation matrix for all the components recursively
+     * @param {double} t - Current time
+     */
+    update(t) {
+        if (this.components[this.idRoot] != null) {
+            this.components[this.idRoot].update(t);
         }
     }
 }

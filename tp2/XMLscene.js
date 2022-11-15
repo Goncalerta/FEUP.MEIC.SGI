@@ -56,7 +56,11 @@ export class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
+
+        // set the update call every 100ms
+        // zero to disable it
         this.setUpdatePeriod(100);
+        this.startTime = null;
     }
 
     /**
@@ -337,5 +341,17 @@ export class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+    }
+
+    update(t) {
+        if (this.sceneInited) {
+            if (this.startTime === null) {
+                this.startTime = t;
+            }
+
+            // traverse scene graph and, for nodes having animation,
+            // compute the animation matrix
+            this.graph.update(t);
+        }
     }
 }
