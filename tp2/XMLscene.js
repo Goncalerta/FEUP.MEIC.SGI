@@ -401,9 +401,9 @@ export class XMLscene extends CGFscene {
                 this.startTime = t;
             }
 
-            this.highlightShader.setUniformsValues({ 
-                timeFactor: Math.abs(Math.cos(t)), 
-                highlightColor: this.highlightColor, 
+            this.highlightShader.setUniformsValues({
+                timeFactor: Math.cos(t*0.0035)/2 + 0.5, 
+                highlightColor: this.highlightColor,
                 highlightScale: this.highlightScale
             });
 

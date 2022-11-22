@@ -367,7 +367,7 @@
                 <componentref id="barrelTop" />
                 <componentref id="barrelBottom" /> 
             </children>
-            <highlighted r="1" g="1" b="1" scale_h="1" />
+            <highlighted r="1" g="0" b="0.5" scale_h="1" />
         </component>
         <component id="barrelSideComplement">
             <transformation>
