@@ -102,6 +102,9 @@
         <texture id="cubemapNegativeYTexture" file="scenes/images/space/stars/ny.jpg" />
         <texture id="cubemapPositiveZTexture" file="scenes/images/space/stars/pz.jpg" />
         <texture id="cubemapNegativeZTexture" file="scenes/images/space/stars/nz.jpg" />
+
+        <texture id="woodBarrelSideTexture" file="scenes/images/space/Wood_Barrel_Side_001_basecolor.jpg" />
+        <texture id="woodBarrelTopBotTexture" file="scenes/images/space/Wood_Barrel_Top_001_basecolor.jpg" />
     </textures>
 
     <materials>
@@ -497,7 +500,7 @@
                 <translate x="15" y="5" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="reflectiveMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1203,10 +1206,21 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="barrelSidePatch" />
+                <componentref id="barrelSidePatchComponent" />
                 <componentref id="barrelSideComplement" />
                 <componentref id="barrelTop" />
                 <componentref id="barrelBottom" /> 
+            </children>
+        </component>
+        <component id="barrelSidePatchComponent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodBarrelSideTexture" />
+            <children>
+                <primitiveref id="barrelSidePatch" />
             </children>
         </component>
         <component id="barrelSideComplement">
@@ -1216,7 +1230,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelSideTexture" />
             <children>
                 <primitiveref id="barrelSidePatch" />
             </children>
@@ -1228,7 +1242,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelTopBotTexture" />
             <children>
                 <componentref id="circle" />
             </children>
@@ -1241,7 +1255,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelTopBotTexture" />
             <children>
                 <componentref id="circle" />
             </children>
