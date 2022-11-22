@@ -18,7 +18,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * Checks if the animation has already started (is visible).
      */
     isVisible() {
-        return this.elapsedTime != null && this.elapsedTime > this.keyFrames[0].getInstant();
+        return this.elapsedTime != null && this.elapsedTime >= this.keyFrames[0].getInstant();
     }
 
     /**
@@ -65,6 +65,7 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         if (i == this.keyFrames.length) {
             this.matrix = keyFrame.calculateMatrix();
+            console.log("last keyframe for " + this.id);
         } else {
             const ratio = (this.elapsedTime - keyFrame.getInstant()) / (this.keyFrames[i].getInstant() - keyFrame.getInstant());
 

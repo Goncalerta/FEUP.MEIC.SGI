@@ -1534,12 +1534,12 @@ export class MySceneGraph {
 
             if (keyFrameTransformations.length != 5) {
                 this.onXMLMinorError('keyframe must have 5 transformations: translation, rotation-z, rotation-y, rotation-x, scaling');
-                continue;
+                return null;
             }
 
             // translation
             const translation = this.parseCoordinates3D(keyFrameTransformations[0], 'translation for animation ' + animationID);
-            if (!Array.isArray(translation)) {
+            if (!Array.isArray(translation) || keyFrameTransformations[0].nodeName != 'translation') {
                 this.onXMLMinorError(
                     'unable to parse translation for animation ' + animationID
                 );
@@ -1549,43 +1549,43 @@ export class MySceneGraph {
 
             // rotation z
             const angleAndAxisZ = this.parseRotation(keyFrameTransformations[1], 'rotation for animation ' + animationID);
-            if (angleAndAxisZ == null) {
+            if (angleAndAxisZ == null || keyFrameTransformations[1].nodeName != 'rotation') {
                 this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
                 return null;
             }
             if (angleAndAxisZ.axis != 'z') {
                 this.onXMLMinorError('rotation for animation ' + animationID + ' must be around z axis');
-                continue;
+                return null;
             }
             const transfRotationZ = new MyTransformation(Transformations.RotationZ, [angleAndAxisZ.angle]);
 
             // rotation y
             const angleAndAxisY = this.parseRotation(keyFrameTransformations[2], 'rotation for animation ' + animationID);
-            if (angleAndAxisY == null) {
+            if (angleAndAxisY == null || keyFrameTransformations[2].nodeName != 'rotation') {
                 this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
                 return null;
             }
             if (angleAndAxisY.axis != 'y') {
                 this.onXMLMinorError('rotation for animation ' + animationID + ' must be around y axis');
-                continue;
+                return null;
             }
             const transfRotationY = new MyTransformation(Transformations.RotationY, [angleAndAxisY.angle]);
 
             // rotation x
             const angleAndAxisX = this.parseRotation(keyFrameTransformations[3], 'rotation for animation ' + animationID);
-            if (angleAndAxisX == null) {
+            if (angleAndAxisX == null || keyFrameTransformations[3].nodeName != 'rotation') {
                 this.onXMLMinorError('unable to parse rotation for animation ' + animationID);
                 return null;
             }
             if (angleAndAxisX.axis != 'x') {
                 this.onXMLMinorError('rotation for animation ' + animationID + ' must be around x axis');
-                continue;
+                return null;
             }
             const transfRotationX = new MyTransformation(Transformations.RotationX, [angleAndAxisX.angle]);
 
             // scaling
             const scaling = this.parseCoordinates3D(keyFrameTransformations[4], 'scaling for animation ' + animationID);
-            if (!Array.isArray(scaling)) {
+            if (!Array.isArray(scaling) || keyFrameTransformations[4].nodeName != 'scale') {
                 this.onXMLMinorError(
                     'unable to parse scaling for animation ' + animationID
                 );
@@ -1600,6 +1600,8 @@ export class MySceneGraph {
 
         if (animation.getKeyFrames().length > 0) {
             this.animations[animationID] = animation;
+        } else {
+            this.onXMLMinorError('animation ' + animationID + ' has no valid keyframes');
         }
         // otherwise not, since its mandatory to have 1
 
