@@ -18,7 +18,7 @@ export class MyKeyframeAnimation extends MyAnimation {
      * Checks if the animation has already started (is visible).
      */
     isVisible() {
-        return this.elapsedTime != null && this.elapsedTime > this.keyFrames[0].getInstant();
+        return this.elapsedTime != null && this.elapsedTime >= this.keyFrames[0].getInstant();
     }
 
     /**

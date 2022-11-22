@@ -102,6 +102,9 @@
         <texture id="cubemapNegativeYTexture" file="scenes/images/space/stars/ny.jpg" />
         <texture id="cubemapPositiveZTexture" file="scenes/images/space/stars/pz.jpg" />
         <texture id="cubemapNegativeZTexture" file="scenes/images/space/stars/nz.jpg" />
+
+        <texture id="woodBarrelSideTexture" file="scenes/images/space/Wood_Barrel_Side_001_basecolor.jpg" />
+        <texture id="woodBarrelTopBotTexture" file="scenes/images/space/Wood_Barrel_Top_001_basecolor.jpg" />
     </textures>
 
     <materials>
@@ -320,19 +323,53 @@
             </keyframe>
         </keyframeanim>
 
-        <keyframeanim id="barrelOrbitAnim">
+        <keyframeanim id="barrelAnim">
             <keyframe instant="0">
-                <translation x="15" y="5" z="0" />
+                <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
-            <keyframe instant="10">
+            <keyframe instant="100">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="36000" />
+                <rotation axis="y" angle="36000" />
+                <rotation axis="x" angle="36000" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="orbitBarrel">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="100">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="3600" />
-                <rotation axis="y" angle="3600" />
-                <rotation axis="x" angle="3600" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="counterOrbitBarrel">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="100">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-3600" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
@@ -347,12 +384,11 @@
             </materials>
             <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
-                <componentref id="spacestation" />
+                <componentref id="spacestationAndSatellites" />
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moon" /> 
                 <componentref id="cubemap" />
-                <componentref id="barrelSatellite" />
             </children>
         </component>
 
@@ -405,22 +441,36 @@
             <animation id="simpleRotation" />
             <highlighted r="0.3" g="0.3" b="0.3" scale_h="1.05" />
         </component>
-        <component id="barrelSatellite">
+
+        <!-- ============ -->
+        <!-- Spacestation -->
+        <component id="spacestationAndSatellites">
             <transformation>
-                <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="barrel" />
+                <componentref id="spacestationPlain" />
+                <componentref id="barrelSatellite" />
             </children>
-            <animation id="barrelOrbitAnim" />
+            <animation id="orbitBarrel" />
         </component>
 
-        <!-- ============ -->
-        <!-- Spacestation -->
+        <component id="spacestationPlain">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="spacestation" />
+            </children>
+            <animation id="counterOrbitBarrel" />
+        </component>
+
         <component id="spacestation">
             <transformation>
                 <rotate axis="z" angle="-15" />
@@ -445,6 +495,21 @@
                 <componentref id="spacestationArm6" />
             </children>
             <animation id="simpleRotation" />
+        </component>
+
+        <component id="barrelSatellite">
+            <transformation>
+                <scale x="0.5" y="0.5" z="0.5" />
+                <translate x="15" y="5" z="0" />
+            </transformation>
+            <materials>
+                <material id="reflectiveMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="barrel" />
+            </children>
+            <animation id="barrelAnim" />
         </component>
 
         <!-- Space station torus component-->
@@ -1144,10 +1209,21 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <primitiveref id="barrelSidePatch" />
+                <componentref id="barrelSidePatchComponent" />
                 <componentref id="barrelSideComplement" />
                 <componentref id="barrelTop" />
                 <componentref id="barrelBottom" /> 
+            </children>
+        </component>
+        <component id="barrelSidePatchComponent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="woodBarrelSideTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="barrelSidePatch" />
             </children>
         </component>
         <component id="barrelSideComplement">
@@ -1157,7 +1233,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelSideTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="barrelSidePatch" />
             </children>
@@ -1169,7 +1245,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelTopBotTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="circle" />
             </children>
@@ -1182,7 +1258,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="woodBarrelTopBotTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="circle" />
             </children>
