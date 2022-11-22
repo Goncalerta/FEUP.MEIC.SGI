@@ -370,6 +370,7 @@
                 <primitiveref id="sphere" />
             </children>
             <animation id="simpleRotation" />
+            <highlighted r="1.0" g="0.9" b="0.4" scale_h="1.5" />
         </component>
         <component id="earth">
             <transformation>
@@ -385,6 +386,7 @@
                 <primitiveref id="sphere" />
             </children>
             <animation id="simpleRotation" />
+            <highlighted r="0.2" g="0.5" b="0.25" scale_h="1.05" />
         </component>
         <component id="moon">
             <transformation>
@@ -396,11 +398,12 @@
             <materials>
                 <material id="planetMaterial" />
             </materials>
-            <texture id="moonTexture" length_s="1.0" length_t="1.0" />
+            <texture id="moonTexture" length_s="1.0" length_t="1.2" />
             <children>
                 <primitiveref id="sphere" />
             </children>
             <animation id="simpleRotation" />
+            <highlighted r="0.3" g="0.3" b="0.3" scale_h="1.05" />
         </component>
         <component id="barrelSatellite">
             <transformation>

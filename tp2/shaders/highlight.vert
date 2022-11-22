@@ -18,7 +18,7 @@ uniform float highlightScale;
 uniform vec4 highlightColor;
 
 void main() {
-	vec4 vertex=vec4(aVertexPosition+aVertexNormal*timeFactor*highlightScale, 1.0);
+	vec4 vertex=vec4(aVertexPosition+aVertexNormal*timeFactor*(highlightScale - 1.0), 1.0);
 
 	gl_Position = uPMatrix * uMVMatrix * vertex;
 

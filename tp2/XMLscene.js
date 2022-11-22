@@ -270,11 +270,20 @@ export class XMLscene extends CGFscene {
             this.isHighlightActive = activateHighlight;
             if (activateHighlight) {
                 this.setActiveShader(this.highlightShader);
-                this.highlightColor = highlightColor;
-                this.highlightScale = highlightScale;
             } else {
                 this.setActiveShader(this.defaultShader);
             }
+            // TODO avoid this call
+            this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
+        }
+
+        if (activateHighlight) {
+            this.highlightColor = highlightColor;
+            this.highlightScale = highlightScale;
+            this.highlightShader.setUniformsValues({
+                highlightColor: this.highlightColor,
+                highlightScale: this.highlightScale
+            });
         }
     }
 
