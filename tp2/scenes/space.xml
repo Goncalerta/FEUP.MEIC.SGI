@@ -1218,7 +1218,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="woodBarrelSideTexture" />
+            <texture id="woodBarrelSideTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="barrelSidePatch" />
             </children>
@@ -1230,7 +1230,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="woodBarrelSideTexture" />
+            <texture id="woodBarrelSideTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="barrelSidePatch" />
             </children>
@@ -1242,7 +1242,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="woodBarrelTopBotTexture" />
+            <texture id="woodBarrelTopBotTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="circle" />
             </children>
@@ -1255,7 +1255,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="woodBarrelTopBotTexture" />
+            <texture id="woodBarrelTopBotTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="circle" />
             </children>

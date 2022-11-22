@@ -65,7 +65,6 @@ export class MyKeyframeAnimation extends MyAnimation {
 
         if (i == this.keyFrames.length) {
             this.matrix = keyFrame.calculateMatrix();
-            console.log("last keyframe for " + this.id);
         } else {
             const ratio = (this.elapsedTime - keyFrame.getInstant()) / (this.keyFrames[i].getInstant() - keyFrame.getInstant());
 
