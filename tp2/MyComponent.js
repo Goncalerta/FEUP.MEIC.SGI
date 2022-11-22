@@ -193,7 +193,7 @@ export class MyComponent extends CGFobject {
             // For efficiency purposes, the shader does not change if the component does
             // not have any primitive children.
             if (this.primitiveChildren.length > 0) {
-                this.scene.toggleHighlightShader(this.highlighted);
+                this.scene.toggleHighlightShader(this.highlighted, this.highlightedColor, this.highlightedScale);
             }
 
             // Display all direct primitive children

@@ -2067,7 +2067,7 @@ export class MySceneGraph {
 
             color.push(...[r, g, b, a]);
         } else {
-            color.push(...[r, g, b]);
+            color.push(...[r, g, b, 1.0]);
         }
         
         return color;
