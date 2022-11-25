@@ -71,12 +71,20 @@
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
             <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
         </omni>
-        <spot id="spotlight" enabled="0" angle="20" exponent="3">
+        <spot id="satteliteSpotlight" enabled="0" angle="20" exponent="3">
             <location x="0.5" y="1.65" z="0.0" w="1.0"/>
             <target x="1.4" y="3.85" z="0.0" />
             <ambient r="0.015" g="0.015" b="0.015" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="0.0" linear="0.0" quadratic="1.0" />
+        </spot>
+        <spot id="tentLamp" enabled="1" angle="15" exponent="20">
+            <location x="-1.0" y="1.0" z="-3.9" w="1.0"/>
+            <target x="-1.1" y="1.0" z="-3.4" />
+            <ambient r="0.015" g="0.015" b="0.015" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.1" a="1.0" />
+            <specular r="0.6" g="0.6" b="0.4" a="1.0" />
             <attenuation constant="0.0" linear="0.0" quadratic="1.0" />
         </spot>
         <omni id="spaceshiplight" enabled="0">
@@ -96,15 +104,15 @@
         <texture id="whiteMetalTexture" file="scenes/images/space/white_metal.jpg" />
         <texture id="metalTilesTexture" file="scenes/images/space/metal_tiles.jpg" />
         <texture id="spaceshipBodyTexture" file="scenes/images/space/spaceship_body.jpg" />
+        <texture id="woodBarrelSideTexture" file="scenes/images/space/wood_barrel_side.jpg" />
+        <texture id="woodBarrelTopBotTexture" file="scenes/images/space/wood_barrel_top.jpg" />
+        <texture id="sleepingBagTexture" file="scenes/images/space/sleeping_bag.jpg" />
         <texture id="cubemapPositiveXTexture" file="scenes/images/space/stars/px.jpg" />
         <texture id="cubemapNegativeXTexture" file="scenes/images/space/stars/nx.jpg" />
         <texture id="cubemapPositiveYTexture" file="scenes/images/space/stars/py.jpg" />
         <texture id="cubemapNegativeYTexture" file="scenes/images/space/stars/ny.jpg" />
         <texture id="cubemapPositiveZTexture" file="scenes/images/space/stars/pz.jpg" />
         <texture id="cubemapNegativeZTexture" file="scenes/images/space/stars/nz.jpg" />
-
-        <texture id="woodBarrelSideTexture" file="scenes/images/space/Wood_Barrel_Side_001_basecolor.jpg" />
-        <texture id="woodBarrelTopBotTexture" file="scenes/images/space/Wood_Barrel_Top_001_basecolor.jpg" />
     </textures>
 
     <materials>
@@ -144,17 +152,35 @@
             <diffuse r="1.0" g="1.0" b="0.3" a="1.0" />
             <specular r="1.0" g="1.0" b="0.3" a="1.0" />
         </material>
-        <material id="allienMaterial" shininess="1">
+        <material id="alienMaterial" shininess="1">
             <emission r="0.0" g="0.1" b="0.0" a="1.0" />
             <ambient r="0.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="0.0" g="1.0" b="0.5" a="1.0" />
             <specular r="0.0" g="0.1" b="0.0" a="1.0" />
         </material>
-        <material id="allienEyesMaterial" shininess="1">
+        <material id="alienEyesMaterial" shininess="1">
             <emission r="0.5" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.1" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.0" b="0.0" a="1.0" />
             <specular r="0.2" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="barrelMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.4" g="0.2" b="0.15" a="1.0" />
+            <diffuse r="0.6" g="0.5" b="0.2" a="1.0" />
+            <specular r="0.3" g="0.1" b="0.1" a="1.0" />
+        </material>
+        <material id="sleepingBagMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.2" g="0.2" b="0.3" a="1.0" />
+            <diffuse r="0.2" g="0.2" b="0.1" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.7" a="1.0" />
+        </material>
+        <material id="pillowMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.2" g="0.05" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.2" b="0.0" a="1.0" />
+            <specular r="0.5" g="0.2" b="0.0" a="1.0" />
         </material>
 
         <!-- Non-standard materials (press M) -->
@@ -256,6 +282,54 @@
                       x2="1" y2="0" z2="0"
                       x3="0.5" y3="0.86602540378" z3="0" />
         </primitive>
+        <primitive id="rectanglePatch">
+            <patch degree_u="1" parts_u="50" degree_v="1" parts_v="50">
+                <controlpoint x="-0.5" y="-0.5" z="0" />
+                <controlpoint x="-0.5" y="0.5" z="0" />
+                <controlpoint x="0.5" y="-0.5" z="0" />
+                <controlpoint x="0.5" y="0.5" z="0" />
+            </patch>
+        </primitive>
+        <primitive id="tentInnerPatch">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="0.5" y="0" z="0.5" />
+                <controlpoint x="0.5" y="1" z="0" />
+                <controlpoint x="0.5" y="0" z="-0.5" />
+            </patch>
+        </primitive>
+        <primitive id="tentOuterPatch">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="0.5" y="0" z="-0.5" />
+                <controlpoint x="0.5" y="1" z="0" />
+                <controlpoint x="0.5" y="0" z="0.5" />
+            </patch>
+        </primitive>
+        <primitive id="tentBackPatch">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="-0.5" y="0" z="0" />
+                <controlpoint x="-0.5" y="0" z="0" />
+                <controlpoint x="-0.5" y="0" z="0" />
+            </patch>
+        </primitive>
+        <primitive id="tentBackPatchFlipped">
+            <patch degree_u="1" parts_u="50" degree_v="2" parts_v="50">
+                <controlpoint x="-0.5" y="0" z="0.5" />
+                <controlpoint x="-0.5" y="1" z="0" />
+                <controlpoint x="-0.5" y="0" z="-0.5" />
+                <controlpoint x="-0.5" y="0" z="0" />
+                <controlpoint x="-0.5" y="0" z="0" />
+                <controlpoint x="-0.5" y="0" z="0" />
+            </patch>
+        </primitive>
         <primitive id="semicirclePatch">
             <patch degree_u="1" parts_u="50" degree_v="3" parts_v="50">
                 <controlpoint x="0.75" y="0" z="0" />
@@ -286,7 +360,7 @@
         </primitive>
     </primitives>
 
-    <animations>
+    <!-- <animations>
         <keyframeanim id="simpleRotationAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -386,7 +460,7 @@
             </keyframe>
         </keyframeanim>
 
-        <keyframeanim id="allienAnim">
+        <keyframeanim id="alienAnim">
             <keyframe instant="5">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -417,7 +491,7 @@
             </keyframe>
         </keyframeanim>
 
-        <keyframeanim id="allienEyesAnim">
+        <keyframeanim id="alienEyesAnim">
             <keyframe instant="5">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -506,7 +580,7 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
-    </animations>
+    </animations> -->
 
     <components>
         <component id="root">
@@ -530,7 +604,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="spacestationAndSatellites" />
+                <!-- <componentref id="spacestationAndSatellites" /> -->
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moonRelated" />
@@ -572,7 +646,7 @@
         </component>
         <component id="moonRelated">
             <transformation>
-                <translate x="-65" y="-60" z="-115" />
+                <!-- <translate x="-65" y="-60" z="-115" /> -->
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -580,7 +654,11 @@
             <texture id="none" />
             <children>
                 <componentref id="moon" />
-                <componentref id="allien" />
+                <componentref id="alien" />
+                <componentref id="tent" />
+                <componentref id="barrelMoon" />
+                <componentref id="sleepingBag" />
+                <componentref id="pillow" />
             </children>
         </component>
         <component id="moon">
@@ -597,6 +675,23 @@
                 <primitiveref id="sphere" />
             </children>
             <highlighted r="0.3" g="0.3" b="0.3" scale_h="1.05" />
+        </component>
+        <component id="barrelMoon">
+            <transformation>
+                <rotate axis="y" angle="8" />
+                <rotate axis="x" angle="-79" />
+                <rotate axis="y" angle="70" />
+                <translate x="0" y="3.735" z="0" />
+                <scale x="0.2" y="0.23" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="reflectiveMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="barrel" />
+            </children>
+            <animation id="barrelAnim" />
         </component>
 
         <!-- ============ -->
@@ -1043,29 +1138,30 @@
         </component>
 
         <!-- ============ -->
-        <!-- Allien -->
-        <component id="allien">
+        <!-- Alien -->
+        <component id="alien">
             <transformation>
+                <rotate axis="x" angle="-100" />
                 <rotate axis="y" angle="160" />
-                <rotate axis="x" angle="45" />
-                <translate x="0" y="2.5" z="3" />
+                <translate x="0" y="4" z="0" />
+                <rotate axis="x" angle="-30" />
                 <scale x="0.1" y="0.1" z="0.1" />
             </transformation>
             <materials>
-                <material id="allienMaterial" />
+                <material id="alienMaterial" />
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="allienHead" />
-                <componentref id="allienBody" />
-                <componentref id="allienLeftArm" />
-                <componentref id="allienRightArm" />
-                <componentref id="allienLeftLeg" />
-                <componentref id="allienRightLeg" />
+                <componentref id="alienHead" />
+                <componentref id="alienBody" />
+                <componentref id="alienLeftArm" />
+                <componentref id="alienRightArm" />
+                <componentref id="alienLeftLeg" />
+                <componentref id="alienRightLeg" />
             </children>
-            <animation id="allienAnim" />
+            <animation id="alienAnim" />
         </component>
-        <component id="allienHead">
+        <component id="alienHead">
             <transformation>
                 <translate x="0" y="3" z="0" />
                 <scale x="1.5" y="1.5" z="2" />
@@ -1075,26 +1171,26 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="allienEyes" />
+                <componentref id="alienEyes" />
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienEyes">
+        <component id="alienEyes">
             <transformation>
                 <scale x="0.5" y="0.5" z="0.5" />
                 <translate x="0" y="0.5" z="1" />
             </transformation>
             <materials>
-                <material id="allienEyesMaterial" />
+                <material id="alienEyesMaterial" />
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="allienEyeLeft" />
-                <componentref id="allienEyeRight" />
+                <componentref id="alienEyeLeft" />
+                <componentref id="alienEyeRight" />
             </children>
-            <animation id="allienEyesAnim" />
+            <animation id="alienEyesAnim" />
         </component>
-        <component id="allienEyeLeft">
+        <component id="alienEyeLeft">
             <transformation>
                 <translate x="-1" y="0" z="0" />
             </transformation>
@@ -1106,7 +1202,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienEyeRight">
+        <component id="alienEyeRight">
             <transformation>
                 <translate x="1" y="0" z="0" />
             </transformation>
@@ -1118,7 +1214,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienBody">
+        <component id="alienBody">
             <transformation>
                 <scale x="1" y="3" z="1" />
             </transformation>
@@ -1130,7 +1226,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienLeftArm">
+        <component id="alienLeftArm">
             <transformation>
                 <translate x="-1.5" y="1.5" z="1" />
                 <rotate axis="z" angle="60" />
@@ -1145,7 +1241,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienRightArm">
+        <component id="alienRightArm">
             <transformation>
                 <translate x="1.5" y="1.5" z="0" />
                 <rotate axis="z" angle="-60" />
@@ -1159,7 +1255,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienLeftLeg">
+        <component id="alienLeftLeg">
             <transformation>
                 <translate x="-0.75" y="-2.5" z="0" />
                 <rotate axis="z" angle="-20" />
@@ -1173,7 +1269,7 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
-        <component id="allienRightLeg">
+        <component id="alienRightLeg">
             <transformation>
                 <translate x="0.75" y="-2.5" z="0" />
                 <rotate axis="z" angle="20" />
@@ -1503,11 +1599,63 @@
 
         <!-- ============ -->
         <!-- NURBS -->
+        <component id="sleepingBag">
+            <transformation>
+                <rotate axis="y" angle="20" />
+                <rotate axis="x" angle="-78" />
+                <rotate axis="y" angle="-20" />
+                <translate x="0" y="3.5" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.7" y="1.2" z="1" />
+            </transformation>
+            <materials>
+                <material id="sleepingBagMaterial" />
+            </materials>
+            <texture id="sleepingBagTexture" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="pillow">
+            <transformation>
+                <rotate axis="y" angle="23" />
+                <rotate axis="x" angle="-71" />
+                <rotate axis="y" angle="-110" />
+                <translate x="0" y="3.5" z="0" />
+                <scale x="0.2" y="0.18" z="0.3" />
+            </transformation>
+            <materials>
+                <material id="pillowMaterial" />
+            </materials>
+            <texture id="sleepingBagTexture" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="tent">
+            <transformation>
+                <rotate axis="y" angle="15" />
+                <rotate axis="x" angle="-75" />
+                <rotate axis="y" angle="70" />
+                <translate x="0" y="3.2" z="0" />
+                <scale x="1.2" y="2.5" z="1.8" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="tentInnerPatch" />
+                <primitiveref id="tentOuterPatch" />
+                <primitiveref id="tentBackPatch" />
+                <primitiveref id="tentBackPatchFlipped" />
+            </children>
+        </component>
         <component id="barrel">
             <transformation>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="barrelMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
