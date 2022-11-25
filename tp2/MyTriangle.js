@@ -56,9 +56,9 @@ export class MyTriangle extends CGFobject {
 
         // No need to divide by this.length_s and length_t since they start as 1.0
         this.baseTexCoords = [
-            0, 0,
-            a, 0,
-            c * cosAlpha, c * sinAlpha
+            0, 1,
+            a, 1,
+            c * cosAlpha, 1 - c * sinAlpha
         ];
         this.texCoords = this.baseTexCoords;
 

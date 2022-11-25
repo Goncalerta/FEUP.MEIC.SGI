@@ -76,7 +76,7 @@ export class MyCylinder extends CGFobject {
                     ])
                 );
 
-                this.texCoords.push(j / this.slices, i / this.stacks);
+                this.texCoords.push(j / this.slices, 1 - i / this.stacks);
             }
         }
 
