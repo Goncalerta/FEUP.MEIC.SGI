@@ -544,6 +544,166 @@
             </keyframe>
         </keyframeanim>
 
+        <keyframeanim id="alienRightArmAnim">
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="11">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="12">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="13">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="14">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="16">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="alienRightArmCounterAnim">
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="8">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="9">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="11">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="12">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="13">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="14">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-20" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+            <keyframe instant="16">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="3" z="1" />
+            </keyframe>
+        </keyframeanim>
+
         <keyframeanim id="noCubeMapAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -1160,9 +1320,8 @@
             <texture id="alienTexture" length_s="0.001" length_t="0.001" />
             <children>
                 <componentref id="alienHead" />
-                <componentref id="alienBody" />
+                <componentref id="alienMain" />
                 <componentref id="alienLeftArm" />
-                <componentref id="alienRightArm" />
                 <componentref id="alienLeftLeg" />
                 <componentref id="alienRightLeg" />
             </children>
@@ -1221,9 +1380,21 @@
                 <primitiveref id="sphere" />
             </children>
         </component>
+        <component id="alienMain">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="alienRightArm" />
+                <componentref id="alienBody" />
+            </children>
+            <animation id="alienRightArmAnim" />
+        </component>
         <component id="alienBody">
             <transformation>
-                <scale x="1" y="3" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1232,13 +1403,14 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienRightArmCounterAnim" />
         </component>
         <component id="alienRightArm">
             <transformation>
-                <translate x="-1.5" y="1.5" z="1" />
                 <rotate axis="z" angle="60" />
-                <rotate axis="x" angle="50" />
+                <rotate axis="x" angle="30" />
                 <scale x="0.5" y="1.7" z="0.5" />
+                <translate x="1" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
