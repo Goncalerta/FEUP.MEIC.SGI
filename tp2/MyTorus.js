@@ -78,7 +78,7 @@ export class MyTorus extends CGFobject {
                     ])
                 );
 
-                this.texCoords.push(j / this.slices, i / this.loops);
+                this.texCoords.push(1 - i / this.loops, j / this.slices);
             }
         }
 
