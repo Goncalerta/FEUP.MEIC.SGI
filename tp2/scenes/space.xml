@@ -16,6 +16,7 @@
             <from x="-65" y="-65" z="-130" />
             <to x="0" y="0" z="0" />
         </perspective>
+
         <perspective id="lightspeed" near="0.1" far="5000" angle="179">
             <from x="0" y="-130" z="40" />
             <to x="25" y="20" z="20" />
@@ -36,6 +37,7 @@
             <from x="15" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
+
         <perspective id="satelliteMainPanelBack" near="0.1" far="5000" angle="60">
             <from x="-2" y="0.5" z="0" />
             <to x="0" y="1.5" z="0" />
@@ -56,6 +58,11 @@
             <to x="0" y="0" z="0" />
             <up x="0" y="1" z="0" />
         </ortho>
+
+        <perspective id="alienTent" near="0.1" far="5000" angle="22.9">
+            <from x="-66.0" y="-65.5" z="-125.3" />
+            <to x="-65.1" y="-58.7" z="-117.8" />
+        </perspective>
     </views>
 
     <ambient>
@@ -80,8 +87,8 @@
             <attenuation constant="0.0" linear="0.0" quadratic="1.0" />
         </spot>
         <spot id="tentLamp" enabled="1" angle="15" exponent="20">
-            <location x="-1.0" y="1.0" z="-3.9" w="1.0"/>
-            <target x="-1.1" y="1.0" z="-3.4" />
+            <location x="-66.0" y="-59.0" z="-118.9" w="1.0"/>
+            <target x="-66.1" y="-59.0" z="-118.4" />
             <ambient r="0.015" g="0.015" b="0.015" a="1.0" />
             <diffuse r="0.3" g="0.3" b="0.1" a="1.0" />
             <specular r="0.6" g="0.6" b="0.4" a="1.0" />
@@ -107,6 +114,7 @@
         <texture id="woodBarrelSideTexture" file="scenes/images/space/wood_barrel_side.jpg" />
         <texture id="woodBarrelTopBotTexture" file="scenes/images/space/wood_barrel_top.jpg" />
         <texture id="sleepingBagTexture" file="scenes/images/space/sleeping_bag.jpg" />
+        <texture id="alienTexture" file="scenes/images/space/alien.jpg" />
         <texture id="cubemapPositiveXTexture" file="scenes/images/space/stars/px.jpg" />
         <texture id="cubemapNegativeXTexture" file="scenes/images/space/stars/nx.jpg" />
         <texture id="cubemapPositiveYTexture" file="scenes/images/space/stars/py.jpg" />
@@ -360,7 +368,7 @@
         </primitive>
     </primitives>
 
-    <!-- <animations>
+    <animations>
         <keyframeanim id="simpleRotationAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -580,7 +588,7 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
-    </animations> -->
+    </animations>
 
     <components>
         <component id="root">
@@ -604,7 +612,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <!-- <componentref id="spacestationAndSatellites" /> -->
+                <componentref id="spacestationAndSatellites" />
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moonRelated" />
@@ -646,7 +654,7 @@
         </component>
         <component id="moonRelated">
             <transformation>
-                <!-- <translate x="-65" y="-60" z="-115" /> -->
+                <translate x="-65" y="-60" z="-115" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -691,7 +699,6 @@
             <children>
                 <componentref id="barrel" />
             </children>
-            <animation id="barrelAnim" />
         </component>
 
         <!-- ============ -->
@@ -1150,7 +1157,7 @@
             <materials>
                 <material id="alienMaterial" />
             </materials>
-            <texture id="none" />
+            <texture id="alienTexture" length_s="0.001" length_t="0.001" />
             <children>
                 <componentref id="alienHead" />
                 <componentref id="alienBody" />
@@ -1169,7 +1176,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <componentref id="alienEyes" />
                 <primitiveref id="sphere" />
@@ -1221,7 +1228,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1236,7 +1243,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1250,7 +1257,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1264,7 +1271,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1278,7 +1285,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1611,7 +1618,7 @@
             <materials>
                 <material id="sleepingBagMaterial" />
             </materials>
-            <texture id="sleepingBagTexture" />
+            <texture id="sleepingBagTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="rectanglePatch" />
             </children>
@@ -1627,7 +1634,7 @@
             <materials>
                 <material id="pillowMaterial" />
             </materials>
-            <texture id="sleepingBagTexture" />
+            <texture id="sleepingBagTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1643,7 +1650,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="metalTilesTexture" />
             <children>
                 <primitiveref id="tentInnerPatch" />
                 <primitiveref id="tentOuterPatch" />
