@@ -9,7 +9,6 @@ export class MyKeyframeAnimation extends MyAnimation {
     constructor(scene, id) {
         super(scene, id);
 
-        this.matrix = mat4.create();
         this.keyFrames = [];
         this.elapsedTime = null;
     }
@@ -37,18 +36,11 @@ export class MyKeyframeAnimation extends MyAnimation {
     }
 
     /**
-     * Applies the animation.
-     */
-    apply() {
-        this.scene.multMatrix(this.matrix);
-    }
-
-    /**
      * Updates the animation.
      * @param {number} t - Current time in milliseconds.
      */
     update(t) {
-        this.elapsedTime = t - this.scene.startTime;
+        super.update(t);
 
         if (this.elapsedTime > this.keyFrames[this.keyFrames.length - 1].getInstant()) {
             this.elapsedTime = this.keyFrames[this.keyFrames.length - 1].getInstant();

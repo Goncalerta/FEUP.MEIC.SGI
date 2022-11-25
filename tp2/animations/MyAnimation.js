@@ -11,6 +11,7 @@ export class MyAnimation {
 
         this.scene = scene;
         this.id = id;
+        this.matrix = mat4.create();
     }
 
     /**
@@ -18,13 +19,13 @@ export class MyAnimation {
      * @param {number} t - Current time in milliseconds.
      */
     update(t) {
-        throw new Error("Method 'update(t)' must be implemented.");
+        this.elapsedTime = t - this.scene.startTime;
     }
 
     /**
      * Applies the animation.
      */
     apply() {
-        throw new Error("Method 'apply()' must be implemented.");
+        this.scene.multMatrix(this.matrix);
     }
 }
