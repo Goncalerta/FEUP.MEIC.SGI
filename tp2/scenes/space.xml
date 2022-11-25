@@ -144,6 +144,18 @@
             <diffuse r="1.0" g="1.0" b="0.3" a="1.0" />
             <specular r="1.0" g="1.0" b="0.3" a="1.0" />
         </material>
+        <material id="allienMaterial" shininess="1">
+            <emission r="0.0" g="0.1" b="0.0" a="1.0" />
+            <ambient r="0.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.0" g="1.0" b="0.5" a="1.0" />
+            <specular r="0.0" g="0.1" b="0.0" a="1.0" />
+        </material>
+        <material id="allienEyesMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.5" g="0.0" b="0.0" a="1.0" />
+            <specular r="0.2" g="0.0" b="0.0" a="1.0" />
+        </material>
 
         <!-- Non-standard materials (press M) -->
         <material id="brownSpaceshipMaterial" shininess="10">
@@ -387,7 +399,7 @@
                 <componentref id="spacestationAndSatellites" />
                 <componentref id="sun" />
                 <componentref id="earth" />
-                <componentref id="moon" /> 
+                <componentref id="moonRelated" />
                 <componentref id="cubemap" />
             </children>
         </component>
@@ -424,9 +436,22 @@
             <animation id="simpleRotation" />
             <highlighted r="0.2" g="0.5" b="0.25" scale_h="1.05" />
         </component>
-        <component id="moon">
+        <component id="moonRelated">
             <transformation>
                 <translate x="-65" y="-60" z="-115" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="moon" />
+                <componentref id="allien" />
+            </children>
+            <animation id="simpleRotation" />
+        </component>
+        <component id="moon">
+            <transformation>
                 <scale x="3.5" y="3.5" z="3.5" />
                 <rotate axis="y" angle="20" />
                 <rotate axis="x" angle="-85" />
@@ -438,7 +463,6 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <animation id="simpleRotation" />
             <highlighted r="0.3" g="0.3" b="0.3" scale_h="1.05" />
         </component>
 
@@ -884,7 +908,150 @@
                 <componentref id="spacestationArmBase" />
             </children>
         </component>
-        
+
+        <!-- ============ -->
+        <!-- Allien -->
+        <component id="allien">
+            <transformation>
+                <rotate axis="y" angle="160" />
+                <rotate axis="x" angle="45" />
+                <translate x="0" y="2.5" z="3" />
+                <scale x="0.1" y="0.1" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="allienMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="allienHead" />
+                <componentref id="allienBody" />
+                <componentref id="allienLeftArm" />
+                <componentref id="allienRightArm" />
+                <componentref id="allienLeftLeg" />
+                <componentref id="allienRightLeg" />
+            </children>
+        </component>
+        <component id="allienHead">
+            <transformation>
+                <translate x="0" y="3" z="0" />
+                <scale x="1.5" y="1.5" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="allienEyes" />
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienEyes">
+            <transformation>
+                <scale x="0.5" y="0.5" z="0.5" />
+                <translate x="0" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="allienEyesMaterial" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="allienEyeLeft" />
+                <componentref id="allienEyeRight" />
+            </children>
+        </component>
+        <component id="allienEyeLeft">
+            <transformation>
+                <translate x="-1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienEyeRight">
+            <transformation>
+                <translate x="1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienBody">
+            <transformation>
+                <scale x="1" y="3" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienLeftArm">
+            <transformation>
+                <translate x="-1.5" y="1.5" z="1" />
+                <rotate axis="z" angle="60" />
+                <rotate axis="x" angle="50" />
+                <scale x="0.5" y="1.7" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienRightArm">
+            <transformation>
+                <translate x="1.5" y="1.5" z="0" />
+                <rotate axis="z" angle="-60" />
+                <scale x="0.5" y="2" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienLeftLeg">
+            <transformation>
+                <translate x="-0.75" y="-2.5" z="0" />
+                <rotate axis="z" angle="-20" />
+                <scale x="0.5" y="4" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="allienRightLeg">
+            <transformation>
+                <translate x="0.75" y="-2.5" z="0" />
+                <rotate axis="z" angle="20" />
+                <scale x="0.5" y="4" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
 
         <!-- ============ -->
         <!-- Cube -->
