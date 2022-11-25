@@ -1650,7 +1650,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalTilesTexture" />
+            <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="tentInnerPatch" />
                 <primitiveref id="tentOuterPatch" />
