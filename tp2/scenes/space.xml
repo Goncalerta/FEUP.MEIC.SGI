@@ -151,7 +151,7 @@
             <specular r="0.0" g="0.1" b="0.0" a="1.0" />
         </material>
         <material id="allienEyesMaterial" shininess="1">
-            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <emission r="0.5" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.1" g="0.0" b="0.0" a="1.0" />
             <diffuse r="0.5" g="0.0" b="0.0" a="1.0" />
             <specular r="0.2" g="0.0" b="0.0" a="1.0" />
@@ -287,7 +287,7 @@
     </primitives>
 
     <animations>
-        <keyframeanim id="simpleRotation">
+        <keyframeanim id="simpleRotationAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -304,7 +304,7 @@
             </keyframe>
         </keyframeanim>
 
-        <keyframeanim id="upAndDownSpaceStation">
+        <keyframeanim id="upAndDownSpaceStationAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -352,7 +352,7 @@
             </keyframe>
         </keyframeanim>
 
-        <keyframeanim id="orbitBarrel">
+        <keyframeanim id="orbitBarrelAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
@@ -385,6 +385,127 @@
                 <scale x="1" y="1" z="1" />
             </keyframe>
         </keyframeanim>
+
+        <keyframeanim id="allienAnim">
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="10000" y="10000" z="10000" />
+            </keyframe>
+            <keyframe instant="20.6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0" y="0" z="0" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="allienEyesAnim">
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="10">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.5" y="1.5" z="1.5" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="2" y="2" z="2" />
+            </keyframe>
+            <keyframe instant="20.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="9999" y="9999" z="9999" />
+            </keyframe>
+            <keyframe instant="20.6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0" y="0" z="0" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="noCubeMapAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="20.7">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="9999" y="9999" z="9999" />
+            </keyframe>
+            <keyframe instant="20.8">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0" y="0" z="0" />
+            </keyframe>
+            <keyframe instant="23">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="0" y="0" z="0" />
+            </keyframe>
+            <keyframe instant="33">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
     </animations>
 
     <components>
@@ -396,12 +517,25 @@
             </materials>
             <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
+                <componentref id="noCubeMap" />
+                <componentref id="cubemap" />
+            </children>
+        </component>
+
+        <component id="noCubeMap">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
                 <componentref id="spacestationAndSatellites" />
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moonRelated" />
-                <componentref id="cubemap" />
             </children>
+            <animation id="noCubeMapAnim" />
         </component>
 
         <!-- ============ -->
@@ -417,7 +551,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <animation id="simpleRotation" />
+            <animation id="simpleRotationAnim" />
             <highlighted r="1.0" g="0.9" b="0.4" scale_h="1.5" />
         </component>
         <component id="earth">
@@ -433,7 +567,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
-            <animation id="simpleRotation" />
+            <animation id="simpleRotationAnim" />
             <highlighted r="0.2" g="0.5" b="0.25" scale_h="1.05" />
         </component>
         <component id="moonRelated">
@@ -448,7 +582,6 @@
                 <componentref id="moon" />
                 <componentref id="allien" />
             </children>
-            <animation id="simpleRotation" />
         </component>
         <component id="moon">
             <transformation>
@@ -479,7 +612,7 @@
                 <componentref id="spacestationPlain" />
                 <componentref id="barrelSatellite" />
             </children>
-            <animation id="orbitBarrel" />
+            <animation id="orbitBarrelAnim" />
         </component>
 
         <component id="spacestationPlain">
@@ -518,7 +651,7 @@
                 <componentref id="spacestationArm5" />
                 <componentref id="spacestationArm6" />
             </children>
-            <animation id="simpleRotation" />
+            <animation id="simpleRotationAnim" />
         </component>
 
         <component id="barrelSatellite">
@@ -696,7 +829,7 @@
                 <componentref id="spacestationMainMirrorSupport1" />
                 <componentref id="spacestationMainMirrorSupport2" />
             </children>
-            <animation id="upAndDownSpaceStation" />
+            <animation id="upAndDownSpaceStationAnim" />
         </component>
         <component id="spacestationMainMirrorPanel">
             <transformation>
@@ -930,6 +1063,7 @@
                 <componentref id="allienLeftLeg" />
                 <componentref id="allienRightLeg" />
             </children>
+            <animation id="allienAnim" />
         </component>
         <component id="allienHead">
             <transformation>
@@ -958,6 +1092,7 @@
                 <componentref id="allienEyeLeft" />
                 <componentref id="allienEyeRight" />
             </children>
+            <animation id="allienEyesAnim" />
         </component>
         <component id="allienEyeLeft">
             <transformation>
