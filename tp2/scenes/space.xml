@@ -740,7 +740,7 @@
                 <rotation axis="x" angle="0" />
                 <scale x="0" y="0" z="0" />
             </keyframe>
-            <keyframe instant="33">
+            <keyframe instant="30">
                 <translation x="0" y="0" z="0" />
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
