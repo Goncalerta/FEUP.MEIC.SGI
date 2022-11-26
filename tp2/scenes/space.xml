@@ -529,7 +529,7 @@
                 <rotation axis="z" angle="0" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
-                <scale x="1.2" y="0.5" z="1" />
+                <scale x="0.7" y="1.2" z="1.2" />
             </keyframe>
             <keyframe instant="20.5">
                 <translation x="0" y="0" z="0" />
@@ -544,6 +544,30 @@
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="0" y="0" z="0" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="alienComponentAnim">
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="17">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="21">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1.5" y="1.5" z="1.5" />
             </keyframe>
         </keyframeanim>
 
@@ -1343,6 +1367,7 @@
                 <componentref id="alienEyes" />
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienComponentAnim" />
             <highlighted r="0.6" g="1.0" b="0.2" scale_h="1.5" />
         </component>
         <component id="alienEyes">
@@ -1423,6 +1448,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienComponentAnim" />
         </component>
         <component id="alienLeftArm">
             <transformation>
@@ -1437,6 +1463,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienComponentAnim" />
         </component>
         <component id="alienLeftLeg">
             <transformation>
@@ -1451,6 +1478,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienComponentAnim" />
         </component>
         <component id="alienRightLeg">
             <transformation>
@@ -1465,6 +1493,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <animation id="alienComponentAnim" />
         </component>
 
         <!-- ============ -->
