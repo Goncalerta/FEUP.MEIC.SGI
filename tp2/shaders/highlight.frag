@@ -5,8 +5,6 @@ precision highp float;
 varying vec2 vTextureCoord;
 uniform sampler2D uSampler;
 
-varying vec4 coords;
-varying vec4 normal;
 uniform float timeFactor;
 uniform vec4 highlightColor;
 

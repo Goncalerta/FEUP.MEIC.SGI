@@ -1181,6 +1181,7 @@
                 <componentref id="alienEyes" />
                 <primitiveref id="sphere" />
             </children>
+            <highlighted r="0.6" g="1.0" b="0.2" scale_h="1.5" />
         </component>
         <component id="alienEyes">
             <transformation>
@@ -1638,6 +1639,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <highlighted r="0.7" g="0.6" b="0.0" scale_h="1.2" />
         </component>
         <component id="tent">
             <transformation>
@@ -1650,13 +1652,14 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="metalTilesTexture" />
+            <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="tentInnerPatch" />
                 <primitiveref id="tentOuterPatch" />
                 <primitiveref id="tentBackPatch" />
                 <primitiveref id="tentBackPatchFlipped" />
             </children>
+            <highlighted r="0.0" g="0.6" b="0.7" scale_h="1.0" />
         </component>
         <component id="barrel">
             <transformation>

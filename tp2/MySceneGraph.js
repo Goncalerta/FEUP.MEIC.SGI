@@ -1868,7 +1868,7 @@ export class MySceneGraph {
             }
 
             // Highlighted
-            // TODO a ordem tem de ser esta no xml ou e' opcional?
+            // opcional
             if (grandChildren[highlightedIndex] != null) {
                 // <highlighted r="ff" g="ff" b="ff" scale_h="ff" />
                 let highlightedError = false;

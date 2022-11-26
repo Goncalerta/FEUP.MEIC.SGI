@@ -273,7 +273,7 @@ export class XMLscene extends CGFscene {
             } else {
                 this.setActiveShader(this.defaultShader);
             }
-            // TODO avoid this call
+            
             this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
         }
 
