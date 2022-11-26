@@ -389,6 +389,71 @@
             </keyframe>
         </keyframeanim>
 
+        <keyframeanim id="slowRotationAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="400000">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="180000" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="fastRotationAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="400000">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="1440000" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
+        <keyframeanim id="rotateMirorSpaceStationAnim">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="-15" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="11">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="3" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
+
         <keyframeanim id="upAndDownSpaceStationAnim">
             <keyframe instant="0">
                 <translation x="0" y="0" z="0" />
@@ -399,21 +464,21 @@
             </keyframe>
             <keyframe instant="5">
                 <translation x="0" y="0" z="0.5" />
-                <rotation axis="z" angle="0" />
+                <rotation axis="z" angle="-10" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="10">
                 <translation x="0" y="0" z="-0.5" />
-                <rotation axis="z" angle="0" />
+                <rotation axis="z" angle="-20" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
             </keyframe>
             <keyframe instant="15">
                 <translation x="0" y="0" z="0" />
-                <rotation axis="z" angle="0" />
+                <rotation axis="z" angle="-30" />
                 <rotation axis="y" angle="0" />
                 <rotation axis="x" angle="0" />
                 <scale x="1" y="1" z="1" />
@@ -906,9 +971,22 @@
             </materials>
             <texture id="none"/>
             <children>
+                <componentref id="spacestationRotativeComponent" />
+                <componentref id="spacestationStem" />
+            </children>
+            <animation id="slowRotationAnim" />
+        </component>
+
+        <component id="spacestationRotativeComponent">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
                 <componentref id="spacestationBodyComponent" />
                 <componentref id="spacestationCenterComponent" />
-                <componentref id="spacestationStem" />
                 <componentref id="spacestationArm1" />
                 <componentref id="spacestationArm2" />
                 <componentref id="spacestationArm3" />
@@ -916,7 +994,7 @@
                 <componentref id="spacestationArm5" />
                 <componentref id="spacestationArm6" />
             </children>
-            <animation id="simpleRotationAnim" />
+            <animation id="fastRotationAnim" />
         </component>
 
         <component id="barrelSatellite">
@@ -1088,13 +1166,25 @@
             </materials>
             <texture id="inherit" />
             <children>
+                <componentref id="spacestationMainMirrorAxis" />
+                <componentref id="spacestationMainMirrorStemArticulation" />
+            </children>
+            <animation id="upAndDownSpaceStationAnim" />
+        </component>
+        <component id="spacestationMainMirrorAxis">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
                 <componentref id="spacestationMainMirrorPanel" />
                 <componentref id="spacestationMainMirrorPanelBack" />
-                <componentref id="spacestationMainMirrorStemArticulation" />
                 <componentref id="spacestationMainMirrorSupport1" />
                 <componentref id="spacestationMainMirrorSupport2" />
             </children>
-            <animation id="upAndDownSpaceStationAnim" />
+            <animation id="rotateMirorSpaceStationAnim" />
         </component>
         <component id="spacestationMainMirrorPanel">
             <transformation>
