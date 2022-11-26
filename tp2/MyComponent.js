@@ -214,7 +214,12 @@ export class MyComponent extends CGFobject {
         }
     }
 
-    // Updates TexCoords by its father component. Only relevant in inherit textures.
+    /**
+     * Updates TexCoords by its father component. Only relevant in inherit textures.
+     * 
+     * @param lengthS
+     * @param lengthT
+     */
     updateTexCoords(parentLengthS, parentLengthT) {
         if (this.texture == 'inherit') {
             this.lengthS = parentLengthS;
@@ -222,6 +227,11 @@ export class MyComponent extends CGFobject {
         }
     }
 
+    /**
+     * Updates component and children animations.
+     * 
+     * @param t updated time
+     */
     update(t) {
         if (this.animation != null) {
             this.animation.update(t);

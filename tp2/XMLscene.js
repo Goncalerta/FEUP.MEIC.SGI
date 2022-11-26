@@ -261,7 +261,9 @@ export class XMLscene extends CGFscene {
 
     /**
      * Activates or deactivates the highlight shader.
-     * @param {Boolean} activateHighlight Wheter to activate or deactivate the highlight
+     * @param {Boolean} activateHighlight Whether to activate or deactivate the highlight
+     * @param highlightColor The color of the highlight
+     * @param highlightScale The max scale factor of the highlight
      */
     toggleHighlightShader(activateHighlight, highlightColor, highlightScale) {
         // For efficiency purposes this function is a no-op if the the active state
@@ -274,6 +276,7 @@ export class XMLscene extends CGFscene {
                 this.setActiveShader(this.defaultShader);
             }
             
+            // Apply the material on the new shader
             this.appearanceStack[this.appearanceStack.length - 1].appearance.apply();
         }
 
@@ -404,6 +407,11 @@ export class XMLscene extends CGFscene {
         // ---- END Background, camera and axis setup
     }
 
+    /**
+     * Updates shader and scene graph animations.
+     * 
+     * @param t updated time
+     */
     update(t) {
         if (this.sceneInited) {
             if (this.startTime === null) {

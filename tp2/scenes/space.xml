@@ -340,10 +340,12 @@
         </primitive>
         <primitive id="semicirclePatch">
             <patch degree_u="1" parts_u="50" degree_v="3" parts_v="50">
+                <!-- radius = 3/4 * height -->
                 <controlpoint x="0.75" y="0" z="0" />
                 <controlpoint x="0.75" y="0" z="1" />
                 <controlpoint x="-0.75" y="0" z="1" />
                 <controlpoint x="-0.75" y="0" z="0" />
+                <!-- Fill the circle -->
                 <controlpoint x="0" y="0" z="0" />
                 <controlpoint x="0" y="0" z="0" />
                 <controlpoint x="0" y="0" z="0" />
@@ -352,6 +354,7 @@
         </primitive>
         <primitive id="barrelSidePatch">
             <patch degree_u="2" parts_u="50" degree_v="3" parts_v="50">
+                <!-- radius = 3/4 * height -->
                 <controlpoint x="0.75" y="-1" z="0" />
                 <controlpoint x="0.75" y="-1" z="1" />
                 <controlpoint x="-0.75" y="-1" z="1" />

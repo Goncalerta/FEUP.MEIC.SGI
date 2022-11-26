@@ -1429,6 +1429,7 @@ export class MySceneGraph {
                     continue;
                 }
 
+                // control points
                 const controlPoints = [];
 
                 const controlPointsNodes = grandChildren[0].children;
