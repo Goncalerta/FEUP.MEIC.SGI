@@ -36,7 +36,7 @@
 ----
 ## Notes
 
--   We opted for not making the translation movement of the sattelite nor the moon around the earth, since it would make it harder to see the important objects of the scene with static cameras if those objects were moving. Moreover, their relative positions to the sun are important to be kept because of the solar panels, mirrors and dark face of the moon. 
+-   We opted for not making the translation movement of the sattelite nor the moon around the earth, since it would make it harder to see the important objects of the scene with static cameras if those objects were moving. Moreover, their relative positions to the sun are important to be kept, especially because of the dark face of the moon. 
 -   Since the assignment didn't specify looping animations, all animations eventually end and the objects freeze after enough time.
 
 ----
