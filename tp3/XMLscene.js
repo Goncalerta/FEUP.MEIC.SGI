@@ -1,5 +1,6 @@
 import {CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance} from '../lib/CGF.js';
 import {subtractVectors} from './utils.js';
+import {MyBoard} from './';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -65,6 +66,8 @@ export class XMLscene extends CGFscene {
         // zero to disable it
         this.setUpdatePeriod(100);
         this.startTime = null;
+
+        this.board = new MyBoard();
     }
 
     /**
