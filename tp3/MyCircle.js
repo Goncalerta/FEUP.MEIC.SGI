@@ -1,6 +1,6 @@
 import {CGFobject} from '../lib/CGF.js';
 
-// TODO confirm if correct on the scene display
+
 /**
  * MyCircle class, representing a circle.
  */
@@ -33,6 +33,10 @@ export class MyCircle extends CGFobject {
         // angle of each slice
         const alpha = (Math.PI * 2) / this.slices;
         
+        // center
+        this.vertices.push(this.center[0], this.center[1], this.center[2]);
+        this.texCoords.push(0.5, 0.5);
+
         // iterating around the circle
         for (let j = 0; j <= this.slices; j++) {
             const currentAngle = (j % this.slices) * alpha;
@@ -44,13 +48,14 @@ export class MyCircle extends CGFobject {
                 this.center[1] + this.radius * sinCurrentAngle,
                 this.center[2]
             );
+
             this.normals.push(0, 0, 1);
-            this.texCoords.push(cosCurrentAngle, sinCurrentAngle);
+            this.texCoords.push(0.5 + cosCurrentAngle / 2, 0.5 + sinCurrentAngle / 2);
         }
 
         // iterating around the circle
         for (let j = 0; j < this.slices; j++) {
-            this.indices.push(j, j + 1, this.slices + 1);
+            this.indices.push(j + 1, j + 2, 0);
         }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
