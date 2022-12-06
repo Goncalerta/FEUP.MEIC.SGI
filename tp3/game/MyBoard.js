@@ -1,10 +1,9 @@
-import {CGFobject} from '../lib/CGF.js';
-import {applyLengthsToTextureCoords} from './utils.js';
+import {CGFobject} from '../../lib/CGF.js';
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
  */
-export class MyRectangle extends CGFobject {
+export class MyBoard extends CGFobject {
     /**
      * @constructor
      * @param scene Reference to MyScene object.

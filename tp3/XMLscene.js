@@ -1,6 +1,6 @@
 import {CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance} from '../lib/CGF.js';
 import {subtractVectors} from './utils.js';
-import {MyBoard} from './';
+import { MyGame } from './game/MyGame.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -67,7 +67,7 @@ export class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
         this.startTime = null;
 
-        this.board = new MyBoard();
+        this.game = new MyGame(this);
     }
 
     /**
@@ -399,6 +399,8 @@ export class XMLscene extends CGFscene {
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
+
+            this.game.display();
 
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
