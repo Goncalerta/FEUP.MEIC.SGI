@@ -15,13 +15,14 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, radius, height, slices, stacks) {
+    constructor(scene, radius, height, pickingId, slices, stacks) {
         super(scene);
 
         this.radius = radius;
         this.height = height;
         this.slices = Math.ceil(slices);
         this.stacks = Math.ceil(stacks);
+        this.pickingId = pickingId
 
         this.cylinder = new MyCylinder(scene, radius, radius, height, slices, stacks);
         this.circle = new MyCircle(scene, radius, [0, 0, 0], slices);
@@ -40,10 +41,15 @@ export class MyChecker extends CGFobject {
         // ^^
     }
 
+    onClick(id) {
+        // TODO
+    }
+
     /**
      * Displays the checker
      */
     display() {
+        //this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
 
         this.scene.pushAppearance(this.material, this.topsTexture);
