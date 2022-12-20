@@ -7,7 +7,7 @@ export class MyGame {
         this.board = new MyBoard(scene, 0.5);
 
         // TODO just to test, remove later vv
-        this.checker = new MyChecker(scene, 2, 1, 50, 10);        
+        this.checker = new MyChecker(scene, 2, 1, 1, 50, 10);        
         // ^^
     }
 
@@ -15,9 +15,7 @@ export class MyGame {
         this.board.display();
 
         // TODO just to test, remove later vv
-        this.scene.pushMatrix();
         this.checker.display();
-        this.scene.popMatrix();
         // ^^
     }
 }

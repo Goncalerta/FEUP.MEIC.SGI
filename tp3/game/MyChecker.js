@@ -43,13 +43,14 @@ export class MyChecker extends CGFobject {
 
     onClick(id) {
         // TODO
+        console.log("Clicked checker with id " + id)
     }
 
     /**
      * Displays the checker
      */
     display() {
-        //this.scene.registerForPick(this.pickingId, this);
+        this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
 
         this.scene.pushAppearance(this.material, this.topsTexture);

@@ -69,26 +69,7 @@ export class XMLscene extends CGFscene {
 
         this.game = new MyGame(this);
 
-        // TODO(picking) the activation of picking capabilities in WebCGF
-        // will use a shader for picking purposes (lib\shaders\picking\vertex.glsl and lib\shaders\picking\fragment.glsl)
         this.setPickEnabled(true);
-    }
-
-    // TODO(picking)
-    logPicking() {
-        if (this.pickMode == false) {
-            // results can only be retrieved when picking mode is false
-            if (this.pickResults != null && this.pickResults.length > 0) {
-                for (let i = 0; i < this.pickResults.length; i++) {
-                    let obj = this.pickResults[i][0];
-                    if (obj) {
-                        obj.onClick(this.pickResults[i][1]);
-                        console.log("Picked object: " + obj + ", with pick id " + this.pickResults[i][1]);
-                    }
-                }
-                this.pickResults.splice(0, this.pickResults.length);
-            }
-        }
     }
 
     /**
@@ -391,26 +372,34 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    checkPicking() {
+        if (this.pickMode == false) {
+            // results can only be retrieved when picking mode is false
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (let i = 0; i < this.pickResults.length; i++) {
+                    let obj = this.pickResults[i][0];
+                    if (obj) {
+                        obj.onClick(this.pickResults[i][1]);
+                    }
+                }
+                this.pickResults.splice(0, this.pickResults.length);
+            }
+        }
+    }
+
     /**
      * Displays the scene.
      */
     display() {
-        // TODO(picking) When picking is enabled, the scene's display method is called once for picking, 
-        // and then again for rendering.
-        // logPicking does nothing in the beginning of the first pass (when pickMode is true)
-        // during the first pass, a picking buffer is filled.
-        // in the beginning of the second pass (pickMode false), logPicking checks the buffer and
-        // collects the id's of the picked object(s) 
-        this.logPicking();
-
-        // this resets the picking buffer (association between objects and ids)
+        this.checkPicking();
         this.clearPickRegistration();
+
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-        this.gl.enable(this.gl.DEPTH_TEST); // TODO(picking) is this needed?
+        // this.gl.enable(this.gl.DEPTH_TEST); TODO is this needed?
 
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
@@ -435,7 +424,7 @@ export class XMLscene extends CGFscene {
             this.game.display();
 
             // Displays the scene (MySceneGraph function).
-            this.registerForPick(-1, null); // TODO(picking)
+            this.registerForPick(-1, null); // Disable picking for the scene graph.
             this.graph.displayScene();
         }
 
