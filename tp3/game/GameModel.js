@@ -89,9 +89,13 @@ export class GameModel {
             let currentY = y + deltaOneY;
             let opponentPiecesInPath = 0;
             while (currentX != targetKillX) {
-                if (this.board[currentY][currentX] == this.getOpponent(currentPlayer)) {
+                const currentTile = this.getPlayer(currentX, currentY);
+
+                if (currentTile == this.getOpponent(currentPlayer)) {
+                    // We can't jump over more than one opponent piece
                     opponentPiecesInPath++;
-                } else if (this.board[currentY][currentX] == currentPlayer) {
+                } else if (currentTile == currentPlayer) {
+                    // We can't jump over our own pieces
                     return false;
                 }
 
