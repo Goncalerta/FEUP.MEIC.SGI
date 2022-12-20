@@ -32,6 +32,16 @@ export class GameModel {
         }
     }
 
+    getOpponent(player) {
+        if (player == 1) {
+            return 2;
+        } else if (player == 2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     isQueen(x, y) {
         return this.board[y][x] == TileState.PLAYER_1_QUEEN || this.board[y][x] == TileState.PLAYER_2_QUEEN;
     }
@@ -52,56 +62,59 @@ export class GameModel {
     isMoveValid(move) {
         const x = move.from[0];
         const y = move.from[1];
-        const targetx = move.to[0];
-        const targety = move.to[1];
-        const deltax = Math.abs(targetx - x);
-        const deltay = Math.abs(targety - y);
+        const targetX = move.to[0];
+        const targetY = move.to[1];
+        const deltaX = Math.abs(targetX - x);
+        const deltaY = Math.abs(targetY - y);
 
-        if (this.board[targety][targetx] != TileState.EMPTY) {
+        if (this.board[targetY][targetX] != TileState.EMPTY) {
             return false;
         }
 
-        if (deltax != deltay) {
+        if (deltaX != deltaY) {
             return false;
         }
 
-        
+        const delta = deltaX; // for semantic purposes
+        if (delta == 0) {
+            return false;
+        }
+
+        const currentPlayer = this.getPlayer(x, y);
+        const deltaOneX = (targetX - x) / deltaX;
+        const deltaOneY = (targetY - y) / deltaY;
 
         if (isQueen(x, y)) {
-            // TODO
+            let currentX = x + deltaOneX;
+            let currentY = y + deltaOneY;
+            let opponentPiecesInPath = 0;
+            while (currentX != targetKillX) {
+                if (this.board[currentY][currentX] == this.getOpponent(currentPlayer)) {
+                    opponentPiecesInPath++;
+                } else if (this.board[currentY][currentX] == currentPlayer) {
+                    return false;
+                }
+
+                currentX += deltaOneX;
+                currentY += deltaOneY;
+            }
+
+            return opponentPiecesInPath == 0 || opponentPiecesInPath == 1;
         } else {
-            // TODO
-            if (deltax == 1) {
+            if (delta == 1) {
                 return true;
             }
 
-            if (deltax != 2) {
+            if (delta != 2) {
                 return false;
             }
 
-            const currentPlayer = this.getPlayer(x, y);
-            const deltaOne = (targetx - x) / deltax;
-            const targetKillX = targetx - deltaOne;
-            const targetKillY = targety - deltaOne;
-
-            // This commented logic is for the queen lol
-            // let currentX = x + deltaOne;
-            // let currentY = y + deltaOne;
-            // while (currentX != targetKillX) {
-            //     if (this.board[currentX][currentY] != TileState.EMPTY) {
-            //         return false;
-            //     }
-
-            //     currentX += deltaOne;
-            //     currentY += deltaOne;
-            // }
+            const targetKillX = x + deltaOneX;
+            const targetKillY = y + deltaOneY;
 
             const targetKill = this.getPlayer(targetKillX, targetKillY)
-            if (targetKill != 0 && targetKill != this.getPlayer(x, y)) {
-                return true;
-            }
-
-            return false;
+            
+            return targetKill != 0 && targetKill != currentPlayer;
         }
     }
 }
