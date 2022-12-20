@@ -35,6 +35,8 @@ export class XMLscene extends CGFscene {
         this.light7 = false;
         this.lightsCount = 0;
 
+        this.displayAxis = false;
+
         this.appearanceStack = [];
         this.fallbackMaterial = {
             shininess: 10,
@@ -43,6 +45,12 @@ export class XMLscene extends CGFscene {
             diffuse: [1.0, 1.0, 1.0, 1.0],
             specular: [0.0, 0.0, 0.0, 1.0],
         };
+        this.fallbackMaterialAppearance = new CGFappearance(this);
+        this.fallbackMaterialAppearance.setEmission(...this.fallbackMaterial.emission);
+        this.fallbackMaterialAppearance.setAmbient(...this.fallbackMaterial.ambient);
+        this.fallbackMaterialAppearance.setDiffuse(...this.fallbackMaterial.diffuse);
+        this.fallbackMaterialAppearance.setSpecular(...this.fallbackMaterial.specular);
+        this.fallbackMaterialAppearance.setShininess(this.fallbackMaterial.shininess);
 
         this.highlightShader = new CGFshader(this.gl, "shaders/highlight.vert", "shaders/highlight.frag");
         this.isHighlightActive = false;
@@ -259,6 +267,11 @@ export class XMLscene extends CGFscene {
             i++;
         }
 
+        // Axis
+        this.interface.gui
+            .add(this, 'displayAxis')
+            .name('Display Axis');
+
         this.sceneInited = true;
     }
 
@@ -410,7 +423,10 @@ export class XMLscene extends CGFscene {
 
         this.pushMatrix();
         this.toggleHighlightShader(false);
-        this.axis.display();
+        this.fallbackMaterialAppearance.apply();
+        if (this.displayAxis) {
+            this.axis.display();
+        }
 
         for (let i = 0; i < this.lightsCount; i++) {
             this.lights[i].setVisible(true);
@@ -418,9 +434,6 @@ export class XMLscene extends CGFscene {
         }
 
         if (this.sceneInited) {
-            // Draw axis
-            this.setDefaultAppearance();
-
             this.game.display();
 
             // Displays the scene (MySceneGraph function).
