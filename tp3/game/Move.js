@@ -4,3 +4,11 @@ export class Move {
         this.to = to;
     }
 }
+
+export class CompletedMove extends Move {
+    constructor(from, to, captured, promoted) {
+        super(from, to);
+        this.captured = captured;
+        this.promoted = promoted;
+    }
+}

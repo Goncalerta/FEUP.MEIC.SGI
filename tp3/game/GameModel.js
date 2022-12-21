@@ -1,3 +1,4 @@
+import { PlayerTurnState } from "./GameState";
 import { Move } from "./Move";
 
 const TileState = {
@@ -15,8 +16,58 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 export class GameModel {
     BOARD_SIZE = 8;
     
-    constructor() {
+    constructor(start_time) {
         this.initBoard();
+        this.game_state = new PlayerTurnState(this.setGameState.bind(this), 1, start_time);
+        this.score_p1 = 0;
+        this.score_p2 = 0;
+        this.start_time = start_time;
+        this.current_time = start_time;
+        this.previousMoves = [];
+        this.nextMoves = [];
+    }
+
+    executeMove(move) {
+        // TODO
+    }
+
+    executeMoveReverse(move) {
+        // TODO
+    }
+
+    move(move) {
+        this.previousMoves.push(move);
+        this.nextMoves = [];
+        this.executeMove(move);
+    }
+
+    undo() {
+        const move = this.previousMoves.pop();
+        if (!move) {
+            return;
+        }
+
+        this.nextMoves.push(move);
+        this.executeMoveReverse(move);
+    }
+
+    redo() {
+        const move = this.nextMoves.pop();
+        if (!move) {
+            return;
+        }
+
+        this.previousMoves.push(move);
+        this.executeMove(move);
+    }
+
+    setGameState(game_state) {
+        this.game_state = game_state;
+    }
+
+    update(t) {
+        this.current_time = t;
+        this.game_state.update(t);
     }
 
     initBoard() {
@@ -149,73 +200,4 @@ export class GameModel {
 
         return [captureMoves, nonCaptureMoves];
     }
-
-    // This function assumes some basic things about the move (for example, that the move is within the board and the current player is playing)
-    // This is because those checks probably make sense to be made elsewhere, in the picking detection, for example
-    // This function was a bad idea: first we usually need all valid moves (to highlight in the screen), not only whether a move is valid or not
-    // Second, we have currently no easy way of determining whether there are possible captures or not, which determines whether other moves are valid or not
-    // isMoveValid(move) {
-    //     const x = move.from[0];
-    //     const y = move.from[1];
-    //     const targetX = move.to[0];
-    //     const targetY = move.to[1];
-    //     const deltaX = Math.abs(targetX - x);
-    //     const deltaY = Math.abs(targetY - y);
-
-    //     if (this.board[targetY][targetX] != TileState.EMPTY) {
-    //         return false;
-    //     }
-
-    //     if (deltaX != deltaY) {
-    //         return false;
-    //     }
-
-    //     // for semantic purposes
-    //     const delta = deltaX;
-
-    //     if (isQueen(x, y)) {
-    //         const currentPlayer = this.getPlayer(x, y);
-    //         const deltaOneX = (targetX - x) / deltaX;
-    //         const deltaOneY = (targetY - y) / deltaY;
-
-    //         let currentX = x + deltaOneX;
-    //         let currentY = y + deltaOneY;
-    //         let opponentPiecesInPath = 0;
-    //         while (currentX != targetKillX) {
-    //             const currentTile = this.getPlayer(currentX, currentY);
-
-    //             if (currentTile == this.getOpponent(currentPlayer)) {
-    //                 // We can't jump over more than one opponent piece
-    //                 opponentPiecesInPath++;
-    //             } else if (currentTile == currentPlayer) {
-    //                 // We can't jump over our own pieces
-    //                 return false;
-    //             }
-
-    //             currentX += deltaOneX;
-    //             currentY += deltaOneY;
-    //         }
-
-    //         return opponentPiecesInPath == 0 || opponentPiecesInPath == 1;
-    //     } else {
-    //         if (delta == 1) {
-    //             return true;
-    //         }
-
-    //         if (delta != 2) {
-    //             return false;
-    //         }
-
-    //         const currentPlayer = this.getPlayer(x, y);
-    //         const deltaOneX = (targetX - x) / deltaX;
-    //         const deltaOneY = (targetY - y) / deltaY;
-
-    //         const targetKillX = x + deltaOneX;
-    //         const targetKillY = y + deltaOneY;
-
-    //         const targetKill = this.getPlayer(targetKillX, targetKillY);
-
-    //         return targetKill != 0 && targetKill != currentPlayer;
-    //     }
-    // }
 }
