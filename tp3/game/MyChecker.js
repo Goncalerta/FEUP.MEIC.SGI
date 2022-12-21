@@ -1,23 +1,9 @@
 import { CGFobject, CGFtexture } from '../../lib/CGF.js';
-import { MyCircle } from '../MyCircle.js';
-import { MyCylinder } from '../MyCylinder.js';
-
 
 /**
  * MyChecker class, representing a checker.
  */
 export class MyChecker extends CGFobject {
-    MATERIAL = {
-        shininess: 10,
-        emission:  [1.0, 1.0, 1.0, 1.0],
-        ambient:   [0.0, 0.0, 0.0, 1.0],
-        diffuse:   [0.0, 0.0, 0.0, 1.0],
-        specular:  [0.0, 0.0, 0.0, 1.0]
-    };
-
-    TOP_TEXTURE = "scenes/images/game/crown_test.png";
-    CYLINDER_TEXTURE = "scenes/images/space/wood_barrel_side.jpg";
-
     /**
      * @method constructor
      * @param {CGFscene} scene - Reference to MyScene object
@@ -26,20 +12,17 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, radius, height, pickingId, slices=50, stacks=10) {
+    constructor(scene, geometries, textures, pickingId, height, player = 1, position = [0, 0], topOffset = 0.0001) {
         super(scene);
 
-        this.radius = radius;
+        this.position = position;
+        this.geometries = geometries;
+        this.textures = textures;
+        this.pickingId = pickingId;
+        this.player = player;
+
         this.height = height;
-        this.slices = Math.ceil(slices);
-        this.stacks = Math.ceil(stacks);
-        this.pickingId = pickingId
-
-        this.cylinder = new MyCylinder(scene, radius, radius, height, slices, stacks);
-        this.circle = new MyCircle(scene, radius, [0, 0, 0], slices);
-
-        this.topsTexture = new CGFtexture(this.scene, this.TOP_TEXTURE);
-        this.cylinderTexture = new CGFtexture(this.scene, this.CYLINDER_TEXTURE);
+        this.topOffset = topOffset;
     }
 
     onClick(id) {
@@ -54,37 +37,39 @@ export class MyChecker extends CGFobject {
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
 
-        this.scene.pushAppearance(this.MATERIAL, this.topsTexture);
-        this.scene.translate(0, this.height, 0);
+        
+        
+        this.scene.translate(this.position[0], this.height, this.position[1]);
+        if (this.player === 1) {
+            this.scene.rotate(Math.PI, 0, 1, 0);
+        }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
+        
+
+        this.textures["side"].apply();
+        this.geometries["major_cylinder"].display();
+
+        this.scene.pushMatrix();
+        this.scene.translate(0, 0, this.topOffset);
+        this.geometries["minor_cylinder"].display();
+        this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.translate(0, 0, this.height);
-        this.circle.display();
+        this.textures["unpromoted_base"].apply();
+        this.geometries["major_circle"].display();
+
+        this.scene.translate(0, 0, this.topOffset);
+        this.textures["promoted_base"].apply();
+        this.geometries["minor_circle"].display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI, 1, 0, 0);
-        this.circle.display();
-        this.scene.popMatrix();
-
-        this.scene.popAppearance();
-
-        this.scene.pushMatrix();
-        this.scene.pushAppearance(this.MATERIAL, this.cylinderTexture);
-        this.cylinder.display();
-        this.scene.popAppearance();
+        this.textures["unpromoted_base"].apply();
+        this.geometries["major_circle"].display();
         this.scene.popMatrix();
 
         this.scene.popMatrix();
-    }
-
-    /**
-     * Updates texture coordinates based on length_s and length_t
-     * @param lengthS
-     * @param lengthT
-     */
-    updateTexCoords(lengthS, lengthT) {
-        // We don't need to update tex coords in quadrics
     }
 }

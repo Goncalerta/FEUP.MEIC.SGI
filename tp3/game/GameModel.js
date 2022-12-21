@@ -1,5 +1,5 @@
-import { PlayerTurnState } from "./GameState";
-import { Move } from "./Move";
+import { PlayerTurnState } from "./GameState.js";
+import { Move } from "./Move.js";
 
 const TileState = {
     WHITE: -1,
@@ -118,7 +118,7 @@ export class GameModel {
     }
 
     getPieces(player) {
-        pieces = [];
+        const pieces = [];
         for (let i = 0; i < this.BOARD_SIZE; i++) {
             for (let j = 0; j < this.BOARD_SIZE; j++) {
                 if (this.getPlayer(j, i) == player) {

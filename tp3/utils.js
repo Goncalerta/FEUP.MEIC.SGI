@@ -1,3 +1,5 @@
+import { CGFappearance } from "../lib/CGF.js";
+
 /**
  * Calculates the unit vector of the given vector
  * @param {list} vector to normalize
@@ -74,4 +76,17 @@ export function applyLengthsToTextureCoords(textureCoords, lengthS, lengthT) {
     }
 
     return textureCoordsCopy;
+}
+
+export function getAppearance(scene, material, texture=null) {
+    const appearance = new CGFappearance(scene);
+    appearance.setEmission(...material.emission);
+    appearance.setAmbient(...material.ambient);
+    appearance.setDiffuse(...material.diffuse);
+    appearance.setSpecular(...material.specular);
+    appearance.setShininess(material.shininess);
+    if (texture != null) {
+        appearance.setTexture(texture);
+    }
+    return appearance;
 }

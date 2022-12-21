@@ -1,4 +1,5 @@
 import {CGFappearance, CGFobject, CGFtexture} from '../../lib/CGF.js';
+import { getAppearance } from '../utils.js';
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
@@ -26,13 +27,7 @@ export class MyBoardTop extends CGFobject {
 
         this.realHalfSize = realHalfSize;
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
-        this.material = new CGFappearance(scene);
-        this.material.setEmission(...this.MATERIAL.emission);
-        this.material.setAmbient(...this.MATERIAL.ambient);
-        this.material.setDiffuse(...this.MATERIAL.diffuse);
-        this.material.setSpecular(...this.MATERIAL.specular);
-        this.material.setShininess(this.MATERIAL.shininess);
-        this.material.setTexture(this.texture);
+        this.material = getAppearance(scene, this.MATERIAL, this.texture);
 
         this.initBuffers();
     }
