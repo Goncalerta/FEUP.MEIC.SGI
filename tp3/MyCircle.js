@@ -35,6 +35,7 @@ export class MyCircle extends CGFobject {
         
         // center
         this.vertices.push(this.center[0], this.center[1], this.center[2]);
+        this.normals.push(0, 0, 1);
         this.texCoords.push(0.5, 0.5);
 
         // iterating around the circle
