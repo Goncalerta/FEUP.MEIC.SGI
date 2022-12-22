@@ -18,7 +18,7 @@ export class GameModel {
     
     constructor(start_time) {
         this.initBoard();
-        this.game_state = new PlayerTurnState(this.setGameState.bind(this), 1, start_time);
+        this.state = new PlayerTurnState(this, 1, start_time);
         this.score_p1 = 0;
         this.score_p2 = 0;
         this.start_time = start_time;
@@ -62,12 +62,12 @@ export class GameModel {
     }
 
     setGameState(game_state) {
-        this.game_state = game_state;
+        this.state = game_state;
     }
 
     update(t) {
         this.current_time = t;
-        this.game_state.update(t);
+        this.state.update(t);
     }
 
     initBoard() {

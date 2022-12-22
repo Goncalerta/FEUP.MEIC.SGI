@@ -12,10 +12,13 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, pickingId, height, player = 1, position = [0, 0], topOffset = 0.01) {
+    constructor(scene, geometries, textures, model, pickingId, tileSize, height, player = 1, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
-        this.position = position;
+        this.model = model;
+
+        this.tileSize = tileSize;
+        this.position = [(position[0] - 3.5) * tileSize, -(position[1] - 3.5) * tileSize];
         this.geometries = geometries;
         this.textures = textures;
         this.pickingId = pickingId;
@@ -29,7 +32,8 @@ export class MyChecker extends CGFobject {
 
     onClick(id) {
         // TODO
-        console.log("Clicked checker with id " + id)
+        console.log("Clicked checker with id " + id + " at position " + [this.position[0]/this.tileSize + 3.5, -this.position[1]/this.tileSize + 3.5]);
+        this.model.state.selectPiece(this.position[0]/this.tileSize + 3.5, -this.position[1]/this.tileSize + 3.5);
     }
 
     /**

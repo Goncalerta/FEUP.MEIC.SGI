@@ -69,16 +69,12 @@ export class MyCheckerGroup {
 
         for (let i = 0; i < p1_pieces.length; i++) {
             const piece = p1_pieces[i];
-            piece[0] = (piece[0] - 3.5) * tileSize;
-            piece[1] = -(piece[1] - 3.5) * tileSize;
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, 100 + i, height, 1, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.model, 100 + i, tileSize, height, 1, piece));
         }
 
         for (let i = 0; i < p2_pieces.length; i++) {
             const piece = p2_pieces[i];
-            piece[0] = (piece[0] - 3.5) * tileSize;
-            piece[1] = -(piece[1] - 3.5) * tileSize;
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, 200 + i, height, 2, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.model, 200 + i, tileSize, height, 2, piece));
         }
     }
 
