@@ -1,4 +1,4 @@
-import { CGFobject, CGFtexture } from '../../lib/CGF.js';
+import { CGFobject } from '../../lib/CGF.js';
 
 /**
  * MyChecker class, representing a checker.
