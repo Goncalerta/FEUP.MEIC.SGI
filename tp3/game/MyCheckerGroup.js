@@ -8,12 +8,20 @@ import { MyChecker } from "./MyChecker.js";
  * MyRectangle class, representing a rectangle in XY plane.
  */
 export class MyCheckerGroup {
-    MATERIAL = {
-        shininess: 10,
-        emission: [0.3, 0.24, 0.24, 1.0],
-        ambient: [0.7, 0.6, 0.6, 1.0],
-        diffuse: [0.9, 0.7, 0.7, 1.0],
-        specular: [0.8, 0.6, 0.6, 1.0],
+    MATERIAL_P1 = {
+        shininess: 5,
+        emission: [0.05, 0.05, 0.05, 1.0],
+        ambient: [0.01, 0.01, 0.01, 1.0],
+        diffuse: [0.15, 0.15, 0.15, 1.0],
+        specular: [0.96, 0.95, 0.95, 1.0],
+    };
+
+    MATERIAL_P2 = {
+        shininess: 5,
+        emission: [0.3, 0.01, 0.005, 1.0],
+        ambient: [0.3, 0.01, 0.005, 1.0],
+        diffuse: [0.9, 0.3, 0.29, 1.0],
+        specular: [0.96, 0.96, 0.96, 1.0],
     };
 
     PIECE_HEIGHT = 0.1;
@@ -21,7 +29,6 @@ export class MyCheckerGroup {
 
     UNPROMOTED_BASE_TEXTURE = "scenes/images/game/checker_base.png";
     PROMOTED_BASE_TEXTURE = "scenes/images/game/checker_base_crown.png";
-    SIDE_TEXTURE = "scenes/images/game/checker_side.png";
 
     /**
      * @constructor
@@ -37,15 +44,15 @@ export class MyCheckerGroup {
         this.scene = scene;
         this.model = model;
         this.textures_p1 = {
-            "unpromoted_base": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.UNPROMOTED_BASE_TEXTURE)),
-            "promoted_base": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.PROMOTED_BASE_TEXTURE)),
-            "side": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.SIDE_TEXTURE)),
+            "unpromoted_base": getAppearance(scene, this.MATERIAL_P1, new CGFtexture(scene, this.UNPROMOTED_BASE_TEXTURE)),
+            "promoted_base": getAppearance(scene, this.MATERIAL_P1, new CGFtexture(scene, this.PROMOTED_BASE_TEXTURE)),
+            "side": getAppearance(scene, this.MATERIAL_P1),
         };
 
         this.textures_p2 = {
-            "unpromoted_base": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.UNPROMOTED_BASE_TEXTURE)),
-            "promoted_base": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.PROMOTED_BASE_TEXTURE)),
-            "side": getAppearance(scene, this.MATERIAL, new CGFtexture(scene, this.SIDE_TEXTURE)),
+            "unpromoted_base": getAppearance(scene, this.MATERIAL_P2, new CGFtexture(scene, this.UNPROMOTED_BASE_TEXTURE)),
+            "promoted_base": getAppearance(scene, this.MATERIAL_P2, new CGFtexture(scene, this.PROMOTED_BASE_TEXTURE)),
+            "side": getAppearance(scene, this.MATERIAL_P2),
         };
 
         this.geometries = {

@@ -12,7 +12,7 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, pickingId, height, player = 1, position = [0, 0], topOffset = 0.0001) {
+    constructor(scene, geometries, textures, pickingId, height, player = 1, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
         this.position = position;
@@ -22,6 +22,8 @@ export class MyChecker extends CGFobject {
         this.player = player;
 
         this.height = height;
+
+        // TODO basically promotion will be animated by rotating the checker and then the offset will pop from 0.01 to 1.0
         this.topOffset = topOffset;
     }
 
@@ -50,7 +52,7 @@ export class MyChecker extends CGFobject {
         this.geometries["major_cylinder"].display();
 
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.topOffset);
+        this.scene.translate(0, 0, this.topOffset*this.height);
         this.geometries["minor_cylinder"].display();
         this.scene.popMatrix();
 
@@ -59,7 +61,7 @@ export class MyChecker extends CGFobject {
         this.textures["unpromoted_base"].apply();
         this.geometries["major_circle"].display();
 
-        this.scene.translate(0, 0, this.topOffset);
+        this.scene.translate(0, 0, this.topOffset*this.height);
         this.textures["promoted_base"].apply();
         this.geometries["minor_circle"].display();
         this.scene.popMatrix();
