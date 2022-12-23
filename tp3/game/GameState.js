@@ -19,7 +19,7 @@ export class PlayerTurnState extends GameState {
     }
 
     selectPiece(x, y) {
-        if (this.model.getPlayer(x, y) !== this.player) {
+        if (this.model.getPlayerId(x, y) !== this.player.getId()) {
             return;
         }
 

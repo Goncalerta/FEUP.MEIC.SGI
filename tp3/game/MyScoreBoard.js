@@ -11,8 +11,6 @@ export class MyScoreBoard extends CGFobject {
         this.gameModel = gameModel;
         this.font = new MyFont(scene, 0.5, 0.5, 0.01);
 
-        this.player1Name = player1Name;
-        this.player2Name = player2Name;
         this.player1NameShort = player1Name.substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2Name.substring(0, this.MAX_CHAR_NAME);
 
