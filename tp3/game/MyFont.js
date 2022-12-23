@@ -50,6 +50,7 @@ export class MyFont extends CGFobject {
             const charX = charCode % 16;
             const charY = Math.floor(charCode / 16);
 
+            // TODO: fix "WebGL: INVALID_OPERATION: uniformMatrix4fv: location is not from current program"
             this.textShader.setUniformsValues({'charCoords': [charX, charY]});
             this.quad.display();
             this.scene.translate(1, 0, 0);

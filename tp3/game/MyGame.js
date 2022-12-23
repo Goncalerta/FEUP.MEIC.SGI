@@ -13,7 +13,7 @@ export class MyGame {
         this.board = new MyBoard(scene, this.TILE_SIZE);
 
         // TODO just testing
-        this.scoreBoard = new MyScoreBoard(scene, "DIOGO", "PEDRO");
+        this.scoreBoard = new MyScoreBoard(scene, this.model, "DIOGO", "PEDRO");
     }
 
     display() {

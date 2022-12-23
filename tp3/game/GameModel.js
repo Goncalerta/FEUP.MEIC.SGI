@@ -15,6 +15,8 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
 export class GameModel {
     BOARD_SIZE = 8;
+    ROUND_TIME = 30; // TODO adjust values
+    MAX_GAME_TIME = 300; // TODO adjust values
     
     constructor(start_time) {
         this.initBoard();
@@ -93,6 +95,16 @@ export class GameModel {
             return 2;
         } else if (player == 2) {
             return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    getScore(player) {
+        if (player == 1) {
+            return this.score_p1;
+        } else if (player == 2) {
+            return this.score_p2;
         } else {
             return 0;
         }

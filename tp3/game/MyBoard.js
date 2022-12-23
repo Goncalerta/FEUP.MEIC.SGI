@@ -23,7 +23,7 @@ export class MyBoard {
     }
 
     squareClickHandler(row, column) {
-        
+        // TODO
     }
 
     display() {
