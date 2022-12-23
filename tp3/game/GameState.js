@@ -5,7 +5,13 @@ class GameState {
 
     update(t) {}
 
+    getSelectedPiece() {
+        return null;
+    }
+
     selectPiece(x, y) {}
+
+    selectTile(x, y) {}
 }
 
 export class PlayerTurnState extends GameState {
@@ -23,10 +29,9 @@ export class PlayerTurnState extends GameState {
             return;
         }
 
-        // TODO get valid moves
-        console.log("Selected piece at " + x + ", " + y);
+        // TODO get valid moves        
 
-        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.model.board[x][y]));
+        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, [x, y]));
     }
 
     update(t) {
@@ -39,6 +44,30 @@ export class PieceSelectedState extends PlayerTurnState {
     constructor(model, player, start_time, t, piece) {
         super(model, player, start_time, t);
         this.piece = piece;
+    }
+
+    selectPiece(x, y) {
+        if (x == this.piece[0] && y == this.piece[1]) {
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
+            return;
+        }
+
+        if (this.model.getPlayer(x, y) === this.player) {
+            super.selectPiece(x, y);
+        } else {
+            console.log("selecting tile")
+            this.selectTile(x, y);
+        }
+    }
+
+    selectTile(x, y) {
+        this.model.game.makeCross(x, y);
+        this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
+        return;
+    }
+
+    getSelectedPiece() {
+        return this.piece;
     }
 }
 

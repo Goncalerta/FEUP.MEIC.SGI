@@ -1,4 +1,5 @@
 import { CGFobject, CGFtexture } from '../../lib/CGF.js';
+import { arraysEqual } from '../utils.js';
 
 /**
  * MyChecker class, representing a checker.
@@ -12,15 +13,17 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, model, pickingId, tileSize, height, player = 1, position = [0, 0], topOffset = 0.01) {
+    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, height, player = 1, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
         this.model = model;
 
         this.tileSize = tileSize;
-        this.position = [(position[0] - 3.5) * tileSize, -(position[1] - 3.5) * tileSize];
+        this.setPosition(position);
         this.geometries = geometries;
-        this.textures = textures;
+        this.selected = false;
+        this.texture = textures;
+        this.texturesSelected = texturesSelected;
         this.pickingId = pickingId;
         this.player = player;
 
@@ -30,16 +33,22 @@ export class MyChecker extends CGFobject {
         this.topOffset = topOffset;
     }
 
+    setPosition(position) {
+        this.position = [(position[0] - 3.5) * this.tileSize, -(position[1] - 3.5) * this.tileSize];
+        this.boardPosition = position;
+    }
+
     onClick(id) {
-        // TODO
-        console.log("Clicked checker with id " + id + " at position " + [this.position[0]/this.tileSize + 3.5, -this.position[1]/this.tileSize + 3.5]);
-        this.model.state.selectPiece(this.position[0]/this.tileSize + 3.5, -this.position[1]/this.tileSize + 3.5);
+        this.model.state.selectPiece(...this.boardPosition);
     }
 
     /**
      * Displays the checker
      */
     display() {
+        const selected = arraysEqual(this.model.state.getSelectedPiece(), this.boardPosition);
+        const texture = selected? this.texturesSelected : this.texture;
+
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
 
@@ -52,7 +61,7 @@ export class MyChecker extends CGFobject {
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
         
 
-        this.textures["side"].apply();
+        texture["side"].apply();
         this.geometries["major_cylinder"].display();
 
         this.scene.pushMatrix();
@@ -62,17 +71,17 @@ export class MyChecker extends CGFobject {
 
         this.scene.pushMatrix();
         this.scene.translate(0, 0, this.height);
-        this.textures["unpromoted_base"].apply();
+        texture["unpromoted_base"].apply();
         this.geometries["major_circle"].display();
 
         this.scene.translate(0, 0, this.topOffset*this.height);
-        this.textures["promoted_base"].apply();
+        texture["promoted_base"].apply();
         this.geometries["minor_circle"].display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI, 1, 0, 0);
-        this.textures["unpromoted_base"].apply();
+        texture["unpromoted_base"].apply();
         this.geometries["major_circle"].display();
         this.scene.popMatrix();
 

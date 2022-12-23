@@ -24,6 +24,14 @@ export class MyCheckerGroup {
         specular: [0.96, 0.96, 0.96, 1.0],
     };
 
+    MATERIAL_SELECTED = {
+        shininess: 5,
+        emission: [0.2, 0.3, 0.005, 1.0],
+        ambient: [0.2, 0.3, 0.005, 1.0],
+        diffuse: [0.3, 1.0, 0.1, 1.0],
+        specular: [0.8, 1.0, 0.8, 1.0],
+    };
+
     PIECE_HEIGHT = 0.1;
     PIECE_TILE_RATIO = 0.4;
 
@@ -55,6 +63,12 @@ export class MyCheckerGroup {
             "side": getAppearance(scene, this.MATERIAL_P2),
         };
 
+        this.textures_selected = {
+            "unpromoted_base": getAppearance(scene, this.MATERIAL_SELECTED, new CGFtexture(scene, this.UNPROMOTED_BASE_TEXTURE)),
+            "promoted_base": getAppearance(scene, this.MATERIAL_SELECTED, new CGFtexture(scene, this.PROMOTED_BASE_TEXTURE)),
+            "side": getAppearance(scene, this.MATERIAL_SELECTED),
+        }
+
         this.geometries = {
             "major_cylinder": new MyCylinder(scene, radius, radius, height, 50, 10),
             "minor_cylinder": new MyCylinder(scene, radius*0.8, radius*0.8, height, 50, 10),
@@ -69,12 +83,12 @@ export class MyCheckerGroup {
 
         for (let i = 0; i < p1_pieces.length; i++) {
             const piece = p1_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.model, 100 + i, tileSize, height, 1, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.textures_selected, this.model, 100 + i, tileSize, height, 1, piece));
         }
 
         for (let i = 0; i < p2_pieces.length; i++) {
             const piece = p2_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.model, 200 + i, tileSize, height, 2, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.textures_selected, this.model, 200 + i, tileSize, height, 2, piece));
         }
     }
 

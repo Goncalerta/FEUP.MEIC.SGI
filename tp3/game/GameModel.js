@@ -16,7 +16,8 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 export class GameModel {
     BOARD_SIZE = 8;
     
-    constructor(start_time) {
+    constructor(game, start_time) {
+        this.game = game;
         this.initBoard();
         this.state = new PlayerTurnState(this, 1, start_time);
         this.score_p1 = 0;
@@ -100,6 +101,10 @@ export class GameModel {
 
     isQueen(x, y) {
         return this.board[y][x] == TileState.PLAYER_1_QUEEN || this.board[y][x] == TileState.PLAYER_2_QUEEN;
+    }
+
+    isRegular(x, y) {
+        return this.board[y][x] == TileState.PLAYER_1 || this.board[y][x] == TileState.PLAYER_2;
     }
 
     getPlayer(x, y) {

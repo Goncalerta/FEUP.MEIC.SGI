@@ -1,4 +1,5 @@
 import { MyBoardTop } from "./MyBoardTop.js";
+import { MyBoardTileGroup } from "./MyBoardTileGroup.js";
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
@@ -15,18 +16,19 @@ export class MyBoard {
      * @param y1 y coordinate of first point.
      * @param y2 y coordinate of second point.
      */
-    constructor(scene, tileSize) {
+    constructor(scene, model, tileSize) {
         this.scene = scene;
         this.tileSize = tileSize;
         this.realHalfSize = (this.EDGE_SIZE + this.NUM_TILES_SIDE / 2) * tileSize;
         this.boardTop = new MyBoardTop(scene, this.realHalfSize);
+        this.tiles = new MyBoardTileGroup(scene, model, tileSize);
     }
 
-    squareClickHandler(row, column) {
-        
-    }
-
-    display() {
+    display(pickMode) {
         this.boardTop.display();
+
+        if (pickMode) {
+            this.tiles.display();
+        }
     }
 }

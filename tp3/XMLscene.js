@@ -75,6 +75,7 @@ export class XMLscene extends CGFscene {
         this.setUpdatePeriod(100);
         this.startTime = null;
 
+        this.eventAnimations = new Set();
         this.game = new MyGame(this);
 
         this.setPickEnabled(true);
@@ -400,6 +401,14 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    animate(eventAnimation) {
+        this.eventAnimations.add(eventAnimation);
+    }
+
+    removeAnimation(eventAnimation) {
+        this.eventAnimations.delete(eventAnimation);
+    }
+
     /**
      * Displays the scene.
      */
@@ -434,7 +443,7 @@ export class XMLscene extends CGFscene {
         }
 
         if (this.sceneInited) {
-            this.game.display();
+            this.game.display(this.pickMode);
 
             // Displays the scene (MySceneGraph function).
             this.registerForPick(-1, null); // Disable picking for the scene graph.
@@ -465,6 +474,9 @@ export class XMLscene extends CGFscene {
             // traverse scene graph and, for nodes having animation,
             // compute the animation matrix
             this.graph.update(t);
+
+            this.game.update(t);
+            this.eventAnimations.forEach((eventAnimation) => eventAnimation.update(t));
         }
     }
 }

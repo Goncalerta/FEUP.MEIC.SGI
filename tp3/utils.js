@@ -90,3 +90,34 @@ export function getAppearance(scene, material, texture=null) {
     }
     return appearance;
 }
+
+export function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
+  
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
+
+export function interpolate(o1, o2, t) {
+    if (typeof o1 === 'number') {
+        return o1 + (o2 - o1) * t;
+    } else if (Array.isArray(o1)) {
+        const o = [];
+        for (let i = 0; i < o1.length; i++) {
+            o.push(interpolate(o1[i], o2[i], t));
+        }
+        return o;
+    } else if (typeof o1 === 'object') {
+        const o = {};
+        for (const key in o1) {
+            if (o1.hasOwnProperty(key)) {
+                o[key] = interpolate(o1[key], o2[key], t);
+            }
+        }
+        return o;
+    }
+}
