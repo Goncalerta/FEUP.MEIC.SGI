@@ -25,7 +25,7 @@ export class PlayerTurnState extends GameState {
     }
 
     selectPiece(x, y) {
-        if (this.model.getPlayer(x, y) !== this.player) {
+        if (this.model.getPlayerId(x, y) !== this.player.getId()) {
             return;
         }
 
@@ -52,10 +52,9 @@ export class PieceSelectedState extends PlayerTurnState {
             return;
         }
 
-        if (this.model.getPlayer(x, y) === this.player) {
+        if (this.model.getPlayerId(x, y) === this.player.getId()) {
             super.selectPiece(x, y);
         } else {
-            console.log("selecting tile")
             this.selectTile(x, y);
         }
     }

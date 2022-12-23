@@ -15,13 +15,18 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
 export class GameModel {
     BOARD_SIZE = 8;
+    // TODO adjust value
+    static GAME_TIME_LIMIT_PER_PLAYER = 3000;
     
-    constructor(game, start_time) {
+    constructor(game, start_time, player1, player2) {
         this.game = game;
         this.initBoard();
-        this.state = new PlayerTurnState(this, 1, start_time);
-        this.score_p1 = 0;
-        this.score_p2 = 0;
+
+        this.player1 = player1;
+        this.player2 = player2;
+
+        this.state = new PlayerTurnState(this, this.player1, start_time);
+
         this.start_time = start_time;
         this.current_time = start_time;
         this.previousMoves = [];
@@ -89,11 +94,21 @@ export class GameModel {
         }
     }
 
-    getOpponent(player) {
-        if (player == 1) {
+    getOpponentId(playerId) {
+        if (playerId == 1) {
             return 2;
-        } else if (player == 2) {
+        } else if (playerId == 2) {
             return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    getScore(playerId) {
+        if (playerId == 1) {
+            return this.player1.getScore();
+        } else if (playerId == 2) {
+            return this.player2.getScore();
         } else {
             return 0;
         }
@@ -107,7 +122,7 @@ export class GameModel {
         return this.board[y][x] == TileState.PLAYER_1 || this.board[y][x] == TileState.PLAYER_2;
     }
 
-    getPlayer(x, y) {
+    getPlayerId(x, y) {
         const tileState = this.board[y][x];
         if (tileState == TileState.PLAYER_1 || tileState == TileState.PLAYER_1_QUEEN) {
             return 1;
@@ -122,11 +137,11 @@ export class GameModel {
         return x >= 0 && x < this.BOARD_SIZE && y >= 0 && y < this.BOARD_SIZE;
     }
 
-    getPieces(player) {
+    getPieces(playerId) {
         const pieces = [];
         for (let i = 0; i < this.BOARD_SIZE; i++) {
             for (let j = 0; j < this.BOARD_SIZE; j++) {
-                if (this.getPlayer(j, i) == player) {
+                if (this.getPlayerId(j, i) == playerId) {
                     pieces.push([j, i]);
                 }
             }
@@ -134,11 +149,11 @@ export class GameModel {
         return pieces;
     }
 
-    getValidMoves(player) {
+    getValidMoves(playerId) {
         const captureMoves = [];
         const nonCaptureMoves = [];
 
-        const pieces = this.getPieces(player);
+        const pieces = this.getPieces(playerId);
         for (let i = 0; i < pieces.length; i++) {
             const piece = pieces[i];
             const moves = this.getValidMovesFor(piece[0], piece[1]);
@@ -150,16 +165,16 @@ export class GameModel {
     }
 
     getValidMovesFor(x, y) {
-        const currentPlayer = this.getPlayer(x, y);
+        const currentPlayerId = this.getPlayerId(x, y);
         const isQueen = this.isQueen(x, y);
 
         let directions = [];
         if (isQueen) {
             directions.push(P1_FORWARD_DIRECTIONS);
             directions.push(P2_FORWARD_DIRECTIONS);
-        } else if (currentPlayer == 1) {
+        } else if (currentPlayerId == 1) {
             directions.push(P1_FORWARD_DIRECTIONS);
-        } else if (currentPlayer == 2) {
+        } else if (currentPlayerId == 2) {
             directions.push(P2_FORWARD_DIRECTIONS);
         }
 
@@ -188,7 +203,7 @@ export class GameModel {
                     break;
                 }
 
-                if (this.getPlayer(currentX, currentY) !== currentPlayer) {
+                if (this.getPlayerId(currentX, currentY) !== currentPlayerId) {
                     currentX += direction[0];
                     currentY += direction[1];
 

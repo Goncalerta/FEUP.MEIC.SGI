@@ -13,7 +13,7 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, height, player = 1, position = [0, 0], topOffset = 0.01) {
+    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, height, playerId = 1, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
         this.model = model;
@@ -25,7 +25,7 @@ export class MyChecker extends CGFobject {
         this.texture = textures;
         this.texturesSelected = texturesSelected;
         this.pickingId = pickingId;
-        this.player = player;
+        this.playerId = playerId;
 
         this.height = height;
 
@@ -55,7 +55,7 @@ export class MyChecker extends CGFobject {
         
         
         this.scene.translate(this.position[0], this.height, this.position[1]);
-        if (this.player === 1) {
+        if (this.playerId === 1) {
             this.scene.rotate(Math.PI, 0, 1, 0);
         }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
