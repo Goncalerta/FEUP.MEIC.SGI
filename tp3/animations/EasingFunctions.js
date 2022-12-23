@@ -9,3 +9,11 @@ export function smoothPeak(t) {
 export function popAndDisappear(t) {
     return Math.sqrt(1-(1.85*t-0.85)**2);
 }
+
+export function easeOutCubic(t) {
+    return 1 - (1 - t)**3;
+}
+
+export function loopbackFunction(f) {
+    return (t) => t > 0.5? f(2 - 2*t) : f(2*t);
+}

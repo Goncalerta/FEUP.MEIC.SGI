@@ -1,5 +1,6 @@
 import { MyBoardTop } from "./MyBoardTop.js";
 import { MyBoardTileGroup } from "./MyBoardTileGroup.js";
+import { MyBoardHintGroup } from "./MyBoardHintGroup.js";
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
@@ -22,6 +23,7 @@ export class MyBoard {
         this.realHalfSize = (this.EDGE_SIZE + this.NUM_TILES_SIDE / 2) * tileSize;
         this.boardTop = new MyBoardTop(scene, this.realHalfSize);
         this.tiles = new MyBoardTileGroup(scene, model, tileSize);
+        this.moveHints = new MyBoardHintGroup(scene, model, tileSize);
     }
 
     display(pickMode) {
@@ -29,6 +31,8 @@ export class MyBoard {
 
         if (pickMode) {
             this.tiles.display();
+        } else {
+            this.moveHints.display();
         }
     }
 }

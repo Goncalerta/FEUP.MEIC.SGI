@@ -170,12 +170,12 @@ export class GameModel {
 
         let directions = [];
         if (isQueen) {
-            directions.push(P1_FORWARD_DIRECTIONS);
-            directions.push(P2_FORWARD_DIRECTIONS);
+            directions.push(...P1_FORWARD_DIRECTIONS);
+            directions.push(...P2_FORWARD_DIRECTIONS);
         } else if (currentPlayerId == 1) {
-            directions.push(P1_FORWARD_DIRECTIONS);
+            directions.push(...P1_FORWARD_DIRECTIONS);
         } else if (currentPlayerId == 2) {
-            directions.push(P2_FORWARD_DIRECTIONS);
+            directions.push(...P2_FORWARD_DIRECTIONS);
         }
 
         const nonCaptureMoves = [];
