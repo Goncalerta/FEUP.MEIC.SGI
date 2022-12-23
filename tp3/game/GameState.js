@@ -16,10 +16,14 @@ class GameState {
     selectPiece(x, y) {}
 
     selectTile(x, y) {}
+
+    getCurrentPlayer() {
+        return null;
+    }
 }
 
 export class PlayerTurnState extends GameState {
-    TURN_TIME_LIMIT = 300;
+    static TURN_TIME_LIMIT = 300;
 
     constructor(model, player, start_time, t = null, validMoves = null) {
         super(model);
@@ -42,6 +46,15 @@ export class PlayerTurnState extends GameState {
     update(t) {
         this.current_time = t;
         // TODO check if time is up
+    }
+
+    getCurrentPlayer() {
+        return this.player;
+    }
+
+    getRemainingTime() {
+        const t = PlayerTurnState.TURN_TIME_LIMIT - Math.round((this.current_time - this.start_time) / 1000);
+        return t > 0 ? t : 0;
     }
 }
 
@@ -77,6 +90,10 @@ export class PieceSelectedState extends PlayerTurnState {
 
     getMoveHints() {
         return this.filteredValidMoves.map(move => move.to);
+    }
+
+    getCurrentPlayer() {
+        return this.player;
     }
 }
 

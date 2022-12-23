@@ -11,14 +11,16 @@ export class MyGame {
     constructor(scene) {
         this.scene = scene;
 
-        // TODO just testing
+        // TODO just testing the names
         this.player1 = new Player(1, "DIOGO");
         this.player2 = new Player(2, "PEDRO");
-        this.scoreBoard = new MyScoreBoard(scene, this.model, this.player1, this.player2);
 
-        this.model = new GameModel(this, 0, this.player1, this.player2); // TODO start time (depends on main menu logic probably)
+        const startTime = new Date().getTime(); // TODO start time (depends on main menu logic probably)
+        this.model = new GameModel(this, startTime, this.player1, this.player2);
         this.checkers = new MyCheckerGroup(scene, this.model, this.TILE_SIZE);
         this.board = new MyBoard(scene, this.model, this.TILE_SIZE);
+
+        this.scoreBoard = new MyScoreBoard(scene, this.model, this.player1, this.player2);
 
         this.crosses = new Set();
     }
@@ -48,7 +50,7 @@ export class MyGame {
         if (!pickMode) {
             this.crosses.forEach(cross => cross.display());
         }
-        
+
         this.board.display(pickMode);
         this.checkers.display();
     }

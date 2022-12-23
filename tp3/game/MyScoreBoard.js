@@ -1,6 +1,7 @@
 import { CGFobject } from '../../lib/CGF.js';
 import { MyFont } from './MyFont.js';
 import { secondsToFormattedTime } from '../utils.js';
+import { PlayerTurnState } from './GameState.js';
 
 export class MyScoreBoard extends CGFobject {
     MAX_CHAR_NAME = 5;
@@ -26,10 +27,14 @@ export class MyScoreBoard extends CGFobject {
         const player1TotalTimeLeftString = secondsToFormattedTime(this.player1.getGameTimeLeft());
         const player2TotalTimeLeftString = secondsToFormattedTime(this.player2.getGameTimeLeft());
 
-        // TODO get values from game model vv
-        const currentPlayerName = this.player1NameShort;
-        const currentPlayerTimeLeftString = secondsToFormattedTime(0);
-        // ^^
+        const gameState = this.gameModel.getGameState();
+        const currentPlayer = gameState.getCurrentPlayer();
+        const currentPlayerName = currentPlayer == null ? "-".repeat(this.MAX_CHAR_NAME) : currentPlayer.getName().substring(0, this.MAX_CHAR_NAME);
+
+        let currentPlayerTimeLeftString = secondsToFormattedTime(0);
+        if (gameState instanceof PlayerTurnState) {
+            currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
+        }
 
         this.scene.pushMatrix();
         this.font.setShader();
