@@ -45,7 +45,14 @@ export class MyFont extends CGFobject {
         this.scene.translate(0, 0, this.elevated);
         this.scene.scale(this.width, this.height, 1);
 
+        let cumulativeTranslation = 0;
         for (let i = 0; i < stringToDisplay.length; i++) {
+            if (stringToDisplay[i] === '\n') {
+                this.scene.translate(-cumulativeTranslation, -1, 0);
+                cumulativeTranslation = 0;
+                continue;
+            }
+
             const charCode = stringToDisplay.charCodeAt(i);
             const charX = charCode % 16;
             const charY = Math.floor(charCode / 16);
@@ -54,6 +61,7 @@ export class MyFont extends CGFobject {
             this.textShader.setUniformsValues({'charCoords': [charX, charY]});
             this.quad.display();
             this.scene.translate(1, 0, 0);
+            cumulativeTranslation += 1;
         }
 
         this.scene.popMatrix();

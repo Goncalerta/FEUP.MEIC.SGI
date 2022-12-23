@@ -1,3 +1,5 @@
+import { GameModel } from "./GameModel.js";
+
 export class Player {
     constructor(id, name, score=0, cumulativeTime=0) {
         this.id = id;
@@ -28,5 +30,9 @@ export class Player {
 
     changeCumulativeTime(delta) {
         this.cumulativeTime += delta;
+    }
+
+    getGameTimeLeft() {
+        return GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.cumulativeTime;
     }
 }

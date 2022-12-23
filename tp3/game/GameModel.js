@@ -15,9 +15,8 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
 export class GameModel {
     BOARD_SIZE = 8;
-    // TODO adjust values vv
-    ROUND_TIME = 30;
-    MAX_GAME_TIME = 300;
+    // TODO adjust value
+    static GAME_TIME_LIMIT_PER_PLAYER = 3000;
     
     constructor(start_time, player1, player2) {
         this.initBoard();
