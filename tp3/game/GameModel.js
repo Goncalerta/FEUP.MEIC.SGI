@@ -103,6 +103,10 @@ export class GameModel {
         return this.state;
     }
 
+    getOpponent(player) {
+        return player.getId() === 1 ? this.player2 : this.player1;
+    }
+
     update(t) {
         this.current_time = t;
         this.state.update(t);

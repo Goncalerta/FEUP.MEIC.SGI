@@ -112,7 +112,15 @@ export class PieceMovingState extends GameState {
         this.completedMove = completedMove;
         this.piece = piece;
 
-        this.piece.animateMove(completedMove);
+        this.piece.animateMove(completedMove, () => {
+            // TODO getOpponent should be changed to something more intelligent to know whether the player can (and will have to) capture more pieces
+            //      in principle this should be doable without a new state, the logic for the Player state probably can be revised for this scenario 
+            this.model.setGameState(new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time));
+        });
+    }
+
+    getCurrentPlayer() {
+        return this.player;
     }
 }
 

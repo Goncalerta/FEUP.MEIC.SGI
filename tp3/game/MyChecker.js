@@ -43,7 +43,7 @@ export class MyChecker extends CGFobject {
         this.boardPosition = position;
     }
 
-    animateMove(move) {
+    animateMove(move, onEndCallback) {
         const startPosition = this.calculatePosition(move.from);
         const endPosition = this.calculatePosition(move.to);
         const deltaPosition = [endPosition[0] - startPosition[0], endPosition[1] - startPosition[1]];
@@ -56,7 +56,7 @@ export class MyChecker extends CGFobject {
 
         const onEnd = () => {
             this.setPosition(move.to);
-            // TODO change game state
+            onEndCallback();
         };
 
         const onUpdate = (t) => {
