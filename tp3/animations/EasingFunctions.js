@@ -27,13 +27,13 @@ export function accelDecel(accel, between, deccel, xRatio, yRatio) {
     const inbetweenYRatio = 1 - 2 * yRatio;
     return (t) => {
         if (t <= xRatio) {
-            console.log('1', t, xRatio, yRatio, accel(t / xRatio) * yRatio);
+            // console.log('1', t, xRatio, yRatio, accel(t / xRatio) * yRatio);
             return accel(t / xRatio) * yRatio;
         } else if (t < 1 - xRatio) {
-            console.log('2', t, xRatio, yRatio, between((t - xRatio) / inbetweenXRatio) * inbetweenYRatio);
+            // console.log('2', t, xRatio, yRatio, between((t - xRatio) / inbetweenXRatio) * inbetweenYRatio);
             return yRatio + between((t - xRatio) / inbetweenXRatio) * inbetweenYRatio;
         } else {
-            console.log('3', t, xRatio, yRatio, 1 - yRatio + deccel((t - 1 + xRatio) / xRatio) * yRatio);
+            // console.log('3', t, xRatio, yRatio, 1 - yRatio + deccel((t - 1 + xRatio) / xRatio) * yRatio);
             return 1 - yRatio + deccel((t - 1 + xRatio) / xRatio) * yRatio;
         }
     };

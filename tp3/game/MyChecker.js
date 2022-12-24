@@ -51,7 +51,6 @@ export class MyChecker extends CGFobject {
 
         const accelerationTime = 0.5;
         const duration = 2 * accelerationTime + (absDelta - 1)/3;
-        console.log(move.from, move.to, absDelta, duration)
         const xRatio = accelerationTime / duration;
         const yRatio = 0.5 / absDelta;
 
