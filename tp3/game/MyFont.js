@@ -14,7 +14,7 @@ export class MyFont extends CGFobject {
         specular: [0, 0, 0, 1.0],
     };
 
-    constructor(scene, width=1, height=1, elevated=0) {
+    constructor(scene, elevated=0, colorRGBa=[0.0,0.0,0.0,1.0]) {
         super(scene);
        
         this.quad = new MyQuad(scene);
@@ -22,10 +22,11 @@ export class MyFont extends CGFobject {
         this.appearance = getAppearance(scene, this.MATERIAL, this.texture);
 
         this.textShader = new CGFshader(scene.gl, "shaders/font.vert", "shaders/font.frag");
-        this.textShader.setUniformsValues({'dims': [16, 16]});
+        this.textShader.setUniformsValues({
+            'dims': [16, 16],
+            'colorRGBa': colorRGBa
+        });
 
-        this.width = width;
-        this.height = height;
         this.elevated = elevated;
     }
 
@@ -38,30 +39,37 @@ export class MyFont extends CGFobject {
         this.scene.setActiveShaderSimple(this.scene.defaultShader);
     }
 
-    display(stringToDisplay) {
+    displayChar(char) {
+        const charCode = char.charCodeAt(0);
+        const charX = charCode % 16;
+        const charY = Math.floor(charCode / 16);
+        this.textShader.setUniformsValues({'charCoords': [charX, charY]});
+        this.quad.display();
+    }
+
+    displayCenteredEqualLines(stringToDisplay) {
+        const lines = stringToDisplay.split('\n');
+        const numLines = lines.length;
+
         this.appearance.apply();
 
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.elevated);
-        this.scene.scale(this.width, this.height, 1);
+        this.scene.translate(0.5, numLines/2.0 - 0.5, this.elevated);
 
-        let cumulativeTranslation = 0;
-        for (let i = 0; i < stringToDisplay.length; i++) {
-            if (stringToDisplay[i] === '\n') {
-                this.scene.translate(-cumulativeTranslation, -1, 0);
-                cumulativeTranslation = 0;
-                continue;
+        for (let i = 0; i < numLines; i++) {
+            const line = lines[i];
+            const lineLength = line.length;
+
+            // center line
+            this.scene.translate(-lineLength/2, 0, 0);
+
+            for (let j = 0; j < lineLength; j++) {
+                this.displayChar(line[j]);
+                this.scene.translate(1, 0, 0);
             }
 
-            const charCode = stringToDisplay.charCodeAt(i);
-            const charX = charCode % 16;
-            const charY = Math.floor(charCode / 16);
-
-            // TODO: fix "WebGL: INVALID_OPERATION: uniformMatrix4fv: location is not from current program"
-            this.textShader.setUniformsValues({'charCoords': [charX, charY]});
-            this.quad.display();
-            this.scene.translate(1, 0, 0);
-            cumulativeTranslation += 1;
+            // center line
+            this.scene.translate(-lineLength/2, -1, 0);
         }
 
         this.scene.popMatrix();

@@ -20,7 +20,7 @@ export class MyGame {
         this.checkers = new MyCheckerGroup(scene, this.model, this.TILE_SIZE);
         this.board = new MyBoard(scene, this.model, this.TILE_SIZE);
 
-        this.scoreBoard = new MyScoreBoard(scene, this.model, this.player1, this.player2);
+        this.scoreBoard = new MyScoreBoard(scene, this.model, this.player1, this.player2, 5, 2);
 
         this.crosses = new Set();
     }
@@ -45,7 +45,12 @@ export class MyGame {
     }
 
     display(pickMode) {
+        this.scene.pushMatrix();
+        this.scene.rotate(Math.PI / 2, 0, 1, 0);
+        this.scene.translate(0, 1, -this.TILE_SIZE * (this.model.BOARD_SIZE / 2 + 2) );
         this.scoreBoard.display();
+        this.scene.popMatrix();
+
 
         if (!pickMode) {
             this.crosses.forEach(cross => cross.display());
