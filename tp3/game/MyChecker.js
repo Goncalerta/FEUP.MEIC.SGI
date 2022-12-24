@@ -56,6 +56,7 @@ export class MyChecker extends CGFobject {
 
         const onEnd = () => {
             this.setPosition(move.to);
+            // TODO change game state
         };
 
         const onUpdate = (t) => {
@@ -63,6 +64,8 @@ export class MyChecker extends CGFobject {
                 startPosition[0] + deltaPosition[0] * t,
                 startPosition[1] + deltaPosition[1] * t,
             ];
+
+            // TODO collision detection
         };
 
         const animation = new EventAnimation(this.scene, duration, accelDecel(easeInCubic, identity, easeOutCubic, xRatio, yRatio), onEnd, onUpdate);
