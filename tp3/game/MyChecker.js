@@ -1,5 +1,6 @@
-import { CGFobject, CGFtexture } from '../../lib/CGF.js';
-import { arraysEqual } from '../utils.js';
+import { CGFobject } from '../../lib/CGF.js';
+import { accelDecel, easeOutCubic, easeInCubic, identity } from '../animations/EasingFunctions.js';
+import { EventAnimation } from '../animations/EventAnimation.js';
 
 /**
  * MyChecker class, representing a checker.
@@ -33,26 +34,55 @@ export class MyChecker extends CGFobject {
         this.topOffset = topOffset;
     }
 
+    calculatePosition(position) {
+        return [(position[0] - 3.5) * this.tileSize, -(position[1] - 3.5) * this.tileSize];
+    }
+
     setPosition(position) {
-        this.position = [(position[0] - 3.5) * this.tileSize, -(position[1] - 3.5) * this.tileSize];
+        this.position = this.calculatePosition(position);
         this.boardPosition = position;
     }
 
+    animateMove(move) {
+        const startPosition = this.calculatePosition(move.from);
+        const endPosition = this.calculatePosition(move.to);
+        const deltaPosition = [endPosition[0] - startPosition[0], endPosition[1] - startPosition[1]];
+        const absDelta = Math.abs(move.to[0] - move.from[0]);
+
+        const accelerationTime = 0.5;
+        const duration = 2 * accelerationTime + (absDelta - 1)/3;
+        console.log(move.from, move.to, absDelta, duration)
+        const xRatio = accelerationTime / duration;
+        const yRatio = 0.5 / absDelta;
+
+        const onEnd = () => {
+            this.setPosition(move.to);
+        };
+
+        const onUpdate = (t) => {
+            this.position = [
+                startPosition[0] + deltaPosition[0] * t,
+                startPosition[1] + deltaPosition[1] * t,
+            ];
+        };
+
+        const animation = new EventAnimation(this.scene, duration, accelDecel(easeInCubic, identity, easeOutCubic, xRatio, yRatio), onEnd, onUpdate);
+        animation.start(this.scene.currentTime);
+    }
+
     onClick(id) {
-        this.model.state.selectPiece(...this.boardPosition);
+        this.model.state.selectPiece(this, ...this.boardPosition);
     }
 
     /**
      * Displays the checker
      */
     display() {
-        const selected = arraysEqual(this.model.state.getSelectedPiece(), this.boardPosition);
+        const selected = this.model.state.getSelectedPiece() === this;
         const texture = selected? this.texturesSelected : this.texture;
 
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
-
-        
         
         this.scene.translate(this.position[0], this.height, this.position[1]);
         if (this.playerId === 1) {

@@ -6,12 +6,21 @@ export class EventAnimation {
      * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
      */
-    constructor(scene, duration, easingFunction=identity, onEnd=null) {
+    constructor(scene, duration, easingFunction=identity, onEnd=null, onUpdate=null) {
         this.scene = scene;
         this.duration = duration * 1000;
         this.easingFunction = easingFunction;
         this.onEndCallback = onEnd;
+        this.onUpdateCallback = onUpdate;
         this.over = false;
+    }
+
+    onEnd(onEnd) {
+        this.onEndCallback = onEnd;
+    }
+
+    onUpdate(onUpdate) {
+        this.onUpdateCallback = onUpdate;
     }
 
     start(t) {
@@ -56,6 +65,10 @@ export class EventAnimation {
             this.t = this.easingFunction.map(f => f(param));
         } else {
             this.t = this.easingFunction(param);
+        }
+
+        if (this.onUpdateCallback) {
+            this.onUpdateCallback(this.t);
         }
     }
 }

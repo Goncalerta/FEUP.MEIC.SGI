@@ -70,9 +70,8 @@ export class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
 
-        // set the update call every 100ms
-        // zero to disable it
-        this.setUpdatePeriod(100);
+        // set the update call every 30ms
+        this.setUpdatePeriod(30);
         this.startTime = null;
 
         this.eventAnimations = new Set();
@@ -464,6 +463,8 @@ export class XMLscene extends CGFscene {
             if (this.startTime === null) {
                 this.startTime = t;
             }
+
+            this.currentTime = t;
 
             this.highlightShader.setUniformsValues({
                 timeFactor: Math.cos(t * 0.0035) / 2 + 0.5,

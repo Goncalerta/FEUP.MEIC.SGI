@@ -13,7 +13,7 @@ class GameState {
         return [];
     }
 
-    selectPiece(x, y) {}
+    selectPiece(piece, x, y) {}
 
     selectTile(x, y) {}
 }
@@ -21,22 +21,22 @@ class GameState {
 export class PlayerTurnState extends GameState {
     TURN_TIME_LIMIT = 300;
 
-    constructor(model, player, start_time, t = null, validMoves = null) {
+    constructor(model, player, startTime, t = null, validMoves = null) {
         super(model);
         this.player = player;
-        this.start_time = start_time;
-        this.current_time = t !== null? t : start_time;
+        this.start_time = startTime;
+        this.current_time = t !== null? t : startTime;
         this.validMoves = validMoves? validMoves : this.model.getValidMoves(this.player.getId());
     }
 
-    selectPiece(x, y) {
+    selectPiece(piece, x, y) {
         if (this.model.getPlayerId(x, y) !== this.player.getId()) {
             return;
         }
 
         const filteredValidMoves = this.validMoves.filter(move => move.from[0] == x && move.from[1] == y);
 
-        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, [x, y]));
+        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, piece, [x, y]));
     }
 
     update(t) {
@@ -46,29 +46,35 @@ export class PlayerTurnState extends GameState {
 }
 
 export class PieceSelectedState extends PlayerTurnState {
-    constructor(model, player, start_time, t, validMoves, filteredValidMoves, piece) {
-        super(model, player, start_time, t, validMoves);
+    constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition) {
+        super(model, player, startTime, t, validMoves);
         this.piece = piece;
+        this.piecePosition = piecePosition;
         this.filteredValidMoves = filteredValidMoves;
     }
 
-    selectPiece(x, y) {
-        if (x == this.piece[0] && y == this.piece[1]) {
+    selectPiece(piece, x, y) {
+        if (x == this.piecePosition[0] && y == this.piecePosition[1]) {
             this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, this.validMoves));
             return;
         }
 
         if (this.model.getPlayerId(x, y) === this.player.getId()) {
-            super.selectPiece(x, y);
+            super.selectPiece(piece, x, y);
         } else {
             this.selectTile(x, y);
         }
     }
 
     selectTile(x, y) {
-        this.model.game.makeCross(x, y);
-        this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
-        return;
+        const move = this.filteredValidMoves.find(move => move.to[0] == x && move.to[1] == y);
+        if (move) {
+            const completedMove = this.model.move(move);
+            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.current_time, completedMove, this.piece));
+        } else {
+            this.model.game.makeCross(x, y);
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
+        }
     }
 
     getSelectedPiece() {
@@ -81,9 +87,15 @@ export class PieceSelectedState extends PlayerTurnState {
 }
 
 export class PieceMovingState extends GameState {
-    constructor(model) {
+    constructor(model, player, startTime, moveTime, completedMove, piece) {
         super(model);
+        this.player = player;
+        this.start_time = startTime;
+        this.move_time = moveTime;
+        this.completedMove = completedMove;
+        this.piece = piece;
 
+        this.piece.animateMove(completedMove);
     }
 }
 

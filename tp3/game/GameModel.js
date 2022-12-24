@@ -1,5 +1,5 @@
 import { PlayerTurnState } from "./GameState.js";
-import { Move } from "./Move.js";
+import { CompletedMove, Move } from "./Move.js";
 
 const TileState = {
     WHITE: -1,
@@ -33,18 +33,45 @@ export class GameModel {
         this.nextMoves = [];
     }
 
-    executeMove(move) {
-        // TODO
+    executeMove(completedMove) {
+        if (completedMove.promoted) {
+            this.board[completedMove.to[1]][completedMove.to[0]] = this.getPlayerQueen(completedMove.by);
+        } else {
+            this.board[completedMove.to[1]][completedMove.to[0]] = this.board[completedMove.from[1]][completedMove.from[0]];
+        }
+        
+        this.board[completedMove.from[1]][completedMove.from[0]] = TileState.EMPTY;
+
+        if (completedMove.captured) {
+            this.board[completedMove.captured[1]][completedMove.captured[0]] = TileState.EMPTY;
+        }
     }
 
-    executeMoveReverse(move) {
-        // TODO
+    executeMoveReverse(completedMove) {
+        if (completedMove.promoted) {
+            this.board[completedMove.from[1]][completedMove.from[0]] = this.getPlayerRegular(completedMove.by);
+        } else {
+            this.board[completedMove.from[1]][completedMove.from[0]] = this.board[completedMove.to[1]][completedMove.to[0]];
+        }
+
+        this.board[completedMove.to[1]][completedMove.to[0]] = TileState.EMPTY;
+
+        if (completedMove.captured) {
+            this.board[completedMove.captured[1]][completedMove.captured[0]] = completedMove.captured[2];
+        }
     }
 
     move(move) {
-        this.previousMoves.push(move);
+        const playerId = this.getPlayerId(...move.from);
+        const promoted = move.to[1] === this.getPromotionRow(playerId) && !this.isQueen(...move.from);
+        const captured = this.getCapturedPiece(move);
+
+        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted);
+
+        this.previousMoves.push(completedMove);
         this.nextMoves = [];
-        this.executeMove(move);
+        this.executeMove(completedMove);
+        return completedMove;
     }
 
     undo() {
@@ -55,6 +82,7 @@ export class GameModel {
 
         this.nextMoves.push(move);
         this.executeMoveReverse(move);
+        return move;
     }
 
     redo() {
@@ -65,6 +93,7 @@ export class GameModel {
 
         this.previousMoves.push(move);
         this.executeMove(move);
+        return move;
     }
 
     setGameState(game_state) {
@@ -92,6 +121,18 @@ export class GameModel {
                 }
             }
         }
+    }
+
+    getCapturedPiece(move) {
+        const dx = move.to[0] - move.from[0];
+        const dy = move.to[1] - move.from[1];
+        const capturedX = move.to[0] - dx / Math.abs(dx);
+        const capturedY = move.to[1] - dy / Math.abs(dy);
+        if (this.board[capturedY][capturedX] === TileState.EMPTY) {
+            return null;
+        }
+
+        return [capturedX, capturedY, this.board[capturedY][capturedX]];
     }
 
     getOpponentId(playerId) {
@@ -129,6 +170,30 @@ export class GameModel {
         } else if (tileState == TileState.PLAYER_2 || tileState == TileState.PLAYER_2_QUEEN) {
             return 2;
         } else {
+            return 0;
+        }
+    }
+
+    getPlayerQueen(playerId) {
+        if (playerId == 1) {
+            return TileState.PLAYER_1_QUEEN;
+        } else if (playerId == 2) {
+            return TileState.PLAYER_2_QUEEN;
+        }
+    }
+
+    getPlayerRegular(playerId) {
+        if (playerId == 1) {
+            return TileState.PLAYER_1;
+        } else if (playerId == 2) {
+            return TileState.PLAYER_2;
+        }
+    }
+
+    getPromotionRow(playerId) {
+        if (playerId == 1) {
+            return this.BOARD_SIZE - 1;
+        } else if (playerId == 2) {
             return 0;
         }
     }
