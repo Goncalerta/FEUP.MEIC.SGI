@@ -15,8 +15,7 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
 export class GameModel {
     BOARD_SIZE = 8;
-    // TODO adjust value
-    static GAME_TIME_LIMIT_PER_PLAYER = 3000;
+    static GAME_TIME_LIMIT_PER_PLAYER = PlayerTurnState.TURN_TIME_LIMIT * 10; // TODO adjust value
     
     constructor(game, start_time, player1, player2) {
         this.game = game;
@@ -98,6 +97,10 @@ export class GameModel {
 
     setGameState(game_state) {
         this.state = game_state;
+    }
+
+    getGameState() {
+        return this.state;
     }
 
     update(t) {
