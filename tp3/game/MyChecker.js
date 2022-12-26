@@ -151,6 +151,11 @@ export class MyChecker extends CGFobject {
 
                             animation.onEnd(() => {
                                 this.setPosition(move.to);
+
+                                if (move.promoted) {
+                                    this.animatePromote();
+                                }
+
                                 onEndCallback();
                             });
 
