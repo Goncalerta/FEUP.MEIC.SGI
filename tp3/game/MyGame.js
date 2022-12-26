@@ -19,7 +19,7 @@ export class MyGame {
 
         const startTime = new Date().getTime(); // TODO start time (depends on main menu logic probably)
         this.model = new GameModel(this, startTime, this.player1, this.player2);
-        this.checkers = new MyCheckerGroup(scene, this.model, this.TILE_SIZE);
+        this.checkers = new MyCheckerGroup(scene, this.model, this.player1, this.player2, this.TILE_SIZE);
         this.board = new MyBoard(scene, this.model, this.TILE_SIZE);
 
         const discardBoardZ = this.board.realHalfSize + this.DISCARD_BOARD_GAP;

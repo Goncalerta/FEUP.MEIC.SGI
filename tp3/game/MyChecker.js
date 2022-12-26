@@ -16,7 +16,7 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, radius, height, playerId = 1, position = [0, 0], topOffset = 0.01) {
+    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, radius, height, player, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
         this.model = model;
@@ -29,7 +29,7 @@ export class MyChecker extends CGFobject {
         this.texture = textures;
         this.texturesSelected = texturesSelected;
         this.pickingId = pickingId;
-        this.playerId = playerId;
+        this.player = player;
 
         this.height = height;
 
@@ -115,7 +115,7 @@ export class MyChecker extends CGFobject {
                     recoilAnimation.onEnd(() => {
                         const captureAnimation = new EventAnimation(this.scene, 1, [identity, smoothPeak]);
                         const begin = [capturedPiece.position[0], capturedPiece.position[2]];
-                        const end = this.scene.game.getDiscardBoard(this.model.getOpponentId(this.playerId)).fillSlot();
+                        const end = this.scene.game.getDiscardBoard(this.model.getOpponentId(this.player.getId())).fillSlot();
                         const delta = [end[0] - begin[0], end[2] - begin[1]];
                         // TODO take into account level, aka end[1]
                         
@@ -161,6 +161,7 @@ export class MyChecker extends CGFobject {
                         });
 
                         captureAnimation.start(this.scene.currentTime - insideTime);
+                        this.player.changeScore(1);
                     });
 
                     recoilAnimation.start(this.scene.currentTime - insideTime);
@@ -186,7 +187,7 @@ export class MyChecker extends CGFobject {
         this.scene.pushMatrix();
         
         this.scene.translate(this.position[0], this.position[1] + this.height, this.position[2]);
-        if (this.playerId === 1) {
+        if (this.player.getId() === 1) {
             this.scene.rotate(Math.PI, 0, 1, 0);
         }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
