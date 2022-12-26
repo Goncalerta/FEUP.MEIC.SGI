@@ -1,3 +1,5 @@
+import { identity } from './EasingFunctions.js';
+
 /**
  * Represents a generic animation, which may change more than just transformations, and which is triggered by a runtime event.
  */

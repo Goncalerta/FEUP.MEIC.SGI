@@ -1,6 +1,7 @@
 import { CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance } from '../lib/CGF.js';
-import { subtractVectors } from './utils.js';
+import { interpolate, subtractVectors } from './utils.js';
 import { MyGame } from './game/MyGame.js';
+import { EventAnimation } from './animations/EventAnimation.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -96,11 +97,24 @@ export class XMLscene extends CGFscene {
     /**
      * Changes the camera that is currently active.
      */
-    setCamera(camera) {
-        if (camera != null) {
-            this.camera = camera;
-            if (this.interface) this.interface.setActiveCamera(this.camera);
-        }
+    setCamera(cameraToSet) {
+        if (cameraToSet == null) return;
+
+        const prevCamera = this.camera;
+        const cameraAnimation = new EventAnimation(this, 1);
+
+        cameraAnimation.onEnd(() => {
+            this.camera = cameraToSet;
+            if (this.interface) this.interface.setActiveCamera(cameraToSet);
+        });
+
+        cameraAnimation.onUpdate((t) => {
+            const interpolatedCamera = interpolate(prevCamera, cameraToSet, t);
+            this.camera = interpolatedCamera;
+            if (this.interface) this.interface.setActiveCamera(interpolatedCamera);
+        });
+
+        cameraAnimation.start(this.currentTime ?? 0);
     }
 
     /**
