@@ -134,7 +134,7 @@ export class MyChecker extends CGFobject {
                             const startPosition = this.position;
                             const endPosition = this.calculatePosition(move.to);
                             const deltaPosition = [endPosition[0] - startPosition[0], endPosition[2] - startPosition[2]];
-                            const absDelta = Math.abs(move.to[0] - move.from[0]);
+                            const absDelta = Math.abs(move.to[0] - this.position[0]);
 
                             const accelerationTime = 0.5;
                             const velocity = 3;
