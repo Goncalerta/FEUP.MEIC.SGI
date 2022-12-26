@@ -1,4 +1,4 @@
-import { MyQuad } from "../MyQuad.js";
+import { MyRectangle } from "../MyRectangle.js";
 import { CGFobject, CGFtexture, CGFshader } from "../../lib/CGF.js";
 import { getAppearance } from '../utils.js';
 
@@ -17,7 +17,7 @@ export class MyFont extends CGFobject {
     constructor(scene, elevated=0, colorRGBa=[0.0,0.0,0.0,1.0]) {
         super(scene);
        
-        this.quad = new MyQuad(scene);
+        this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
         this.appearance = getAppearance(scene, this.MATERIAL, this.texture);
 

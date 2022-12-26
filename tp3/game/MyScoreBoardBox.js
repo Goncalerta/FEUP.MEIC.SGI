@@ -1,6 +1,6 @@
 import { CGFobject, CGFtexture } from "../../lib/CGF.js";
 import { getAppearance } from '../utils.js';
-import { MyQuad } from "../MyQuad.js";
+import { MyRectangle } from "../MyRectangle.js";
 
 export class MyScoreBoardBox extends CGFobject {
     TEXTURE_PATH = "scenes/images/game/wood.jpg";
@@ -15,7 +15,7 @@ export class MyScoreBoardBox extends CGFobject {
     constructor(scene) {
         super(scene);
 
-        this.quad = new MyQuad(scene);
+        this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
         this.appearance = getAppearance(scene, this.MATERIAL, this.texture);
     }
