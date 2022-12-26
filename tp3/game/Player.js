@@ -25,7 +25,7 @@ export class Player {
     }
 
     getCumulativeTime() {
-        return this.cumulativeTime;
+        return Math.round(this.cumulativeTime);
     }
 
     changeCumulativeTime(delta) {
@@ -33,6 +33,6 @@ export class Player {
     }
 
     getGameTimeLeft() {
-        return GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.cumulativeTime;
+        return GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.getCumulativeTime();
     }
 }

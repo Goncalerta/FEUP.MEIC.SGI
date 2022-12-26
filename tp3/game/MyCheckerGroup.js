@@ -46,7 +46,7 @@ export class MyCheckerGroup {
      * @param y1 y coordinate of first point.
      * @param y2 y coordinate of second point.
      */
-    constructor(scene, model, tileSize) {
+    constructor(scene, model, player1, player2, tileSize) {
         const radius = tileSize * this.PIECE_TILE_RATIO;
         const height = this.PIECE_HEIGHT;
         this.scene = scene;
@@ -83,12 +83,12 @@ export class MyCheckerGroup {
 
         for (let i = 0; i < p1_pieces.length; i++) {
             const piece = p1_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.textures_selected, this.model, 100 + i, tileSize, radius, height, 1, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.textures_selected, this.model, 100 + i, tileSize, radius, height, player1, piece));
         }
 
         for (let i = 0; i < p2_pieces.length; i++) {
             const piece = p2_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.textures_selected, this.model, 200 + i, tileSize, radius, height, 2, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.textures_selected, this.model, 200 + i, tileSize, radius, height, player2, piece));
         }
     }
 
