@@ -7,6 +7,7 @@ import { EventAnimation } from '../animations/EventAnimation.js';
  */
 export class MyChecker extends CGFobject {
     LEAP_HEIGHT = 0.8;
+    DEFAULT_TOP_OFFSET = 0.01;
 
     /**
      * @method constructor
@@ -122,30 +123,46 @@ export class MyChecker extends CGFobject {
                         const begin = [capturedPiece.position[0], capturedPiece.position[2]];
                         const end = this.scene.game.getDiscardBoard(this.model.getOpponentId(this.player.getId())).fillSlot();
                         const delta = [end[0] - begin[0], end[2] - begin[1]];
-                        // TODO take into account level, aka end[1]
-                        
+                        const level = end[1] * (this.height + 0.001);
+
                         captureAnimation.onUpdate((t) => {
                             capturedPiece.position = [
                                 begin[0] + delta[0] * t[0],
-                                this.LEAP_HEIGHT * t[1],
+                                Math.max(this.LEAP_HEIGHT * t[1], level),
                                 begin[1] + delta[1] * t[0],
                             ];
                         });
 
                         captureAnimation.onEnd(() => {
-                            capturedPiece.position = [end[0], 0, end[2]];
+                            capturedPiece.position = [end[0], Math.max(0, level), end[2]];
                             capturedPiece.boardPosition = null;
+
+                            if (capturedPiece.topOffset > this.DEFAULT_TOP_OFFSET) {
+                                const removeHeightAnimation = new EventAnimation(this.scene, 0.2, identity);
+                                const begin = capturedPiece.topOffset;
+                                const delta = this.DEFAULT_TOP_OFFSET - begin;
+
+                                removeHeightAnimation.onUpdate((t) => {
+                                    capturedPiece.topOffset = begin + delta * t;
+                                });
+
+                                removeHeightAnimation.onEnd(() => {
+                                    capturedPiece.topOffset = this.DEFAULT_TOP_OFFSET;
+                                });
+
+                                removeHeightAnimation.start(this.scene.currentTime);
+                            }
                             
                             const startPosition = this.position;
                             const endPosition = this.calculatePosition(move.to);
                             const deltaPosition = [endPosition[0] - startPosition[0], endPosition[2] - startPosition[2]];
-                            const absDelta = Math.abs(move.to[0] - this.position[0]);
+                            const absDelta = Math.abs(deltaPosition[0]);
 
                             const accelerationTime = 0.5;
                             const velocity = 3;
-                            const duration = 2 * accelerationTime + (absDelta - 1)/velocity;
+                            const duration = 2 * accelerationTime + (absDelta/this.tileSize - 1)/velocity;
                             const xRatio = accelerationTime / duration;
-                            const yRatio = 0.5 / absDelta;
+                            const yRatio = 0.5 * this.tileSize / absDelta;
 
                             const animation = new EventAnimation(this.scene, duration, accelDecel(easeInCubic, identity, easeOutCubic, xRatio, yRatio));
 
@@ -171,7 +188,7 @@ export class MyChecker extends CGFobject {
                         });
 
                         captureAnimation.start(this.scene.currentTime - insideTime);
-                        this.player.changeScore(1);
+                        this.player.changeScore(1); // TODO this should not be done inside MyChecker class
                     });
 
                     recoilAnimation.start(this.scene.currentTime - insideTime);
