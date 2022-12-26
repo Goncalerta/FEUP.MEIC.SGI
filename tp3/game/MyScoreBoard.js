@@ -25,6 +25,8 @@ export class MyScoreBoard extends CGFobject {
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);
+
+        this.currentPlayerTimeLeftString = secondsToFormattedTime(0);
     }
 
     display() {
@@ -38,9 +40,8 @@ export class MyScoreBoard extends CGFobject {
         const currentPlayer = gameState.getCurrentPlayer();
         const currentPlayerName = currentPlayer == null ? "-".repeat(this.MAX_CHAR_NAME) : currentPlayer.getName().substring(0, this.MAX_CHAR_NAME);
 
-        let currentPlayerTimeLeftString = secondsToFormattedTime(0);
         if (gameState instanceof PlayerTurnState) {
-            currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
+            this.currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
         }
         
         this.scene.pushMatrix();
@@ -56,7 +57,7 @@ export class MyScoreBoard extends CGFobject {
             this.player1NameShort + " " + player1ScoreString + " " + player1TotalTimeLeftString + "\n" +
             this.player2NameShort + " " + player2ScoreString + " " + player2TotalTimeLeftString + "\n\n" +
             "CURRENT PLAYER\n" +
-            "" + currentPlayerName + "    " + currentPlayerTimeLeftString
+            "" + currentPlayerName + "    " + this.currentPlayerTimeLeftString
         );
 
         this.font.resetShader();
