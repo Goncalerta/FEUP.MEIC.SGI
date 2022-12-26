@@ -30,22 +30,13 @@ export class EventAnimation {
         this.update(t);
     }
 
-    get() {
-        return this.t;
+    interrupt() {
+        this.scene.removeAnimation(this);
+        this.over = true;
     }
 
-    onEnd() {
-        if (this.over) {
-            return;
-        }
-
-        if (this.onEndCallback) {
-            this.onEndCallback();
-        }
-
-        this.scene.removeAnimation(this);
-        
-        this.over = true;
+    get() {
+        return this.t;
     }
 
     /**
@@ -55,7 +46,17 @@ export class EventAnimation {
     update(t) {
         if (t >= this.endTime) {
             this.t = 1;
-            this.onEnd();
+            
+            if (this.over) {
+                return;
+            }
+    
+            if (this.onEndCallback) {
+                this.onEndCallback();
+            }
+    
+            this.interrupt();
+
             return;
         }
 

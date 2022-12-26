@@ -131,6 +131,10 @@ export class GameModel {
     }
 
     getCapturedPiece(move) {
+        if (Math.abs(move.to[0] - move.from[0]) == 1) {
+            return; // Can't capture if only moving one tile
+        }
+
         const dx = move.to[0] - move.from[0];
         const dy = move.to[1] - move.from[1];
         const capturedX = move.to[0] - dx / Math.abs(dx);

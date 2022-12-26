@@ -2,11 +2,13 @@ import { GameModel } from './GameModel.js';
 import { MyAnimatedCross } from './MyAnimatedCross.js';
 import { MyBoard } from './MyBoard.js';
 import { MyCheckerGroup } from './MyCheckerGroup.js';
+import { MyDiscardBoard } from './MyDiscardBoard.js';
 import { MyScoreBoard } from './MyScoreBoard.js';
 import { Player } from './Player.js';
 
 export class MyGame {
     TILE_SIZE = 0.5;
+    DISCARD_BOARD_GAP = 0.15;
 
     constructor(scene) {
         this.scene = scene;
@@ -19,6 +21,10 @@ export class MyGame {
         this.model = new GameModel(this, startTime, this.player1, this.player2);
         this.checkers = new MyCheckerGroup(scene, this.model, this.TILE_SIZE);
         this.board = new MyBoard(scene, this.model, this.TILE_SIZE);
+
+        const discardBoardZ = this.board.realHalfSize + this.DISCARD_BOARD_GAP;
+        this.player1DiscardBoard = new MyDiscardBoard(scene, this.board.realHalfSize, this.TILE_SIZE, [0, 0, discardBoardZ], 1);
+        this.player2DiscardBoard = new MyDiscardBoard(scene, this.board.realHalfSize, this.TILE_SIZE, [0, 0, -discardBoardZ], -1);
 
         this.scoreBoard = new MyScoreBoard(scene, this.model, this.player1, this.player2, 5, 2);
 
@@ -40,6 +46,18 @@ export class MyGame {
         cross.start(this.model.current_time);
     }
 
+    getDiscardBoard(playerId) {
+        if (playerId == 1) {
+            return this.player1DiscardBoard;
+        } else if (playerId == 2) {
+            return this.player2DiscardBoard;
+        }
+    }
+
+    getChecker(x, y) {
+        return this.checkers.getChecker(x, y);
+    }
+
     update(t) {
         this.model.update(t);
     }
@@ -51,6 +69,8 @@ export class MyGame {
         this.scoreBoard.display();
         this.scene.popMatrix();
 
+        this.player1DiscardBoard.display();
+        this.player2DiscardBoard.display();
 
         if (!pickMode) {
             this.crosses.forEach(cross => cross.display());

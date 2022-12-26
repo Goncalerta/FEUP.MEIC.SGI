@@ -1,7 +1,7 @@
 import { CGFtexture } from "../../lib/CGF.js";
 import { MyCircle } from "../MyCircle.js";
 import { MyCylinder } from "../MyCylinder.js";
-import { getAppearance } from "../utils.js";
+import { arraysEqual, getAppearance } from "../utils.js";
 import { MyChecker } from "./MyChecker.js";
 
 /**
@@ -83,13 +83,17 @@ export class MyCheckerGroup {
 
         for (let i = 0; i < p1_pieces.length; i++) {
             const piece = p1_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.textures_selected, this.model, 100 + i, tileSize, height, 1, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p1, this.textures_selected, this.model, 100 + i, tileSize, radius, height, 1, piece));
         }
 
         for (let i = 0; i < p2_pieces.length; i++) {
             const piece = p2_pieces[i];
-            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.textures_selected, this.model, 200 + i, tileSize, height, 2, piece));
+            this.pieces.push(new MyChecker(scene, this.geometries, this.textures_p2, this.textures_selected, this.model, 200 + i, tileSize, radius, height, 2, piece));
         }
+    }
+
+    getChecker(x, y) {
+        return this.pieces.find((piece) => arraysEqual(piece.boardPosition, [x, y]));
     }
 
     display() {
