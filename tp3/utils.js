@@ -1,4 +1,4 @@
-import { CGFappearance } from "../lib/CGF.js";
+import { CGFappearance, CGFcamera } from "../lib/CGF.js";
 
 /**
  * Calculates the unit vector of the given vector
@@ -111,6 +111,13 @@ export function interpolate(o1, o2, t) {
             o.push(interpolate(o1[i], o2[i], t));
         }
         return o;
+    } else if (o1 instanceof CGFcamera) {
+        const fov = interpolate(o1.fov, o2.fov, t);
+        const near = interpolate(o1.near, o2.near, t);
+        const far = interpolate(o1.far, o2.far, t);
+        const position = interpolate(o1.position, o2.position, t);
+        const target = interpolate(o1.target, o2.target, t);
+        return new CGFcamera(fov, near, far, position, target);
     } else if (typeof o1 === 'object') {
         const o = {};
         for (const key in o1) {
