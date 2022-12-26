@@ -1,12 +1,12 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, gravityUp, gravityDown } from '../animations/EasingFunctions.js';
+import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, quadPeak, gravityUp, gravityDown } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 
 /**
  * MyChecker class, representing a checker.
  */
 export class MyChecker extends CGFobject {
-    LEAP_HEIGHT = 1.25;
+    LEAP_HEIGHT = 0.8;
 
     /**
      * @method constructor
@@ -118,7 +118,7 @@ export class MyChecker extends CGFobject {
                     });
 
                     recoilAnimation.onEnd(() => {
-                        const captureAnimation = new EventAnimation(this.scene, 1, [identity, smoothPeak]);
+                        const captureAnimation = new EventAnimation(this.scene, 1, [identity, quadPeak]);
                         const begin = [capturedPiece.position[0], capturedPiece.position[2]];
                         const end = this.scene.game.getDiscardBoard(this.model.getOpponentId(this.player.getId())).fillSlot();
                         const delta = [end[0] - begin[0], end[2] - begin[1]];
@@ -136,10 +136,10 @@ export class MyChecker extends CGFobject {
                             capturedPiece.position = [end[0], 0, end[2]];
                             capturedPiece.boardPosition = null;
                             
-                            const startPosition = this.calculatePosition(move.from);
+                            const startPosition = this.position;
                             const endPosition = this.calculatePosition(move.to);
                             const deltaPosition = [endPosition[0] - startPosition[0], endPosition[2] - startPosition[2]];
-                            const absDelta = Math.abs(move.to[0] - move.from[0]);
+                            const absDelta = Math.abs(move.to[0] - this.position[0]);
 
                             const accelerationTime = 0.5;
                             const velocity = 3;
@@ -219,6 +219,10 @@ export class MyChecker extends CGFobject {
     }
 
     onClick(id) {
+        if (!this.boardPosition) {
+            return;
+        }
+
         this.model.state.selectPiece(this, ...this.boardPosition);
     }
 
