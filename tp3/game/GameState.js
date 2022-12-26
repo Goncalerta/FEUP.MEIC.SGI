@@ -116,7 +116,7 @@ export class PieceMovingState extends GameState {
         this.piece.animateMove(completedMove, () => {
             const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
 
-            if (captureMoves.length > 0) {
+            if (completedMove.captured && captureMoves.length > 0) {
                 this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to));
             } else {
                 this.model.setGameState(new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time));
