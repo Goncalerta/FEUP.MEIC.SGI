@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak } from '../animations/EasingFunctions.js';
+import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, gravityUp, gravityDown } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 
 /**
@@ -32,8 +32,8 @@ export class MyChecker extends CGFobject {
         this.player = player;
 
         this.height = height;
+        this.rotationRatio = 0;
 
-        // TODO basically promotion will be animated by rotating the checker and then the offset will pop from 0.01 to 1.0
         this.topOffset = topOffset;
     }
 
@@ -65,6 +65,11 @@ export class MyChecker extends CGFobject {
 
         animation.onEnd(() => {
             this.setPosition(move.to);
+
+            if (move.promoted) {
+                this.animatePromote();
+            }
+
             onEndCallback();
         });
 
@@ -172,6 +177,47 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
+    animatePromote() {
+        const gravity = 9.8;
+        const heightToReach = this.height * 30;
+        const upDuration = Math.sqrt(2 * heightToReach / gravity);
+        const upAnimation = new EventAnimation(this.scene, upDuration, gravityUp(gravity));
+
+        upAnimation.onUpdate((t) => {
+            this.position[1] = heightToReach * t;
+
+            if (this.position[1] > this.radius) {
+                this.rotationRatio = (1 - (this.position[1] - this.radius) / (heightToReach - this.radius)) * 3;
+            }
+        });
+
+        upAnimation.onEnd(() => {
+            this.position[1] = heightToReach;
+
+            const downAnimation = new EventAnimation(this.scene, upDuration, gravityDown(gravity));
+
+            downAnimation.onUpdate((t) => {
+                this.position[1] = heightToReach * (1 - t);
+                this.topOffset = t;
+
+                if (this.position[1] > this.radius) {
+                    this.rotationRatio = (1 - (this.position[1] - this.radius) / (heightToReach - this.radius)) * 3;
+                } else {
+                    this.rotationRatio = 0.5;
+                }
+            });
+
+            downAnimation.onEnd(() => {
+                this.position[1] = 0;
+                this.topOffset = 1;
+            });
+
+            downAnimation.start(this.scene.currentTime);
+        });
+
+        upAnimation.start(this.scene.currentTime);
+    }
+
     onClick(id) {
         this.model.state.selectPiece(this, ...this.boardPosition);
     }
@@ -186,12 +232,14 @@ export class MyChecker extends CGFobject {
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
         
-        this.scene.translate(this.position[0], this.position[1] + this.height, this.position[2]);
+        this.scene.translate(this.position[0], this.position[1] + (this.rotationRatio == 0 ? this.height : 0), this.position[2]);
+        this.scene.rotate(this.rotationRatio * Math.PI * 2, 0, 0, 1);
+        this.scene.rotate(this.rotationRatio * Math.PI * 2, 0, 1, 0);
+
         if (this.player.getId() === 1) {
             this.scene.rotate(Math.PI, 0, 1, 0);
         }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
-        
 
         texture["side"].apply();
         this.geometries["major_cylinder"].display();

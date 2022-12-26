@@ -41,3 +41,11 @@ export function accelDecel(accel, between, deccel, xRatio, yRatio) {
         }
     };
 }
+
+export function gravityUp(g) {
+    return  (t) => 1 - 1 / (1 + g * t**2);
+}
+
+export function gravityDown(g) {
+    return (t) => 1 / (1 + g * (1 - t)**2);
+}
