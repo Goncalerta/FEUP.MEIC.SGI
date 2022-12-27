@@ -9,7 +9,7 @@ export class MyButtonGroup extends CGFobject {
     P2_SCENARIO_TEXTURE_PATH = "scenes/images/game/p2_scenario.png";
     PLAY_TEXTURE_PATH = "scenes/images/game/play.png";
 
-    constructor(scene, buttonWidth, buttonHeight, buttonDepth, buttonColorRGBA) {
+    constructor(scene, cameras, buttonWidth, buttonHeight, buttonDepth, buttonColorRGBA) {
         super(scene);
 
         this.buttonWidth = buttonWidth;
@@ -17,13 +17,13 @@ export class MyButtonGroup extends CGFobject {
         
         // TODO use proper callbacks
         let pickingId = 401;
-        this.undoButton =  new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
-        this.redoButton =  new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.REDO_TEXTURE_PATH, buttonColorRGBA);
-        this.povButton =   new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.SCENARIO_TEXTURE_PATH, buttonColorRGBA);
-        this.playButton =  new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
-        this.p1PovButton = new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.P1_SCENARIO_TEXTURE_PATH, buttonColorRGBA);
-        this.p2PovButton = new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.P2_SCENARIO_TEXTURE_PATH, buttonColorRGBA);
+        this.undoButton  = new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
+        this.redoButton  = new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.REDO_TEXTURE_PATH, buttonColorRGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => {}, buttonWidth, buttonHeight, buttonDepth, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
         // ^^
+        this.povButton   = new MyButton(scene, pickingId++, () => { cameras.setFrontCamera() }, buttonWidth, buttonHeight, buttonDepth, this.SCENARIO_TEXTURE_PATH, buttonColorRGBA);
+        this.p1PovButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(1) }, buttonWidth, buttonHeight, buttonDepth, this.P1_SCENARIO_TEXTURE_PATH, buttonColorRGBA);
+        this.p2PovButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(2) }, buttonWidth, buttonHeight, buttonDepth, this.P2_SCENARIO_TEXTURE_PATH, buttonColorRGBA);
 
         this.buttons = [
             [this.povButton, this.playButton],
@@ -34,6 +34,7 @@ export class MyButtonGroup extends CGFobject {
 
     display() {
         this.scene.pushMatrix();
+
         this.scene.translate(0, 1.1 * this.buttonHeight, 0);
         for (let i = 0; i < this.buttons.length; i++) {
             const row = this.buttons[i];

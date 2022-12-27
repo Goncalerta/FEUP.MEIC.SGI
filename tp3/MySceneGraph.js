@@ -10,8 +10,9 @@ import {CGFtexture} from '../lib/CGF.js';
 import { MyKeyframeAnimation } from './animations/MyKeyframeAnimation.js';
 import { MyTransformation, Transformations } from './animations/MyTransformation.js';
 import { MyKeyframe } from './animations/MyKeyframe.js';
+import { degreeToRad } from './utils.js';
 
-const DEGREE_TO_RAD = Math.PI / 180;
+
 const SECONDS_TO_MILLISECONDS = 1000;
 
 // Order of the groups in the XML document.
@@ -429,7 +430,7 @@ export class MySceneGraph {
 
                     // Add the new perspective camera
                     this.cameras[viewId] = new CGFcamera(
-                        angle * DEGREE_TO_RAD, near, far,
+                        degreeToRad(angle), near, far,
                         fromToPositions[0], fromToPositions[1]
                     );
                 } else {
@@ -984,7 +985,7 @@ export class MySceneGraph {
             mat4.rotate(
                 transfMatrix,
                 transfMatrix,
-                angleAndAxis.angle * DEGREE_TO_RAD,
+                degreeToRad(angleAndAxis.angle),
                 angleAndAxis.axisVector
             );
             break;

@@ -1,6 +1,14 @@
 import { CGFappearance, CGFcamera } from "../lib/CGF.js";
 
 /**
+ * Converts degrees to radians
+ * @param {float} degrees 
+ */
+export function degreeToRad(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+/**
  * Calculates the unit vector of the given vector
  * @param {list} vector to normalize
  */

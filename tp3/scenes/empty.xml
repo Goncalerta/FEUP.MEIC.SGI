@@ -6,18 +6,6 @@
             <from x="10" y="10" z="10" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="player1" near="0.1" far="5000" angle="22.9">
-            <from x="0" y="12" z="10" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <perspective id="player2" near="0.1" far="5000" angle="22.9">
-            <from x="0" y="12" z="-10" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        <perspective id="front" near="0.1" far="5000" angle="22.9">
-            <from x="12" y="4" z="0" />
-            <to x="0" y="0" z="0" />
-        </perspective>
     </views>
 
     <ambient>

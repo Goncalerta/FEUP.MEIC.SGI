@@ -1,8 +1,5 @@
 import { MyTransformation } from "./MyTransformation.js";
 
-const DEGREE_TO_RAD = Math.PI / 180;
-
-
 export class MyKeyframe {
     /**
      * @constructor
@@ -54,9 +51,9 @@ export class MyKeyframe {
         const matrix = mat4.create();
 
         mat4.translate(matrix, matrix, this.translation.args);
-        mat4.rotateZ(matrix, matrix, this.rotationZ.args[0] * DEGREE_TO_RAD);
-        mat4.rotateY(matrix, matrix, this.rotationY.args[0] * DEGREE_TO_RAD);
-        mat4.rotateX(matrix, matrix, this.rotationX.args[0] * DEGREE_TO_RAD);
+        mat4.rotateZ(matrix, matrix, degreeToRad(this.rotationZ.args[0]));
+        mat4.rotateY(matrix, matrix, degreeToRad(this.rotationY.args[0]));
+        mat4.rotateX(matrix, matrix, degreeToRad(this.rotationX.args[0]));
         mat4.scale(matrix, matrix, this.scaling.args);
 
         return matrix;
