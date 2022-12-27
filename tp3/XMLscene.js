@@ -455,7 +455,7 @@ export class XMLscene extends CGFscene {
      */
     display() {
         this.checkPicking();
-        this.clearPickRegistration();
+        this.clearPickRegistration(); // TODO we might need to call this in other places (some objects are being picked by others (last button picked when clicked on aux boards))
 
         // ---- BEGIN Background, camera and axis setup
 

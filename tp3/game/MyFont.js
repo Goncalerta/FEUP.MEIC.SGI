@@ -48,6 +48,8 @@ export class MyFont extends CGFobject {
     }
 
     displayCenteredEqualLines(stringToDisplay) {
+        let transHorizontallyAmount = 0;
+
         const lines = stringToDisplay.split('\n');
         const numLines = lines.length;
 
@@ -59,6 +61,7 @@ export class MyFont extends CGFobject {
         for (let i = 0; i < numLines; i++) {
             const line = lines[i];
             const lineLength = line.length;
+            transHorizontallyAmount = Math.max(transHorizontallyAmount, lineLength);
 
             // center line
             this.scene.translate(-lineLength/2, 0, 0);
@@ -73,5 +76,7 @@ export class MyFont extends CGFobject {
         }
 
         this.scene.popMatrix();
+
+        return transHorizontallyAmount / 2;
     }
 }
