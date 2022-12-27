@@ -13,6 +13,8 @@ class GameState {
         return [];
     }
 
+    getHighlightedPieces() {}
+
     selectPiece(piece, x, y) {}
 
     selectTile(x, y) {}
@@ -31,6 +33,12 @@ export class PlayerTurnState extends GameState {
         this.start_time = startTime;
         this.current_time = t !== null? t : startTime;
         this.validMoves = validMoves? validMoves : this.model.getValidMoves(this.player.getId());
+        this.validMovesPieces = [];
+        for (let move of this.validMoves) {
+            if (!this.validMovesPieces.some(piece => piece[0] == move.from[0] && piece[1] == move.from[1])) {
+                this.validMovesPieces.push(move.from);
+            }
+        }
     }
 
     selectPiece(piece, x, y) {
@@ -40,12 +48,21 @@ export class PlayerTurnState extends GameState {
 
         const filteredValidMoves = this.validMoves.filter(move => move.from[0] == x && move.from[1] == y);
 
+        if (filteredValidMoves.length == 0) {
+            piece.animateUnallowed();
+            return;
+        }
+
         this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, piece, [x, y]));
     }
 
     update(t) {
         this.current_time = t;
         // TODO check if time is up
+    }
+
+    getHighlightedPieces() {
+        return this.validMovesPieces;
     }
 
     getCurrentPlayer() {
@@ -86,6 +103,7 @@ export class PieceSelectedState extends PlayerTurnState {
             this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.current_time, completedMove, this.piece));
             this.player.changeCumulativeTime((this.current_time - this.start_time) / 1000);
         } else {
+            this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
             this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
         }
@@ -93,6 +111,10 @@ export class PieceSelectedState extends PlayerTurnState {
 
     getSelectedPiece() {
         return this.piece;
+    }
+
+    getHighlightedPieces() {
+        return this.validMovesPieces;
     }
 
     getMoveHints() {
@@ -118,6 +140,10 @@ export class PieceMovingState extends GameState {
             //      in principle this should be doable without a new state, the logic for the Player state probably can be revised for this scenario 
             this.model.setGameState(new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time));
         });
+    }
+
+    getHighlightedPieces() {
+        return [this.completedMove.from];
     }
 
     getCurrentPlayer() {

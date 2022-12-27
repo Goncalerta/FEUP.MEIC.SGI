@@ -1,6 +1,7 @@
 import { CGFobject } from '../../lib/CGF.js';
 import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, quadPeak, gravityUp, gravityDown } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
+import { arraysEqual, getAppearance, interpolate } from '../utils.js';
 
 /**
  * MyChecker class, representing a checker.
@@ -17,7 +18,7 @@ export class MyChecker extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, geometries, textures, texturesSelected, model, pickingId, tileSize, radius, height, player, position = [0, 0], topOffset = 0.01) {
+    constructor(scene, geometries, materials, textures, model, pickingId, tileSize, radius, height, player, position = [0, 0], topOffset = 0.01) {
         super(scene);
 
         this.model = model;
@@ -27,8 +28,8 @@ export class MyChecker extends CGFobject {
         this.setPosition(position);
         this.geometries = geometries;
         this.selected = false;
-        this.texture = textures;
-        this.texturesSelected = texturesSelected;
+        this.materials = materials;
+        this.textures = textures;
         this.pickingId = pickingId;
         this.player = player;
 
@@ -45,6 +46,18 @@ export class MyChecker extends CGFobject {
     setPosition(position) {
         this.position = this.calculatePosition(position);
         this.boardPosition = position;
+    }
+
+    animateUnallowed() {
+        const animation = new EventAnimation(this.scene, 0.4, identity);
+        animation.onUpdate((t) => {
+            this.animationColorWeight = t;
+        });
+
+        animation.onEnd(() => {
+            this.animationColorWeight = null;
+        });
+        animation.start(this.scene.currentTime);
     }
 
     animateMove(move, onEndCallback) {
@@ -252,8 +265,25 @@ export class MyChecker extends CGFobject {
      * Displays the checker
      */
     display() {
+
         const selected = this.model.state.getSelectedPiece() === this;
-        const texture = selected? this.texturesSelected : this.texture;
+        let material;
+        if (selected) {
+            material = this.materials["selected"];
+        } else {
+            const highlighted = this.model.state.getHighlightedPieces().some((position) => arraysEqual(position, this.boardPosition));
+            if (highlighted) {
+                material = this.materials["highlighted"];
+            } else {
+                material = this.materials["normal"];
+            }
+        }
+
+        if (this.animationColorWeight) {
+            material = interpolate(this.materials["unallowed"], material, this.animationColorWeight);
+        }
+
+        const appearance = getAppearance(this.scene, material);
 
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
@@ -267,7 +297,8 @@ export class MyChecker extends CGFobject {
         }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);
 
-        texture["side"].apply();
+        appearance.setTexture(this.textures["side"]);
+        appearance.apply();
         this.geometries["major_cylinder"].display();
 
         this.scene.pushMatrix();
@@ -277,17 +308,20 @@ export class MyChecker extends CGFobject {
 
         this.scene.pushMatrix();
         this.scene.translate(0, 0, this.height);
-        texture["unpromoted_base"].apply();
+        appearance.setTexture(this.textures["unpromoted_base"]);
+        appearance.apply();
         this.geometries["major_circle"].display();
 
         this.scene.translate(0, 0, this.topOffset*this.height);
-        texture["promoted_base"].apply();
+        appearance.setTexture(this.textures["promoted_base"]);
+        appearance.apply();
         this.geometries["minor_circle"].display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI, 1, 0, 0);
-        texture["unpromoted_base"].apply();
+        appearance.setTexture(this.textures["unpromoted_base"]);
+        appearance.apply();
         this.geometries["major_circle"].display();
         this.scene.popMatrix();
 
