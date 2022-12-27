@@ -483,7 +483,7 @@ export class XMLscene extends CGFscene {
             this.lights[i].update();
         }
 
-        this.lights[7].setVisible(true);
+        this.lights[7].setVisible(false);
         this.lights[7].update();
 
         if (this.sceneInited) {
