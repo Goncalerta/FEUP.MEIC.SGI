@@ -33,7 +33,6 @@ export class XMLscene extends CGFscene {
         this.light4 = false;
         this.light5 = false;
         this.light6 = false;
-        this.light7 = false;
         this.lightsCount = 0;
 
         this.displayAxis = false;
@@ -137,6 +136,19 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    setGameSpotlightPosition(x, z) {
+        this.lights[7].setPosition(x, 3, z, 1);
+    }
+
+    updateGameSpotlight(on) {
+        if (on) {
+            this.lights[7].enable();
+        } else {
+            this.lights[7].disable();
+        }
+        this.lights[7].update();
+    }
+
     /**
      * Updates the highlighted state of the given component.
      * @param {MyComponent} component the component to update
@@ -156,10 +168,10 @@ export class XMLscene extends CGFscene {
     initLights() {
         // Reads the lights from the scene graph.
         for (const key in this.graph.lights) {
-            if (this.lightsCount >= 8) {
-                // Only eight lights allowed by WebGL.
+            if (this.lightsCount >= 7) {
+                // Only eight lights allowed by WebGL. One is reserved for the game.
                 console.warn(
-                    'Warning: more than 8 lights defined in the scene. Only the first 8 will be used.'
+                    'Warning: more than 7 lights defined in the scene. Only the first 7 will be used.'
                 );
                 break;
             }
@@ -215,6 +227,21 @@ export class XMLscene extends CGFscene {
                 this.lightsCount++;
             }
         }
+
+        this.lights[7].setPosition(0, 3, 0, 1);
+        this.lights[7].setAmbient(0, 0, 0, 1);
+        this.lights[7].setDiffuse(1, 1, 1, 1);
+        this.lights[7].setSpecular(1, 1, 1, 1);
+        this.lights[7].setConstantAttenuation(1);
+        this.lights[7].setLinearAttenuation(0);
+        this.lights[7].setQuadraticAttenuation(0);
+
+        this.lights[7].setSpotCutOff(0.5);
+        this.lights[7].setSpotExponent(150);
+        this.lights[7].setSpotDirection(0, -3, 0);
+
+        this.lights[7].disable();
+        this.lights[7].update();
     }
 
     /**
@@ -226,6 +253,7 @@ export class XMLscene extends CGFscene {
         this.setSpecular(0.2, 0.4, 0.8, 1.0);
         this.setShininess(10.0);
     }
+
     /** Handler called when the graph is finally loaded.
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -454,6 +482,9 @@ export class XMLscene extends CGFscene {
             this.lights[i].setVisible(true);
             this.lights[i].update();
         }
+
+        this.lights[7].setVisible(true);
+        this.lights[7].update();
 
         if (this.sceneInited) {
             this.game.display(this.pickMode);

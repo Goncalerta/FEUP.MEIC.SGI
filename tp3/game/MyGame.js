@@ -31,6 +31,18 @@ export class MyGame {
         this.crosses = new Set();
     }
 
+    setSpotlightPosition(x, y) {
+        this.scene.setGameSpotlightPosition(x, y);
+    }
+
+    enableSpotlight() {
+        this.scene.updateGameSpotlight(true);
+    }
+
+    disableSpotlight() {
+        this.scene.updateGameSpotlight(false);
+    }
+
     makeCross(x, y) {
         let height = 0.01;
         if (this.model.isQueen(x, y)) {
@@ -60,6 +72,13 @@ export class MyGame {
 
     update(t) {
         this.model.update(t);
+
+        if (this.model.state.spotlightOn()) {
+            this.enableSpotlight();
+            this.setSpotlightPosition(...this.model.state.spotlightOn());
+        } else {
+            this.disableSpotlight();
+        }
     }
 
     display(pickMode) {

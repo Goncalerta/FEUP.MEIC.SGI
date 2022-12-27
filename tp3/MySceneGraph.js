@@ -740,9 +740,9 @@ export class MySceneGraph {
 
 
             numLights++;
-            if (numLights > 8) {
+            if (numLights > 7) {
                 this.onXMLError(
-                    'too many lights defined; WebGL imposes a limit of 8 lights. Only the first 8 used'
+                    'too many lights defined; WebGL imposes a limit of 8 lights and one is reserved for the game. Only the first 7 used'
                 );
                 break;
             }

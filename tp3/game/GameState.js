@@ -22,6 +22,10 @@ class GameState {
     getCurrentPlayer() {
         return null;
     }
+
+    spotlightOn() {
+        return null;
+    }
 }
 
 export class PlayerTurnState extends GameState {
@@ -152,6 +156,10 @@ export class PieceMovingState extends GameState {
 
     getCurrentPlayer() {
         return this.player;
+    }
+
+    spotlightOn() {
+        return [this.piece.position[0], this.piece.position[2]];
     }
 }
 

@@ -1,10 +1,11 @@
 import { CGFobject, CGFtexture } from '../../lib/CGF.js';
+import { MyPatch } from '../MyPatch.js';
 import { getAppearance } from '../utils.js';
 
 /**
  * MyRectangle class, representing a rectangle in XY plane.
  */
-export class MyBoardTop extends CGFobject {
+export class MyBoardTop {
     TEXTURE_PATH = "scenes/images/game/board.png";
     MATERIAL = {
         shininess: 10,
@@ -23,53 +24,25 @@ export class MyBoardTop extends CGFobject {
      * @param y2 y coordinate of second point.
      */
      constructor(scene, realHalfSize) {
-        super(scene);
-
+        this.scene = scene;
         this.realHalfSize = realHalfSize;
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
         this.material = getAppearance(scene, this.MATERIAL, this.texture);
 
-        this.initBuffers();
-    }
-
-    /**
-     * Initializes the rectangle buffers
-     */
-    initBuffers() {
-        // TODO use NURBS for example, so that lights work better
-        this.vertices = [
-            this.realHalfSize, 0, -this.realHalfSize,
-            -this.realHalfSize, 0, -this.realHalfSize,
-            this.realHalfSize, 0, this.realHalfSize,
-            -this.realHalfSize, 0, this.realHalfSize,
-        ];
-
-        // Counter-clockwise reference of vertices
-        this.indices = [
-            0, 1, 2,
-            1, 3, 2
-        ];
-
-        // Facing Y positive
-        this.normals = [
-            0, 1, 0,
-            0, 1, 0,
-            0, 1, 0,
-            0, 1, 0
-        ];
-
-        this.texCoords = [
-            0, 1,
-            1, 1,
-            0, 0,
-            1, 0
-        ];
-        this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
+        this.geometry = new MyPatch(scene, 1, 100, 1, 100, [
+            [
+                [-realHalfSize, 0, realHalfSize, 1],
+                [-realHalfSize, 0, -realHalfSize, 1],
+            ],
+            [
+                [realHalfSize, 0, realHalfSize, 1],
+                [realHalfSize, 0, -realHalfSize, 1],
+            ],
+        ]);
     }
 
     display() {
         this.material.apply();
-        super.display();
+        this.geometry.display();
     }
 }
