@@ -33,6 +33,7 @@ export class Player {
     }
 
     getGameTimeLeft() {
-        return GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.getCumulativeTime();
+        const timeLeft = GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.getCumulativeTime();
+        return timeLeft > 0 ? timeLeft : 0;
     }
 }
