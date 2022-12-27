@@ -1,9 +1,9 @@
-import { EventAnimation } from '../animations/EventAnimation.js';
-import { CGFobject, CGFtexture, CGFshader } from '../../lib/CGF.js';
-import { MyBox } from '../MyBox.js';
-import { MyRectangle } from '../MyRectangle.js';
-import { quadMin } from '../animations/EasingFunctions.js';
-import { getAppearance } from '../utils.js';
+import { EventAnimation } from '../../animations/EventAnimation.js';
+import { CGFobject, CGFtexture, CGFshader } from '../../../lib/CGF.js';
+import { MyBox } from '../../MyBox.js';
+import { MyRectangle } from '../../MyRectangle.js';
+import { quadMin } from '../../animations/EasingFunctions.js';
+import { getAppearance } from '../../utils.js';
 
 export class MyButton extends CGFobject {
     MIN_RATIO_DEPTH = 0.5;

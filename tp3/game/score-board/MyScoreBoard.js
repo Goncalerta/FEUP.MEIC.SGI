@@ -1,7 +1,7 @@
-import { CGFobject } from '../../lib/CGF.js';
+import { CGFobject } from '../../../lib/CGF.js';
 import { MyFont } from './MyFont.js';
-import { secondsToFormattedTime } from '../utils.js';
-import { PlayerTurnState } from './GameState.js';
+import { secondsToFormattedTime } from '../../utils.js';
+import { PlayerTurnState } from '../GameState.js';
 import { MyScoreBoardBox } from './MyScoreBoardBox.js';
 import { MyButtonGroup } from './MyButtonGroup.js';
 

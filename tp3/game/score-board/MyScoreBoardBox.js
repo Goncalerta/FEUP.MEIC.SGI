@@ -1,6 +1,6 @@
-import { CGFtexture } from "../../lib/CGF.js";
-import { getAppearance } from '../utils.js';
-import { MyBox } from "../MyBox.js";
+import { CGFtexture } from "../../../lib/CGF.js";
+import { getAppearance } from '../../utils.js';
+import { MyBox } from "../../MyBox.js";
 
 export class MyScoreBoardBox extends MyBox {
     static TEXTURE_PATH = "scenes/images/game/wood.jpg";

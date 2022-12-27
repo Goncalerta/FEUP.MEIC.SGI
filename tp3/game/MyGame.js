@@ -1,11 +1,9 @@
-import { CGFcamera } from '../../lib/CGF.js';
-import { degreeToRad } from '../utils.js';
 import { GameModel } from './GameModel.js';
 import { MyAnimatedCross } from './MyAnimatedCross.js';
 import { MyBoard } from './MyBoard.js';
 import { MyCheckerGroup } from './MyCheckerGroup.js';
 import { MyDiscardBoard } from './MyDiscardBoard.js';
-import { MyScoreBoard } from './MyScoreBoard.js';
+import { MyScoreBoard } from './score-board/MyScoreBoard.js';
 import { Player } from './Player.js';
 import { MyGameCameras } from './MyGameCameras.js';
 
