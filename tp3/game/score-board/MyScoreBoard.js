@@ -3,7 +3,7 @@ import { MyFont } from './MyFont.js';
 import { secondsToFormattedTime } from '../../utils.js';
 import { PlayerTurnState } from '../GameState.js';
 import { MyScoreBoardBox } from './MyScoreBoardBox.js';
-import { MyButtonGroup } from './MyButtonGroup.js';
+import { ScoreBoardButtons } from './ScoreBoardButtons.js';
 
 export class MyScoreBoard extends CGFobject {
     MAX_CHAR_NAME = 5;
@@ -28,7 +28,7 @@ export class MyScoreBoard extends CGFobject {
         this.font = new MyFont(scene, 0.01, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
-        this.buttonGroup = new MyButtonGroup(scene, cameras, this.BUTTONS_WIDTH, this.BUTTONS_HEIGHT, this.BUTTONS_DEPTH, this.TEXT_COLOR_RGBA);
+        this.buttonGroup = new ScoreBoardButtons(scene, cameras, this.BUTTONS_WIDTH, this.BUTTONS_HEIGHT, this.BUTTONS_DEPTH, this.TEXT_COLOR_RGBA);
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);
