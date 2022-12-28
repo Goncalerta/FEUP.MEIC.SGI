@@ -103,14 +103,14 @@ export class XMLscene extends CGFscene {
         const cameraAnimation = new EventAnimation(this, 1);
 
         cameraAnimation.onEnd(() => {
-            this.camera = cameraToSet;
-            if (this.interface) this.interface.setActiveCamera(cameraToSet);
+            this.camera = interpolate(prevCamera, cameraToSet, 1.0)
+            if (this.interface) this.interface.setActiveCamera(this.camera);
         });
 
         cameraAnimation.onUpdate((t) => {
             const interpolatedCamera = interpolate(prevCamera, cameraToSet, t);
             this.camera = interpolatedCamera;
-            if (this.interface) this.interface.setActiveCamera(interpolatedCamera);
+            if (this.interface) this.interface.setActiveCamera(this.camera);
         });
 
         cameraAnimation.start(this.currentTime ?? 0);
