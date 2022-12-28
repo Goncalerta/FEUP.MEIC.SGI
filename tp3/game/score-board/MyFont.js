@@ -48,20 +48,21 @@ export class MyFont extends CGFobject {
     }
 
     displayCenteredEqualLines(stringToDisplay) {
-        let transHorizontallyAmount = 0;
+        let transAmount = [0, 0];
 
         const lines = stringToDisplay.split('\n');
         const numLines = lines.length;
+        transAmount[1] = numLines/2.0 - 0.5;
 
         this.appearance.apply();
 
         this.scene.pushMatrix();
-        this.scene.translate(0.5, numLines/2.0 - 0.5, this.elevated);
+        this.scene.translate(0.5, transAmount[1], this.elevated);
 
         for (let i = 0; i < numLines; i++) {
             const line = lines[i];
             const lineLength = line.length;
-            transHorizontallyAmount = Math.max(transHorizontallyAmount, lineLength);
+            transAmount[0] = Math.max(transAmount[0], lineLength/2.0);
 
             // center line
             this.scene.translate(-lineLength/2, 0, 0);
@@ -77,6 +78,6 @@ export class MyFont extends CGFobject {
 
         this.scene.popMatrix();
 
-        return transHorizontallyAmount / 2;
+        return transAmount;
     }
 }

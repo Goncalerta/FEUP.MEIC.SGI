@@ -12,7 +12,7 @@ export class MyScoreBoard extends CGFobject {
     BUTTONS_WIDTH = 0.5;
     BUTTONS_DEPTH = 0.1;
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
-    DELTA_TEXT = 0.5;
+    DELTA_TEXT = 0.1;
 
     constructor(scene, gameModel, cameras, player1, player2, width=1, height=1, depth=1) {
         super(scene);
@@ -40,8 +40,7 @@ export class MyScoreBoard extends CGFobject {
         const player1ScoreString = this.player1.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0");
         const player2ScoreString = this.player2.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0");
 
-        const player1TotalTimeLeftString = secondsToFormattedTime(this.player1.getGameTimeLeft());
-        const player2TotalTimeLeftString = secondsToFormattedTime(this.player2.getGameTimeLeft());
+        const totalTime = secondsToFormattedTime(0); // TODO: get total time from model
 
         const gameState = this.gameModel.getGameState();
         const currentPlayer = gameState.getCurrentPlayer();
@@ -60,17 +59,18 @@ export class MyScoreBoard extends CGFobject {
         // text
         this.scene.pushMatrix();
         this.scene.translate(-this.DELTA_TEXT, 0, this.depth / 2);
-        this.scene.scale(2/this.width, 1/(2*this.height), 1);
+        this.scene.scale(2/this.width, 0.4/this.height, 1);
 
         this.font.setShader();
 
         let translatedAmount = this.font.displayCenteredEqualLines(
-            "   SCORE TIMES\n" +
-            this.player1NameShort + " " + player1ScoreString + " " + player1TotalTimeLeftString + "\n" +
-            this.player2NameShort + " " + player2ScoreString + " " + player2TotalTimeLeftString + "\n\n" +
-            "CURRENT PLAYER\n" +
-            "" + currentPlayerName + "    " + this.currentPlayerTimeLeftString
-        ) - this.DELTA_TEXT - 0.2;
+            "TIME  " + totalTime + "\n\n" +
+            "      SCORE\n" +
+            this.player1NameShort + "    " + player1ScoreString + "\n" +
+            this.player2NameShort + "    " + player2ScoreString + "\n\n" +
+            "    CURRENT\n" +
+            currentPlayerName + " " + this.currentPlayerTimeLeftString
+        );
 
         this.font.resetShader();
         this.scene.popMatrix();
@@ -78,8 +78,9 @@ export class MyScoreBoard extends CGFobject {
         // buttons
         this.scene.pushMatrix();
         this.scene.scale(2/this.width, 1, 1);
-        this.scene.translate(translatedAmount, 0, this.depth / 2);
+        this.scene.translate(translatedAmount[0] - this.DELTA_TEXT + 0.1, 0.475, this.depth / 2);
         this.scene.scale(this.width/2, 1, 1);
+        this.scene.scale(0.36, 0.36, 1)
 
         this.buttonGroup.display();
 
