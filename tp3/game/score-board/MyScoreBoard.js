@@ -1,5 +1,5 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { MyFont } from './MyFont.js';
+import { MyFont } from '../MyFont.js';
 import { secondsToFormattedTime } from '../../utils.js';
 import { PlayerTurnState } from '../GameState.js';
 import { MyScoreBoardBox } from './MyScoreBoardBox.js';
@@ -25,7 +25,7 @@ export class MyScoreBoard extends CGFobject {
         this.height = height;
         this.depth = depth;
 
-        this.font = new MyFont(scene, 0.01, this.TEXT_COLOR_RGBA);
+        this.font = new MyFont(scene, 0.2, 0.01, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
         this.buttonGroup = new ScoreBoardButtons(scene, cameras, this.BUTTONS_WIDTH, this.BUTTONS_HEIGHT, this.BUTTONS_DEPTH, this.TEXT_COLOR_RGBA);
@@ -59,9 +59,6 @@ export class MyScoreBoard extends CGFobject {
         // text
         this.scene.pushMatrix();
         this.scene.translate(-this.DELTA_TEXT, 0, this.depth / 2);
-        this.scene.scale(2/this.width, 0.4/this.height, 1);
-
-        this.font.setShader();
 
         let translatedAmount = this.font.displayCenteredEqualLines(
             "TIME  " + totalTime + "\n\n" +
@@ -72,15 +69,12 @@ export class MyScoreBoard extends CGFobject {
             currentPlayerName + " " + this.currentPlayerTimeLeftString
         );
 
-        this.font.resetShader();
         this.scene.popMatrix();
 
         // buttons
         this.scene.pushMatrix();
-        this.scene.scale(2/this.width, 1, 1);
-        this.scene.translate(translatedAmount[0] - this.DELTA_TEXT + 0.1, 0.475, this.depth / 2);
-        this.scene.scale(this.width/2, 1, 1);
-        this.scene.scale(0.36, 0.36, 1)
+        this.scene.translate(translatedAmount[0] - this.DELTA_TEXT + 0.2, 0.475, this.depth / 2);
+        this.scene.scale(0.35, 0.35, 1)
 
         this.buttonGroup.display();
 

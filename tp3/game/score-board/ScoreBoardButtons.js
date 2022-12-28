@@ -22,14 +22,14 @@ export class ScoreBoardButtons extends MyButtonGroup {
 
     getButtons() {
         return [
-            [this.playButton],
+            [this.scenarioButton],
             [],
             [],
             [this.p1POVButton],
             [this.p2POVButton],
             [],
-            [this.scenarioButton],
-            [this.undoButton]
+            [this.undoButton],
+            [this.playButton]
         ];
     }
 }
