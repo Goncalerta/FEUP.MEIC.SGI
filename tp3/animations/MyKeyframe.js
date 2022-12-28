@@ -1,4 +1,5 @@
 import { MyTransformation } from "./MyTransformation.js";
+import { degreeToRad } from "../utils.js";
 
 export class MyKeyframe {
     /**
