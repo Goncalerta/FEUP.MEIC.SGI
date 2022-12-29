@@ -44,7 +44,7 @@ export class MyScoreBoard extends CGFobject {
 
         let stringToDisplay = 
             "TIME  " + totalTime + "\n\n" +
-            "      SCORE\n" +
+            "   CAPTURES\n" +
             this.player1NameShort + "    " + player1ScoreString + "\n" +
             this.player2NameShort + "    " + player2ScoreString + "\n\n" +
             "    CURRENT\n" +
