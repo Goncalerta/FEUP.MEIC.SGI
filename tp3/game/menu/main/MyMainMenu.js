@@ -4,6 +4,8 @@ import { MyLabel } from "../../buttons/MyLabel.js";
 import { MyButton } from "../../buttons/MyButton.js";
 import { MyMenu } from "../MyMenu.js";
 import { textToLimitedCentered, removeFileExtension } from "../../../utils.js";
+import { MyTextBox } from "../../buttons/MyTextBox.js";
+import { Player } from "../../Player.js";
 
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
@@ -11,7 +13,7 @@ export class MyMainMenu extends MyMenu {
     LEFT_TEXTURE_PATH = "scenes/images/game/left.png";
     RIGHT_TEXTURE_PATH = "scenes/images/game/right.png";
 
-    constructor(scene, scenariosNames=[], playCallBack=(scenarioFileName) => {}) {
+    constructor(scene, enableTextCallBack, scenariosNames=[], playCallBack=(scenarioFileName, player1Name, player2Name) => {}) {
         super(scene);
 
         this.depth = 1;
@@ -20,7 +22,15 @@ export class MyMainMenu extends MyMenu {
         this.box = new MyMainMenuBox(scene);
 
         let pickingId = 501;
-        this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+
+        // TextBoxes to player names
+        this.player1Label = new MyLabel(this.scene, () => { return "PLAYER1" }, this.TEXT_COLOR_RGBA);
+        this.player1NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, Player.PLAYER_1_DEFAULT_NAME, Player.PLAYER_LENGTH);
+        this.player2Label = new MyLabel(this.scene, () => { return "PLAYER2" }, this.TEXT_COLOR_RGBA);
+        this.player2NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, Player.PLAYER_2_DEFAULT_NAME, Player.PLAYER_LENGTH);
+
+        // Buttons
+        this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName(), this.player1NameTextBox.getContent(), this.player2NameTextBox.getContent()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
@@ -29,8 +39,6 @@ export class MyMainMenu extends MyMenu {
 
         this.title = new MyLabel(this.scene, () => { return "CHECKERS" }, this.TEXT_COLOR_RGBA, 1.5);
         this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.TEXT_COLOR_RGBA);
-
-        // TODO text box to insert player names (?)
     }
 
     getTitle() {
@@ -45,6 +53,12 @@ export class MyMainMenu extends MyMenu {
         return [
             this.scenarioLabel,
             this.chooseScenarioLabelButton,
+            null,
+            this.player1Label,
+            this.player1NameTextBox,
+            null,
+            this.player2Label,
+            this.player2NameTextBox,
             null,
             this.playLabelButton
         ];

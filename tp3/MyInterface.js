@@ -9,6 +9,7 @@ export class MyInterface extends CGFinterface {
      */
     constructor() {
         super();
+        this.onClickTextActivated = false
     }
 
     /**
@@ -40,6 +41,53 @@ export class MyInterface extends CGFinterface {
         }
 
         this.clickCallbacks[keyCode].push(callback);
+    }
+
+    /**
+     * Adds a callback for all text keys.
+     * @param {Function} callback which takes a key.
+     */
+    onClickText(callback) {
+        if (this.onClickTextActivated) {
+            this.removeOnClickTextIfAny();
+        }
+
+        for (let i = 65; i <= 90; i++) {
+            let char = String.fromCharCode(i);
+            // Add callback for all letters.
+            this.onClick("Key" + char, () => { callback(char) });
+        }
+
+        // Add callback for space.
+        this.onClick("Space", () => { callback(" ") });
+
+        // Add callback for backspace.
+        this.onClick("Backspace", () => { callback("Backspace") });
+
+        this.onClickTextActivated = true;
+    }
+
+    /**
+     * Removes last callbacks added for text keys.
+     */
+    removeOnClickTextIfAny() {
+        if (!this.onClickTextActivated) {
+            return;
+        }
+
+        for (let i = 65; i <= 90; i++) {
+            let  char = String.fromCharCode(i);
+            // Add callback for all letters.
+            this.clickCallbacks["Key" + char].pop();
+        }
+
+        // Add callback for space.
+        this.clickCallbacks["Space"].pop();
+
+        // Add callback for backspace.
+        this.clickCallbacks["Backspace"].pop();
+
+        this.onClickTextActivated = false;
     }
 
     /**

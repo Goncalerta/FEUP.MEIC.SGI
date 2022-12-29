@@ -3,7 +3,6 @@ import { getAppearance } from '../../../utils.js';
 import { MyBox } from "../../../MyBox.js";
 
 export class MyMainMenuBox extends MyBox {
-    // TODO adjust material and texture (?)
     static TEXTURE_PATH = "scenes/images/game/wood.jpg";
     static MATERIAL = {
         shininess: 10,
