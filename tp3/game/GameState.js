@@ -32,6 +32,10 @@ class GameState {
     getRemainingTime() {
         return null;
     }
+
+    getGameTime() {
+        return this.model.current_time;
+    }
 }
 
 export class PlayerTurnState extends GameState {
@@ -73,12 +77,11 @@ export class PlayerTurnState extends GameState {
             return;
         }
 
-        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, piece, [x, y], this.turn_time_limit));
+        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.model.current_time, this.validMoves, filteredValidMoves, piece, [x, y], this.turn_time_limit));
     }
 
     update(t) {
-        this.current_time = t;
-        this.remaining_time = Math.max(0, this.turn_time_limit - Math.floor((this.current_time - this.start_time) / 1000));
+        this.remaining_time = Math.max(0, this.turn_time_limit - Math.floor((t - this.start_time) / 1000));
         if (this.remaining_time == 0) {
             this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
         }
@@ -107,7 +110,7 @@ export class PieceSelectedState extends PlayerTurnState {
 
     selectPiece(piece, x, y) {
         if (x == this.piecePosition[0] && y == this.piecePosition[1]) {
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, this.validMoves, this.turn_time_limit));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.model.current_time, this.validMoves, this.turn_time_limit));
             return;
         }
 
@@ -122,12 +125,12 @@ export class PieceSelectedState extends PlayerTurnState {
         const move = this.filteredValidMoves.find(move => move.to[0] == x && move.to[1] == y);
         if (move) {
             const completedMove = this.model.move(move);
-            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.current_time, completedMove, this.piece, this.getRemainingTime()));
-            this.player.changeCumulativeTime((this.current_time - this.start_time) / 1000);
+            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.model.current_time, completedMove, this.piece, this.getRemainingTime()));
+            this.player.changeCumulativeTime((this.model.current_time - this.start_time) / 1000);
         } else {
             this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, null, this.turn_time_limit));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.model.current_time, null, this.turn_time_limit));
         }
     }
 
@@ -200,6 +203,11 @@ export class GameOverState extends GameState {
     constructor(model, winner) {
         super(model);
         this.winner = winner;
+        this.win_time = model.current_time;
         console.log("winner detected: TODO winning", winner);
+    }
+
+    getGameTime() {
+        return this.win_time;
     }
 }

@@ -264,7 +264,7 @@ export class MySceneGraph {
             }
         }
 
-        if (this.components[this.idRoot] == null) {
+        if (this.idRoot && this.components[this.idRoot] == null) {
             this.onXMLError('no root component found');
         }
         this.log('all parsed');

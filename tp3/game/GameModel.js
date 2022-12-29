@@ -33,7 +33,7 @@ export class GameModel {
     }
 
     getGameTime() {
-        return Math.floor((this.current_time - this.start_time) / 1000);
+        return Math.floor((this.state.getGameTime() - this.start_time) / 1000);
     }
 
     executeMove(completedMove) {
