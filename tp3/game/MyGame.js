@@ -3,7 +3,7 @@ import { MyAnimatedCross } from './MyAnimatedCross.js';
 import { MyBoard } from './MyBoard.js';
 import { MyCheckerGroup } from './MyCheckerGroup.js';
 import { MyDiscardBoard } from './MyDiscardBoard.js';
-import { MyScoreBoard } from './score-board/MyScoreBoard.js';
+import { MyScoreBoard } from './scoreboard/MyScoreBoard.js';
 import { Player } from './Player.js';
 import { MyGameCameras } from './MyGameCameras.js';
 
