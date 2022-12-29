@@ -28,7 +28,7 @@ function resetScene() {
     }
 }
 
-function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scenariosNames=[]) {
+function changeScene(sceneName, player1Name, player2Name, game_scene_state=GAME_SCENE_STATE.PLAYING, scenariosNames=[]) {
     resetScene();
 
     // Standard application, scene and interface setup
@@ -48,7 +48,7 @@ function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scena
     const myGraph = new MySceneGraph(sceneName, myScene);
 
     // Game specific setup
-    myScene.initGame(game_scene_state, scenariosNames, changeScene);
+    myScene.initGame(game_scene_state, scenariosNames, changeScene, player1Name, player2Name);
 
     // start
     app.run();
@@ -56,7 +56,7 @@ function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scena
 
 function changeToMainMenu() {
     const availableScenes = ["space.xml", "empty.xml"];
-    changeScene("main-menu.xml", GAME_SCENE_STATE.MAIN_MENU, availableScenes);
+    changeScene("main-menu.xml", null, null, GAME_SCENE_STATE.MAIN_MENU, availableScenes);
 }
 
 function main() {

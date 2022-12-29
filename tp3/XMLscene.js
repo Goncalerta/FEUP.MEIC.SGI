@@ -30,13 +30,13 @@ export class XMLscene extends CGFscene {
      * @param {list} scenariosNames 
      * @param {function} playCallBack
      */
-    initGame(game_scene_state=GAME_SCENE_STATE.NO_GAME, scenariosNames=[], playCallBack=(scenarioFileName) => {}) {
+    initGame(game_scene_state=GAME_SCENE_STATE.NO_GAME, scenariosNames=[], playCallBack=(scenarioFileName, player1Name, player2Name) => {}, player1Name, player2Name) {
         this.mainMenu = null;
         this.game = null;
         if (game_scene_state == GAME_SCENE_STATE.MAIN_MENU) {
-            this.mainMenu = new MyMainMenu(this, scenariosNames, playCallBack);
+            this.mainMenu = new MyMainMenu(this, this.interface.onClickText.bind(this.interface), scenariosNames, playCallBack, this.interface);
         } else if (game_scene_state == GAME_SCENE_STATE.PLAYING) {
-            this.game = new MyGame(this);
+            this.game = new MyGame(this, player1Name, player2Name);
         }
     }
 
@@ -453,6 +453,9 @@ export class XMLscene extends CGFscene {
         if (this.pickMode == false) {
             // results can only be retrieved when picking mode is false
             if (this.pickResults != null && this.pickResults.length > 0) {
+                // Removing "selection" from textBoxes
+                this.interface.removeOnClickTextIfAny();
+
                 for (let i = 0; i < this.pickResults.length; i++) {
                     let obj = this.pickResults[i][0];
                     if (obj) {

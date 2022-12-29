@@ -11,12 +11,11 @@ export class MyGame {
     TILE_SIZE = 0.5;
     DISCARD_BOARD_GAP = 0.15;
 
-    constructor(scene) {
+    constructor(scene, player1Name=Player.PLAYER_1_DEFAULT_NAME, player2Name=Player.PLAYER_2_DEFAULT_NAME) {
         this.scene = scene;
 
-        // TODO just testing the names
-        this.player1 = new Player(1, "BLACK");
-        this.player2 = new Player(2, "RED");
+        this.player1 = new Player(1, player1Name);
+        this.player2 = new Player(2, player2Name);
 
         const startTime = new Date().getTime(); // TODO start time (depends on main menu logic probably)
         this.model = new GameModel(this, startTime, this.player1, this.player2);
