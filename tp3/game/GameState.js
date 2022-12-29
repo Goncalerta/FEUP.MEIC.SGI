@@ -26,6 +26,10 @@ class GameState {
     spotlightOn() {
         return null;
     }
+
+    getRemainingTime() {
+        return null;
+    }
 }
 
 export class PlayerTurnState extends GameState {
@@ -140,13 +144,23 @@ export class PieceMovingState extends GameState {
         this.piece = piece;
 
         this.piece.animateMove(completedMove, () => {
-            const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
-
-            if (completedMove.captured && captureMoves.length > 0) {
-                this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to));
-            } else {
-                this.model.setGameState(new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time));
+            // Check for multicapture
+            if ((!completedMove.promoted) && completedMove.captured) {
+                const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
+                if (captureMoves.length > 0) {
+                    this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to));
+                    return;
+                }
             }
+
+            let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
+
+            // Check for game over
+            if (nextState.validMoves.length === 0) {
+                nextState = new GameOverState(this.model, this.player);
+            }
+
+            this.model.setGameState(nextState);
         });
     }
 
@@ -167,5 +181,6 @@ export class GameOverState extends GameState {
     constructor(model, winner) {
         super(model);
         this.winner = winner;
+        console.log("winner detected: TODO winning", winner);
     }
 }
