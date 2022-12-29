@@ -39,7 +39,7 @@ export class PlayerTurnState extends GameState {
         super(model);
         this.player = player;
         this.start_time = startTime;
-        this.current_time = t !== null? t : startTime;
+        this.update(t !== null? t : startTime);
         this.turn_time_limit = turn_time_limit !== null? turn_time_limit : PlayerTurnState.TURN_TIME_LIMIT;
         this.validMoves = validMoves? validMoves : this.model.getValidMoves(this.player.getId());
         this.validMovesPieces = [];
@@ -62,12 +62,15 @@ export class PlayerTurnState extends GameState {
             return;
         }
 
-        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, piece, [x, y]));
+        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.current_time, this.validMoves, filteredValidMoves, piece, [x, y], this.turn_time_limit));
     }
 
     update(t) {
         this.current_time = t;
-        // TODO check if time is up
+        this.remaining_time = Math.max(0, this.turn_time_limit - Math.round((this.current_time - this.start_time) / 1000));
+        if (this.remaining_time == 0) {
+            this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
+        }
     }
 
     getHighlightedPieces() {
@@ -79,8 +82,7 @@ export class PlayerTurnState extends GameState {
     }
 
     getRemainingTime() {
-        const t = this.turn_time_limit - Math.round((this.current_time - this.start_time) / 1000);
-        return t > 0 ? t : 0;
+        return this.remaining_time;
     }
 }
 
