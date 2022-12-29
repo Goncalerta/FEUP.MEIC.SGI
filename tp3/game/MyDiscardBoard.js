@@ -6,7 +6,7 @@ import { getAppearance } from '../utils.js';
  * MyRectangle class, representing a rectangle in XY plane.
  */
 export class MyDiscardBoard {
-    TEXTURE_PATH = "scenes/images/game/board.png"; // TODO change texture
+    TEXTURE_PATH = "scenes/images/game/discardboard.png"; // TODO change texture
     MATERIAL = {
         shininess: 10,
         emission: [0.3, 0.24, 0.24, 1.0],

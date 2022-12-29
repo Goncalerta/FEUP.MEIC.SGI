@@ -7,7 +7,7 @@ import { MyBoardHintGroup } from "./MyBoardHintGroup.js";
  */
 export class MyBoard {
     NUM_TILES_SIDE = 8;
-    EDGE_SIZE = 0.25; // TODO this might not be exactly correct
+    EDGE_SIZE = 0.28;
 
     /**
      * @constructor
