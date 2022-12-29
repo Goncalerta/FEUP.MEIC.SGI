@@ -54,10 +54,13 @@ function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scena
     app.run();
 }
 
-function main() {
+function changeToMainMenu() {
     const availableScenes = ["empty.xml", "space.xml"];
-
     changeScene("main-menu.xml", GAME_SCENE_STATE.MAIN_MENU, availableScenes);
+}
+
+function main() {
+    changeToMainMenu();
 }
 
 main();
