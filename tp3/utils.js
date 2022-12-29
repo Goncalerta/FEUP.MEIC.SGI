@@ -1,4 +1,4 @@
-import { CGFappearance, CGFcamera } from "../lib/CGF.js";
+import { CGFappearance, CGFcamera, CGFcameraOrtho } from "../lib/CGF.js";
 
 /**
  * Converts degrees to radians
@@ -77,7 +77,7 @@ export function calculateNorm(vector) {
 export function applyLengthsToTextureCoords(textureCoords, lengthS, lengthT) {
     const textureCoordsCopy = [...textureCoords];
 
-    // Divide by length_s and lenght_y accordingly
+    // Divide by length_s and length_y accordingly
     for (let i = 0; i < textureCoords.length; i += 2) {
         textureCoordsCopy[i] /= lengthS;
         textureCoordsCopy[i + 1] /= lengthT;
@@ -110,6 +110,69 @@ export function arraysEqual(a, b) {
     return true;
 }
 
+export function interpolateCameras(o1, o2, t) {
+    if (o1 instanceof CGFcameraOrtho && o2 instanceof CGFcameraOrtho) {
+        const left = interpolate(o1.left, o2.left, t);
+        const right = interpolate(o1.right, o2.right, t);
+        const bottom = interpolate(o1.bottom, o2.bottom, t);
+        const top = interpolate(o1.top, o2.top, t);
+        const near = interpolate(o1.near, o2.near, t);
+        const far = interpolate(o1.far, o2.far, t);
+        const position = interpolate(o1.position, o2.position, t);
+        const target = interpolate(o1.target, o2.target, t);
+        const up = interpolate(o1._up, o2._up, t);
+        return new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, up);
+    } else if (o1 instanceof CGFcamera && o2 instanceof CGFcamera) {
+        const fov = interpolate(o1.fov, o2.fov, t);
+        const near = interpolate(o1.near, o2.near, t);
+        const far = interpolate(o1.far, o2.far, t);
+        const position = interpolate(o1.position, o2.position, t);
+        const target = interpolate(o1.target, o2.target, t);
+        return new CGFcamera(fov, near, far, position, target);
+    } else {
+        // This is merely a hack to interpolate between perspective and ortho cameras
+        
+        function fovToLeftRightTopBottom(fov, aspect) {
+            const top = Math.tan(fov / 2);
+            const right = top * aspect;
+            return [-right, right, top, -top];
+        }
+
+        function leftRightTopBottomToFov(left, right, top, bottom) {
+            const aspect = (right - left) / (top - bottom);
+            const fov = 2 * Math.atan(top / aspect);
+            return fov;
+        }
+
+        const perspectiveCamera = o1 instanceof CGFcamera ? o1 : o2;
+        const orthoCamera = o1 instanceof CGFcameraOrtho ? o1 : o2;
+
+        // Interpolate between perspective and ortho camera
+        if (perspectiveCamera === o2) {
+            t = 1 - t;
+        }
+
+        const near = interpolate(perspectiveCamera.near, orthoCamera.near, t);
+        const far = interpolate(perspectiveCamera.far, orthoCamera.far, t);
+        const position = interpolate(perspectiveCamera.position, orthoCamera.position, t);
+        const target = interpolate(perspectiveCamera.target, orthoCamera.target, t);
+
+        if (t < 0.5) { // result is perspective camera
+            const orthoFov = leftRightTopBottomToFov(orthoCamera.left, orthoCamera.right, orthoCamera.top, orthoCamera.bottom);
+            const fov = interpolate(perspectiveCamera.fov, orthoFov, t);
+            return new CGFcamera(fov, near, far, position, target);
+        } else { // result is ortho camera
+            const [perspectiveLeft, perspectiveRight, perspectiveTop, perspectiveBottom] = fovToLeftRightTopBottom(perspectiveCamera.fov, 1);
+            const left = interpolate(perspectiveLeft, orthoCamera.left, t);
+            const right = interpolate(perspectiveRight, orthoCamera.right, t);
+            const bottom = interpolate(perspectiveBottom, orthoCamera.bottom, t);
+            const top = interpolate(perspectiveTop, orthoCamera.top, t);
+            return new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, orthoCamera._up);
+        }
+
+    }
+}
+
 export function interpolate(o1, o2, t) {
     if (typeof o1 === 'number') {
         return o1 + (o2 - o1) * t;
@@ -119,13 +182,9 @@ export function interpolate(o1, o2, t) {
             o.push(interpolate(o1[i], o2[i], t));
         }
         return o;
-    } else if (o1 instanceof CGFcamera) {
-        const fov = interpolate(o1.fov, o2.fov, t);
-        const near = interpolate(o1.near, o2.near, t);
-        const far = interpolate(o1.far, o2.far, t);
-        const position = interpolate(o1.position, o2.position, t);
-        const target = interpolate(o1.target, o2.target, t);
-        return new CGFcamera(fov, near, far, position, target);
+    } else if ((o1 instanceof CGFcamera || o1 instanceof CGFcameraOrtho)
+            && (o2 instanceof CGFcamera || o2 instanceof CGFcameraOrtho)) {
+        return interpolateCameras(o1, o2, t);
     } else if (typeof o1 === 'object') {
         const o = {};
         for (const key in o1) {
