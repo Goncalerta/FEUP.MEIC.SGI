@@ -20,7 +20,6 @@ export class MyMainMenu extends MyMenu {
         this.box = new MyMainMenuBox(scene);
 
         let pickingId = 501;
-        // TODO use proper play callback
         this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);

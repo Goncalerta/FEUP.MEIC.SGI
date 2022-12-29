@@ -14,9 +14,22 @@ function getUrllets() {
     return lets;
 }
 
+function resetScene() {
+    let bodyEle = document.getElementsByTagName("body")[0];
+    let canvasEle = bodyEle.getElementsByTagName("canvas")[0];
+    let interfaceEle = bodyEle.getElementsByClassName("dg ac")[0];
+
+    if (canvasEle) {
+        bodyEle.removeChild(canvasEle);
+    }
+
+    if (interfaceEle) {
+        interfaceEle.firstChild.remove();
+    }
+}
+
 function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scenariosNames=[]) {
-    // clear the current scene
-    document.getElementsByTagName("body")[0].innerHTML = "";
+    resetScene();
 
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);
