@@ -56,6 +56,6 @@ export class MyTextBox extends CGFobject {
 
         this.label.display();
 
-        this.registerForPick(-1, null);
+        this.scene.registerForPick(-1, null);
     }
 }
