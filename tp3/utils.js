@@ -131,8 +131,8 @@ export function interpolateCameras(o1, o2, t) {
         return new CGFcamera(fov, near, far, position, target);
     } else {
         // This is merely a hack to interpolate between perspective and ortho cameras
-        
-        function fovToLeftRightTopBottom(fov, aspect) {
+
+        function fovToLeftRightTopBottom(fov, aspect=1) {
             const top = Math.tan(fov / 2);
             const right = top * aspect;
             return [-right, right, top, -top];
@@ -162,7 +162,7 @@ export function interpolateCameras(o1, o2, t) {
             const fov = interpolate(perspectiveCamera.fov, orthoFov, t);
             return new CGFcamera(fov, near, far, position, target);
         } else { // result is ortho camera
-            const [perspectiveLeft, perspectiveRight, perspectiveTop, perspectiveBottom] = fovToLeftRightTopBottom(perspectiveCamera.fov, 1);
+            const [perspectiveLeft, perspectiveRight, perspectiveTop, perspectiveBottom] = fovToLeftRightTopBottom(perspectiveCamera.fov);
             const left = interpolate(perspectiveLeft, orthoCamera.left, t);
             const right = interpolate(perspectiveRight, orthoCamera.right, t);
             const bottom = interpolate(perspectiveBottom, orthoCamera.bottom, t);

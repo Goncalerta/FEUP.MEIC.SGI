@@ -35,8 +35,11 @@ export class MyMenu extends CGFobject {
         this.scene.translate(0, halfVertical, this.BOX_DEPTH/2.0);
 
         // title
-        this.getTitle().display();
-        this.scene.translate(0, -1.1 * this.getTitle().getFontSize() * 2, 0);
+        let title = this.getTitle();
+        if (title != null) {
+            this.getTitle().display();
+            this.scene.translate(0, -1.1 * this.getTitle().getFontSize() * 2, 0);
+        }
 
         // labels
         this.scene.pushMatrix();
