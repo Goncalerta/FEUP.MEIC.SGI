@@ -76,5 +76,7 @@ export class MyButton extends CGFobject {
         }
 
         this.scene.popMatrix();
+
+        this.scene.registerForPick(-1, null);
     }
 }

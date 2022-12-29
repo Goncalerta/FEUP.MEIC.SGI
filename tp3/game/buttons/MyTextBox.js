@@ -55,5 +55,7 @@ export class MyTextBox extends CGFobject {
         this.scene.popMatrix();
 
         this.label.display();
+
+        this.registerForPick(-1, null);
     }
 }
