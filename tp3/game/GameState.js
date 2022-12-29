@@ -13,7 +13,9 @@ class GameState {
         return [];
     }
 
-    getHighlightedPieces() {}
+    getHighlightedPieces() {
+        return [];
+    }
 
     selectPiece(piece, x, y) {}
 
