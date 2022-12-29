@@ -1,9 +1,9 @@
 import { MyRectangle } from "../MyRectangle.js";
-import { CGFobject, CGFtexture, CGFshader } from "../../lib/CGF.js";
+import { CGFtexture, CGFshader } from "../../lib/CGF.js";
 import { getAppearance } from '../utils.js';
 
 
-export class MyFont extends CGFobject { // TODO should this really be a CGFobject? (no display())
+export class MyFont {
     // TODO might need to use other font or adjust this (e.g. 'I' are weird since they are not centered)
     TEXTURE_PATH = "scenes/images/game/oolite-font.trans.png";
     MATERIAL = {
@@ -14,8 +14,8 @@ export class MyFont extends CGFobject { // TODO should this really be a CGFobjec
         specular: [0, 0, 0, 1.0],
     };
 
-    constructor(scene, fontSize=1, elevated=0, colorRGBa=[0.0,0.0,0.0,1.0]) {
-        super(scene);
+    constructor(scene, fontSize=1, elevated=0, colorRGBa=[0,0,0,1]) {
+        this.scene = scene;
         
         this.fontSize = fontSize;
 
@@ -32,7 +32,7 @@ export class MyFont extends CGFobject { // TODO should this really be a CGFobjec
         this.elevated = elevated;
     }
 
-    displayChar(char) {
+    writeChar(char) {
         const charCode = char.charCodeAt(0);
         const charX = charCode % 16;
         const charY = Math.floor(charCode / 16);
@@ -44,30 +44,29 @@ export class MyFont extends CGFobject { // TODO should this really be a CGFobjec
         this.scene.popMatrix();
     }
 
-    displayCenteredEqualLines(stringToDisplay) {
-        let transAmount = [0, 0];
-
+    writeCenteredEqualLines(stringToDisplay, writeRigid=true) {
         const lines = stringToDisplay.split('\n');
         const numLines = lines.length;
-        transAmount[1] = (numLines/2.0 - 0.5) * this.fontSize;
 
         this.scene.setActiveShaderSimple(this.textShader);
         this.appearance.apply();
 
-        this.scene.pushMatrix();
-        this.scene.translate(0.5 * this.fontSize, transAmount[1], this.elevated);
+        if (writeRigid) {
+            this.scene.pushMatrix();
+        }
+
+        this.scene.translate(0.5 * this.fontSize, (numLines/2.0 - 0.5) * this.fontSize, this.elevated);
 
         for (let i = 0; i < numLines; i++) {
             const line = lines[i];
             const lineLength = line.length;
             const transCenter = lineLength/2.0 * this.fontSize;
-            transAmount[0] = Math.max(transAmount[0], transCenter);
 
             // center line
             this.scene.translate(-transCenter, 0, 0);
 
             for (let j = 0; j < lineLength; j++) {
-                this.displayChar(line[j]);
+                this.writeChar(line[j]);
                 this.scene.translate(this.fontSize, 0, 0);
             }
 
@@ -75,8 +74,26 @@ export class MyFont extends CGFobject { // TODO should this really be a CGFobjec
             this.scene.translate(-transCenter, -this.fontSize, 0);
         }
 
-        this.scene.popMatrix();
+        if (writeRigid) {
+            this.scene.popMatrix();
+        }
+
         this.scene.setActiveShaderSimple(this.scene.defaultShader);
+    }
+
+    getTransAmountCenteredEqualLines(stringToDisplay) {
+        let transAmount = [0, 0];
+
+        const lines = stringToDisplay.split('\n');
+        const numLines = lines.length;
+        transAmount[1] = (numLines/2.0 - 0.5) * this.fontSize;
+
+        for (let i = 0; i < numLines; i++) {
+            const line = lines[i];
+            const lineLength = line.length;
+            const transCenter = lineLength/2.0 * this.fontSize;
+            transAmount[0] = Math.max(transAmount[0], transCenter);
+        }
 
         return transAmount;
     }

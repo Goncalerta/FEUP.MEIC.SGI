@@ -3,14 +3,11 @@ import { MyFont } from '../MyFont.js';
 import { secondsToFormattedTime } from '../../utils.js';
 import { PlayerTurnState } from '../GameState.js';
 import { MyScoreBoardBox } from './MyScoreBoardBox.js';
-import { ScoreBoardButtons } from './ScoreBoardButtons.js';
+import { MyScoreBoardButtons } from './MyScoreBoardButtons.js';
 
 export class MyScoreBoard extends CGFobject {
     MAX_CHAR_NAME = 5;
     MAX_SCORE_SIZE = 2;
-    BUTTONS_HEIGHT = 0.5;
-    BUTTONS_WIDTH = 0.5;
-    BUTTONS_DEPTH = 0.1;
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
     DELTA_TEXT = 0.1;
 
@@ -28,7 +25,7 @@ export class MyScoreBoard extends CGFobject {
         this.font = new MyFont(scene, 0.2, 0.01, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
-        this.buttonGroup = new ScoreBoardButtons(scene, cameras, this.BUTTONS_WIDTH, this.BUTTONS_HEIGHT, this.BUTTONS_DEPTH, this.TEXT_COLOR_RGBA);
+        this.buttonGroup = new MyScoreBoardButtons(scene, cameras, this.TEXT_COLOR_RGBA);
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);
@@ -49,6 +46,14 @@ export class MyScoreBoard extends CGFobject {
         if (gameState instanceof PlayerTurnState) {
             this.currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
         }
+
+        let stringToDisplay = 
+            "TIME  " + totalTime + "\n\n" +
+            "      SCORE\n" +
+            this.player1NameShort + "    " + player1ScoreString + "\n" +
+            this.player2NameShort + "    " + player2ScoreString + "\n\n" +
+            "    CURRENT\n" +
+            currentPlayerName + " " + this.currentPlayerTimeLeftString;
         
         // box
         this.scene.pushMatrix();
@@ -60,21 +65,14 @@ export class MyScoreBoard extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-this.DELTA_TEXT, 0, this.depth / 2);
 
-        let translatedAmount = this.font.displayCenteredEqualLines(
-            "TIME  " + totalTime + "\n\n" +
-            "      SCORE\n" +
-            this.player1NameShort + "    " + player1ScoreString + "\n" +
-            this.player2NameShort + "    " + player2ScoreString + "\n\n" +
-            "    CURRENT\n" +
-            currentPlayerName + " " + this.currentPlayerTimeLeftString
-        );
+        this.font.writeCenteredEqualLines(stringToDisplay);    
 
         this.scene.popMatrix();
 
         // buttons
         this.scene.pushMatrix();
-        this.scene.translate(translatedAmount[0] - this.DELTA_TEXT + 0.2, 0.475, this.depth / 2);
-        this.scene.scale(0.35, 0.35, 1)
+        this.scene.translate(this.font.getTransAmountCenteredEqualLines(stringToDisplay)[0], 0.475, this.depth / 2);
+        this.scene.scale(0.175, 0.175, 0.36)
 
         this.buttonGroup.display();
 
