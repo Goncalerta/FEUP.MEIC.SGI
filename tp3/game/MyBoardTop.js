@@ -29,6 +29,7 @@ export class MyBoardTop {
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
         this.material = getAppearance(scene, this.MATERIAL, this.texture);
 
+        const delta = 0.01;
         this.geometry = new MyPatch(scene, 1, 100, 1, 100, [
             [
                 [-realHalfSize, 0, realHalfSize, 1],
@@ -43,6 +44,9 @@ export class MyBoardTop {
 
     display() {
         this.material.apply();
+        this.scene.pushMatrix();
+        // this.scene.translate(0, 0, -0.01)
         this.geometry.display();
+        this.scene.popMatrix();
     }
 }
