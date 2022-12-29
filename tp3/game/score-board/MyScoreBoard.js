@@ -71,7 +71,7 @@ export class MyScoreBoard extends CGFobject {
 
         // buttons
         this.scene.pushMatrix();
-        this.scene.translate(this.font.getTransAmountCenteredEqualLines(stringToDisplay)[0], 0.475, this.depth / 2);
+        this.scene.translate(this.font.getTransAmountCenteredEqualLines(stringToDisplay), 0.475, this.depth / 2);
         this.scene.scale(0.175, 0.175, 0.36)
 
         this.buttonGroup.display();

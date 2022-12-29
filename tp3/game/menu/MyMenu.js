@@ -1,14 +1,16 @@
 import {CGFobject} from '../../../lib/CGF.js';
 
 export class MyMenu extends CGFobject {
-    BOX_WIDTH = 20;
-    BOX_HEIGHT = 20;
+    BOX_WIDTH = 15;
+    BOX_HEIGHT = 15;
     BOX_DEPTH = 1;
-
-    FONT_SIZE = 1;
 
     constructor(scene) {
         super(scene);
+    }
+
+    getTitle() {
+        throw new Error("Abstract method");
     }
 
     getBox() {
@@ -20,7 +22,7 @@ export class MyMenu extends CGFobject {
     }
 
     display() {
-        const halfVertical = (this.FONT_SIZE * this.getLabels().length) / 2;
+        const halfVertical = (this.getLabels().length + this.getTitle().getFontSize() * 2) / 2;
 
         this.scene.pushMatrix();
 
@@ -32,6 +34,10 @@ export class MyMenu extends CGFobject {
 
         this.scene.translate(0, halfVertical, this.BOX_DEPTH/2.0);
 
+        // title
+        this.getTitle().display();
+        this.scene.translate(0, -1.1 * this.getTitle().getFontSize() * 2, 0);
+
         // labels
         this.scene.pushMatrix();
 
@@ -41,7 +47,7 @@ export class MyMenu extends CGFobject {
             if (labelledButton != null) {
                 labelledButton.display();
             }
-            this.scene.translate(0, -1.1 * this.FONT_SIZE, 0);
+            this.scene.translate(0, -1.1, 0);
         }
         this.scene.popMatrix();
 

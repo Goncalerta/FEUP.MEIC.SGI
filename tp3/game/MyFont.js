@@ -82,19 +82,6 @@ export class MyFont {
     }
 
     getTransAmountCenteredEqualLines(stringToDisplay) {
-        let transAmount = [0, 0];
-
-        const lines = stringToDisplay.split('\n');
-        const numLines = lines.length;
-        transAmount[1] = (numLines/2.0 - 0.5) * this.fontSize;
-
-        for (let i = 0; i < numLines; i++) {
-            const line = lines[i];
-            const lineLength = line.length;
-            const transCenter = lineLength/2.0 * this.fontSize;
-            transAmount[0] = Math.max(transAmount[0], transCenter);
-        }
-
-        return transAmount;
+        return Math.max(0, ...stringToDisplay.split('\n').map(line => line.length/2.0 * this.fontSize));
     }
 }

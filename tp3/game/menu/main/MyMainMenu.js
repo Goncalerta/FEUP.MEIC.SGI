@@ -22,13 +22,17 @@ export class MyMainMenu extends MyMenu {
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => {}, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
         // TODO implement label with callback so that it can be updated when a button is pressed
-        this.chooseScenarioLabelButton = new MyLabelButton(scene, " TODO ", this.scenarioRightButton, this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
+        this.chooseScenarioLabelButton = new MyLabelButton(scene, "TODO", this.scenarioRightButton, this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
         this.playLabelButton = new MyLabelButton(scene, "PLAY", this.playButton, this.TEXT_COLOR_RGBA, this.playButton2);
 
-        this.title = new MyLabel(this.scene, "MAIN MENU", this.TEXT_COLOR_RGBA);
+        this.title = new MyLabel(this.scene, "CHECKERS", this.TEXT_COLOR_RGBA, 1.5);
         this.scenarioLabel = new MyLabel(this.scene, "SCENARIO", this.TEXT_COLOR_RGBA);
 
         // TODO text box to insert player names (?)
+    }
+
+    getTitle() {
+        return this.title;
     }
 
     getBox() {
@@ -37,8 +41,6 @@ export class MyMainMenu extends MyMenu {
 
     getLabels() {
         return [
-            this.title,
-            null,
             this.scenarioLabel,
             this.chooseScenarioLabelButton,
             null,
