@@ -1,7 +1,6 @@
 import { CGFobject } from '../../../lib/CGF.js';
 import { MyFont } from '../MyFont.js';
 import { secondsToFormattedTime } from '../../utils.js';
-import { PlayerTurnState } from '../GameState.js';
 import { MyScoreBoardBox } from './MyScoreBoardBox.js';
 import { MyScoreBoardButtons } from './MyScoreBoardButtons.js';
 
@@ -22,7 +21,7 @@ export class MyScoreBoard extends CGFobject {
         this.height = height;
         this.depth = depth;
 
-        this.font = new MyFont(scene, 0.2, 0.01, this.TEXT_COLOR_RGBA);
+        this.font = new MyFont(scene, 0.2, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
         this.buttonGroup = new MyScoreBoardButtons(scene, gameModel, cameras, this.TEXT_COLOR_RGBA);

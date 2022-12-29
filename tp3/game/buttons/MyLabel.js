@@ -8,7 +8,7 @@ export class MyLabel extends CGFobject {
         this.getLabelString = getLabelString;
         this.fontSize = fontSize;
 
-        this.font = new MyFont(scene, this.fontSize, 0.01, colorRGBa);
+        this.font = new MyFont(scene, this.fontSize, colorRGBa);
     }
 
     getFontSize() {

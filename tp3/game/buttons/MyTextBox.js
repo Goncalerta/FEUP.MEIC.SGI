@@ -12,12 +12,13 @@ export class MyTextBox extends CGFobject {
         specular: [0.8, 0.6, 0.6, 1.0],
     };
 
-    constructor(scene, pickingId, enableTextCallBack, startContent="", maxSize=10, colorRGBa=[0, 0, 0, 1], fontSize=1) {
+    constructor(scene, pickingId, enableTextCallBack, startContent="", maxSize=10, colorRGBa=[0, 0, 0, 1], fontSize=1, elevated=0.01) {
         super(scene);
 
         this.pickingId = pickingId;
         this.enableTextCallBack = enableTextCallBack;
         this.maxSize = maxSize;
+        this.elevated = elevated;
         this.content = startContent;
 
         this.label = new MyLabel(scene, () => { return this.content }, colorRGBa, fontSize);
@@ -48,6 +49,7 @@ export class MyTextBox extends CGFobject {
         this.appearance.apply();
 
         this.scene.pushMatrix();
+        this.scene.translate(0, 0, this.elevated);
         this.scene.scale(this.label.getFontSize() * this.maxSize, 1, 1);
         this.quad.display();
         this.scene.popMatrix();

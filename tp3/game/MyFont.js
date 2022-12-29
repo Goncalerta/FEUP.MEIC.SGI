@@ -14,7 +14,7 @@ export class MyFont {
         specular: [0, 0, 0, 1.0],
     };
 
-    constructor(scene, fontSize=1, elevated=0, colorRGBa=[0,0,0,1]) {
+    constructor(scene, fontSize=1, colorRGBa=[0,0,0,1], elevated=0.01) {
         this.scene = scene;
         
         this.fontSize = fontSize;
