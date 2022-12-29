@@ -8,8 +8,8 @@ export class MyScoreBoardBox extends MyBox {
         shininess: 10,
         emission: [0.3, 0.24, 0.24, 1.0],
         ambient: [0.7, 0.6, 0.6, 1.0],
-        diffuse: [0.9, 0.7, 0.7, 1.0],
-        specular: [0.8, 0.6, 0.6, 1.0],
+        diffuse: [0.45, 0.35, 0.35, 1.0],
+        specular: [0.08, 0.06, 0.06, 1.0],
     };
 
     constructor(scene) {

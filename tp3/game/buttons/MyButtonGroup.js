@@ -1,13 +1,7 @@
-import { CGFobject } from "../../lib/CGF.js";
+import { CGFobject } from "../../../lib/CGF.js";
+import { MyButton } from "./MyButton.js";
 
 export class MyButtonGroup extends CGFobject {
-    constructor(scene, buttonWidth, buttonHeight) {
-        super(scene);
-
-        this.buttonWidth = buttonWidth;
-        this.buttonHeight = buttonHeight;
-    }
-
     /**
      * Get buttons in a 2D array layout.
      */
@@ -18,7 +12,7 @@ export class MyButtonGroup extends CGFobject {
 
         this.scene.pushMatrix();
 
-        this.scene.translate(0, 1.1 * this.buttonHeight, 0);
+        this.scene.translate(0, 1.1 * MyButton.HEIGHT, 0);
         for (let i = 0; i < buttons.length; i++) {
             const row = buttons[i];
             for (let j = 0; j < row.length; j++) {
@@ -27,9 +21,9 @@ export class MyButtonGroup extends CGFobject {
                     button.display();
                 }
 
-                this.scene.translate(1.1 * this.buttonWidth, 0, 0);
+                this.scene.translate(1.1 * MyButton.WIDTH, 0, 0);
             }
-            this.scene.translate(-1.1 * this.buttonWidth * row.length, -1.1 * this.buttonHeight, 0);
+            this.scene.translate(-1.1 * MyButton.WIDTH * row.length, -1.1 * MyButton.HEIGHT, 0);
         }
 
         this.scene.popMatrix();
