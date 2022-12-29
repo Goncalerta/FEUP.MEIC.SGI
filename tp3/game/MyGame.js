@@ -15,8 +15,8 @@ export class MyGame {
         this.scene = scene;
 
         // TODO just testing the names
-        this.player1 = new Player(1, "DIOGO");
-        this.player2 = new Player(2, "PEDRO");
+        this.player1 = new Player(1, "BLACK");
+        this.player2 = new Player(2, "RED");
 
         const startTime = new Date().getTime(); // TODO start time (depends on main menu logic probably)
         this.model = new GameModel(this, startTime, this.player1, this.player2);

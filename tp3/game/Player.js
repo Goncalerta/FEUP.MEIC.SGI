@@ -3,7 +3,7 @@ import { GameModel } from "./GameModel.js";
 export class Player {
     constructor(id, name, score=0, cumulativeTime=0) {
         this.id = id;
-        this.name = name;
+        this.name = name.padEnd(5, ' ');
         this.score = score;
         this.cumulativeTime = cumulativeTime;
     }
