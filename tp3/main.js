@@ -1,5 +1,5 @@
 import {CGFapplication} from '../lib/CGF.js';
-import {XMLscene,GAME_SCENE_STATE} from './XMLscene.js';
+import {XMLscene, GAME_SCENE_STATE} from './XMLscene.js';
 import {MyInterface} from './MyInterface.js';
 import {MySceneGraph} from './MySceneGraph.js';
 
@@ -55,12 +55,18 @@ function changeScene(sceneName, game_scene_state=GAME_SCENE_STATE.PLAYING, scena
 }
 
 function changeToMainMenu() {
-    const availableScenes = ["empty.xml", "space.xml"];
+    const availableScenes = ["space.xml", "empty.xml"];
     changeScene("main-menu.xml", GAME_SCENE_STATE.MAIN_MENU, availableScenes);
 }
 
 function main() {
-    changeToMainMenu();
+    const filename = getUrllets()['file'] || 'main-menu.xml';
+
+    if (filename == 'main-menu.xml') {
+        changeToMainMenu();
+    } else {
+        changeScene(filename);
+    }
 }
 
 main();
