@@ -25,7 +25,7 @@ export class MyScoreBoard extends CGFobject {
         this.font = new MyFont(scene, 0.2, 0.01, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
-        this.buttonGroup = new MyScoreBoardButtons(scene, cameras, this.TEXT_COLOR_RGBA);
+        this.buttonGroup = new MyScoreBoardButtons(scene, gameModel, cameras, this.TEXT_COLOR_RGBA);
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);

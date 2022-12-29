@@ -142,3 +142,14 @@ export function secondsToFormattedTime(seconds) {
     const secondsLeft = seconds % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
 }
+
+export function textToLimitedCentered(text, maxChars) {
+    if (text.length == maxChars) {
+        return text;
+    } else if (text.length < maxChars) {
+        const spaces = ' '.repeat((maxChars - text.length) / 2);
+        return spaces + text + spaces + ((maxChars - text.length) / 2 % 2 != 0 ? ' ' : '');
+    } else {
+        return text.substring(0, maxChars - 2) + '..';
+    }
+}

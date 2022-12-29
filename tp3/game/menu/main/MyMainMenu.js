@@ -3,6 +3,7 @@ import { MyLabelButton } from "../../buttons/MyLabelButton.js";
 import { MyLabel } from "../../buttons/MyLabel.js";
 import { MyButton } from "../../buttons/MyButton.js";
 import { MyMenu } from "../MyMenu.js";
+import { textToLimitedCentered } from "../../../utils.js";
 
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
@@ -10,23 +11,25 @@ export class MyMainMenu extends MyMenu {
     LEFT_TEXTURE_PATH = "scenes/images/game/left.png";
     RIGHT_TEXTURE_PATH = "scenes/images/game/right.png";
 
-    constructor(scene) {
+    constructor(scene, scenariosNames=[]) {
         super(scene);
 
         this.depth = 1;
+        this.scenariosNames = scenariosNames;
+        this.currentScenarioIndex = 0;
         this.box = new MyMainMenuBox(scene);
 
         let pickingId = 501;
+        // TODO use proper play callback
         this.playButton  = new MyButton(scene, pickingId++, () => {}, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
-        this.scenarioRightButton = new MyButton(scene, pickingId++, () => {}, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
-        this.scenarioLeftButton = new MyButton(scene, pickingId++, () => {}, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
-        // TODO implement label with callback so that it can be updated when a button is pressed
-        this.chooseScenarioLabelButton = new MyLabelButton(scene, "TODO", this.scenarioRightButton, this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
-        this.playLabelButton = new MyLabelButton(scene, "PLAY", this.playButton, this.TEXT_COLOR_RGBA, this.playButton2);
+        this.chooseScenarioLabelButton = new MyLabelButton(scene, this.getCurrentScenarioName.bind(this), this.scenarioRightButton, this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
+        this.playLabelButton = new MyLabelButton(scene, () => { return "PLAY" }, this.playButton, this.TEXT_COLOR_RGBA, this.playButton2);
 
-        this.title = new MyLabel(this.scene, "CHECKERS", this.TEXT_COLOR_RGBA, 1.5);
-        this.scenarioLabel = new MyLabel(this.scene, "SCENARIO", this.TEXT_COLOR_RGBA);
+        this.title = new MyLabel(this.scene, () => { return "CHECKERS" }, this.TEXT_COLOR_RGBA, 1.5);
+        this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.TEXT_COLOR_RGBA);
 
         // TODO text box to insert player names (?)
     }
@@ -46,5 +49,25 @@ export class MyMainMenu extends MyMenu {
             null,
             this.playLabelButton
         ];
+    }
+
+    getCurrentScenarioName() {
+        if (this.scenariosNames.length == 0) {
+            return " ? ";
+        }
+
+        return textToLimitedCentered(this.scenariosNames[this.currentScenarioIndex], 5);
+    }
+
+    updateScenarioIndex(delta) {
+        if (this.scenariosNames.length == 0) {
+            return;
+        }
+
+        if (this.currentScenarioIndex + delta < 0) {
+            this.currentScenarioIndex = this.scenariosNames.length;
+        }
+
+        this.currentScenarioIndex = (this.currentScenarioIndex + delta) % this.scenariosNames.length;
     }
 }

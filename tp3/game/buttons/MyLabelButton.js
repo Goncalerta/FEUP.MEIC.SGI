@@ -3,8 +3,8 @@ import { MyButton } from "./MyButton.js";
 
 // A label with a button on the right. Optionally, a button on the left.
 export class MyLabelButton extends MyLabel {
-    constructor(scene, labelString, rightButton, colorRGBa=[0, 0, 0, 1], leftButton=null) {
-        super(scene, labelString, colorRGBa);
+    constructor(scene, getLabelString, rightButton, colorRGBa=[0, 0, 0, 1], leftButton=null) {
+        super(scene, getLabelString, colorRGBa);
 
         this.rightButton = rightButton;
         this.leftButton = leftButton;
