@@ -34,13 +34,12 @@ class GameState {
 
 export class PlayerTurnState extends GameState {
     static TURN_TIME_LIMIT = 300;
+    static ONE_MOVE_TIME_LIMT = 60;
 
     constructor(model, player, startTime, t = null, validMoves = null, turn_time_limit=null) {
         super(model);
         this.player = player;
-        this.start_time = startTime;
-        this.update(t !== null? t : startTime);
-        this.turn_time_limit = turn_time_limit !== null? turn_time_limit : PlayerTurnState.TURN_TIME_LIMIT;
+
         this.validMoves = validMoves? validMoves : this.model.getValidMoves(this.player.getId());
         this.validMovesPieces = [];
         for (let move of this.validMoves) {
@@ -48,6 +47,16 @@ export class PlayerTurnState extends GameState {
                 this.validMovesPieces.push(move.from);
             }
         }
+
+        this.start_time = startTime;
+        if (turn_time_limit !== null) {
+            this.turn_time_limit = turn_time_limit;
+        } else if (this.validMoves.length == 1) {
+            this.turn_time_limit = PlayerTurnState.ONE_MOVE_TIME_LIMT;
+        } else {
+            this.turn_time_limit = PlayerTurnState.TURN_TIME_LIMIT;
+        }
+        this.update(t !== null? t : startTime);
     }
 
     selectPiece(piece, x, y) {
@@ -67,7 +76,7 @@ export class PlayerTurnState extends GameState {
 
     update(t) {
         this.current_time = t;
-        this.remaining_time = Math.max(0, this.turn_time_limit - Math.round((this.current_time - this.start_time) / 1000));
+        this.remaining_time = Math.max(0, this.turn_time_limit - Math.floor((this.current_time - this.start_time) / 1000));
         if (this.remaining_time == 0) {
             this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
         }
@@ -96,7 +105,7 @@ export class PieceSelectedState extends PlayerTurnState {
 
     selectPiece(piece, x, y) {
         if (x == this.piecePosition[0] && y == this.piecePosition[1]) {
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, this.validMoves));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, this.validMoves, this.turn_time_limit));
             return;
         }
 
@@ -116,7 +125,7 @@ export class PieceSelectedState extends PlayerTurnState {
         } else {
             this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.current_time, null, this.turn_time_limit));
         }
     }
 

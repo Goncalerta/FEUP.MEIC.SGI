@@ -277,7 +277,6 @@ export class MySceneGraph {
     parseScene(sceneNode) {
         // Get root of the scene.
         const root = this.reader.getString(sceneNode, 'root', false);
-        if (root == null) this.onXMLError('no root defined for scene');
 
         this.idRoot = root;
 

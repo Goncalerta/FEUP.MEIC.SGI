@@ -1,5 +1,5 @@
 <sxs>
-    <scene root="root" axis_length="0.5"/>
+    <scene axis_length="0.5"/>
 
     <views default="defaultview">
         <perspective id="defaultview" near="0.1" far="5000" angle="22.9">
@@ -47,25 +47,11 @@
     </transformations>
 
     <primitives>
-        <primitive id="square">
-            <rectangle x1="100" y1="100" x2="101" y2="101" />
-        </primitive>
     </primitives>
 
     <animations>
     </animations>
 
     <components>
-         <component id="root">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
     </components>
 </sxs>

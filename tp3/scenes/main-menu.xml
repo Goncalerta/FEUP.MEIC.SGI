@@ -1,16 +1,16 @@
 <sxs>
-    <scene root="root" axis_length="0.5"/>
+    <scene axis_length="0.5"/>
 
     <views default="menuView">
-        <perspective id="menuView" near="0.1" far="5000" angle="22.9">
+        <perspective id="menuView" near="0.1" far="100" angle="22.9">
             <from x="0" y="0" z="40" />
             <to x="0" y="0" z="0" />
         </perspective>
     </views>
 
     <ambient>
-        <ambient r="0.025" g="0.025" b="0.025" a="1.0" />
-        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+        <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
+        <background r="0.9" g="0.7" b="0.6" a="1.0" />
     </ambient>
 
     <lights>
@@ -33,25 +33,11 @@
     </transformations>
 
     <primitives>
-        <primitive id="square">
-            <rectangle x1="10000" y1="10000" x2="10001" y2="10001" />
-        </primitive>
     </primitives>
 
     <animations>
     </animations>
 
     <components>
-         <component id="root">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
     </components>
 </sxs>
