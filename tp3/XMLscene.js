@@ -1,7 +1,14 @@
 import { CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance } from '../lib/CGF.js';
 import { interpolate, subtractVectors } from './utils.js';
 import { MyGame } from './game/MyGame.js';
+import { MyMainMenu } from './game/menu/main/MyMainMenu.js';
 import { EventAnimation } from './animations/EventAnimation.js';
+
+export const GAME_SCENE_STATE = {
+    NO_GAME: -1,
+    MAIN_MENU: 0,
+    PLAYING: 1,
+};
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -15,6 +22,22 @@ export class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+    }
+
+    /**
+     * Inits the game/main-menu objects
+     * @param {GAME_SCENE_STATE} game_scene_state 
+     * @param {list} scenariosNames 
+     * @param {function} playCallBack
+     */
+    initGame(game_scene_state=GAME_SCENE_STATE.NO_GAME, scenariosNames=[], playCallBack=(scenarioFileName) => {}) {
+        this.mainMenu = null;
+        this.game = null;
+        if (game_scene_state == GAME_SCENE_STATE.MAIN_MENU) {
+            this.mainMenu = new MyMainMenu(this, scenariosNames, playCallBack);
+        } else if (game_scene_state == GAME_SCENE_STATE.PLAYING) {
+            this.game = new MyGame(this);
+        }
     }
 
     /**
@@ -75,7 +98,6 @@ export class XMLscene extends CGFscene {
         this.startTime = null;
 
         this.eventAnimations = new Set();
-        this.game = new MyGame(this);
 
         this.setPickEnabled(true);
     }
@@ -487,7 +509,11 @@ export class XMLscene extends CGFscene {
         this.lights[7].update();
 
         if (this.sceneInited) {
-            this.game.display(this.pickMode);
+            if (this.game !== null) {
+                this.game.display(this.pickMode);
+            } else if (this.mainMenu !== null) {
+                this.mainMenu.display();
+            }
 
             // Displays the scene (MySceneGraph function).
             this.registerForPick(-1, null); // Disable picking for the scene graph.
@@ -520,8 +546,11 @@ export class XMLscene extends CGFscene {
             // traverse scene graph and, for nodes having animation,
             // compute the animation matrix
             this.graph.update(t);
+            
+            if (this.game !== null) {
+                this.game.update(t);
+            }
 
-            this.game.update(t);
             this.eventAnimations.forEach((eventAnimation) => eventAnimation.update(t));
         }
     }

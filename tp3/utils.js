@@ -153,3 +153,7 @@ export function textToLimitedCentered(text, maxChars) {
         return text.substring(0, maxChars - 2) + '..';
     }
 }
+
+export function removeFileExtension(filename) {
+    return filename.substring(0, filename.lastIndexOf('.'));
+}

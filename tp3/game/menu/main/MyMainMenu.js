@@ -3,7 +3,7 @@ import { MyLabelButton } from "../../buttons/MyLabelButton.js";
 import { MyLabel } from "../../buttons/MyLabel.js";
 import { MyButton } from "../../buttons/MyButton.js";
 import { MyMenu } from "../MyMenu.js";
-import { textToLimitedCentered } from "../../../utils.js";
+import { textToLimitedCentered, removeFileExtension } from "../../../utils.js";
 
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
@@ -11,7 +11,7 @@ export class MyMainMenu extends MyMenu {
     LEFT_TEXTURE_PATH = "scenes/images/game/left.png";
     RIGHT_TEXTURE_PATH = "scenes/images/game/right.png";
 
-    constructor(scene, scenariosNames=[]) {
+    constructor(scene, scenariosNames=[], playCallBack=(scenarioFileName) => {}) {
         super(scene);
 
         this.depth = 1;
@@ -21,7 +21,7 @@ export class MyMainMenu extends MyMenu {
 
         let pickingId = 501;
         // TODO use proper play callback
-        this.playButton  = new MyButton(scene, pickingId++, () => {}, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
@@ -51,12 +51,20 @@ export class MyMainMenu extends MyMenu {
         ];
     }
 
+    getCurrentScenarioFileName() {
+        if (this.scenariosNames.length == 0) {
+            return null;
+        }
+
+        return this.scenariosNames[this.currentScenarioIndex];
+    }
+
     getCurrentScenarioName() {
         if (this.scenariosNames.length == 0) {
             return " ? ";
         }
 
-        return textToLimitedCentered(this.scenariosNames[this.currentScenarioIndex], 5);
+        return textToLimitedCentered(removeFileExtension(this.scenariosNames[this.currentScenarioIndex]), 5);
     }
 
     updateScenarioIndex(delta) {
