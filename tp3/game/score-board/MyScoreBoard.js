@@ -29,8 +29,6 @@ export class MyScoreBoard extends CGFobject {
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);
-
-        this.currentPlayerTimeLeftString = secondsToFormattedTime(0);
     }
 
     display() {
@@ -43,9 +41,7 @@ export class MyScoreBoard extends CGFobject {
         const currentPlayer = gameState.getCurrentPlayer();
         const currentPlayerName = currentPlayer == null ? "-".repeat(this.MAX_CHAR_NAME) : currentPlayer.getName().substring(0, this.MAX_CHAR_NAME);
 
-        if (gameState instanceof PlayerTurnState) { // TODO do we really need instanceof? maybe we could act based on the value of getRemainingTime. Besides, when the piece is moving we probably want to show a (frozen) time anyway
-            this.currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
-        }
+        const currentPlayerTimeLeftString = secondsToFormattedTime(gameState.getRemainingTime());
 
         let stringToDisplay = 
             "TIME  " + totalTime + "\n\n" +
@@ -53,7 +49,7 @@ export class MyScoreBoard extends CGFobject {
             this.player1NameShort + "    " + player1ScoreString + "\n" +
             this.player2NameShort + "    " + player2ScoreString + "\n\n" +
             "    CURRENT\n" +
-            currentPlayerName + " " + this.currentPlayerTimeLeftString;
+            currentPlayerName + " " + currentPlayerTimeLeftString;
         
         // box
         this.scene.pushMatrix();

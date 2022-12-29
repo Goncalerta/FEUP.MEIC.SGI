@@ -81,10 +81,10 @@ export class MyChecker extends CGFobject {
             this.setPosition(move.to);
 
             if (move.promoted) {
-                this.animatePromote();
+                this.animatePromote(onEndCallback);
+            } else {
+                onEndCallback();
             }
-
-            onEndCallback();
         });
 
         animation.onUpdate((t) => {
@@ -183,10 +183,10 @@ export class MyChecker extends CGFobject {
                                 this.setPosition(move.to);
 
                                 if (move.promoted) {
-                                    this.animatePromote();
+                                    this.animatePromote(onEndCallback);
+                                } else {
+                                    onEndCallback();
                                 }
-
-                                onEndCallback();
                             });
 
                             animation.onUpdate((t) => {
@@ -212,7 +212,7 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
-    animatePromote() {
+    animatePromote(onEndCallback) {
         const gravity = 9.8;
         const heightToReach = this.height * 30;
         const upDuration = Math.sqrt(2 * heightToReach / gravity);
@@ -245,6 +245,7 @@ export class MyChecker extends CGFobject {
             downAnimation.onEnd(() => {
                 this.position[1] = 0;
                 this.topOffset = 1;
+                onEndCallback();
             });
 
             downAnimation.start(this.scene.currentTime);

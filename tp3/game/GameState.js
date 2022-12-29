@@ -35,11 +35,12 @@ class GameState {
 export class PlayerTurnState extends GameState {
     static TURN_TIME_LIMIT = 300;
 
-    constructor(model, player, startTime, t = null, validMoves = null) {
+    constructor(model, player, startTime, t = null, validMoves = null, turn_time_limit=null) {
         super(model);
         this.player = player;
         this.start_time = startTime;
         this.current_time = t !== null? t : startTime;
+        this.turn_time_limit = turn_time_limit !== null? turn_time_limit : PlayerTurnState.TURN_TIME_LIMIT;
         this.validMoves = validMoves? validMoves : this.model.getValidMoves(this.player.getId());
         this.validMovesPieces = [];
         for (let move of this.validMoves) {
@@ -78,14 +79,14 @@ export class PlayerTurnState extends GameState {
     }
 
     getRemainingTime() {
-        const t = PlayerTurnState.TURN_TIME_LIMIT - Math.round((this.current_time - this.start_time) / 1000);
+        const t = this.turn_time_limit - Math.round((this.current_time - this.start_time) / 1000);
         return t > 0 ? t : 0;
     }
 }
 
 export class PieceSelectedState extends PlayerTurnState {
-    constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition) {
-        super(model, player, startTime, t, validMoves);
+    constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition, turn_time_limit=null) {
+        super(model, player, startTime, t, validMoves, turn_time_limit);
         this.piece = piece;
         this.piecePosition = piecePosition;
         this.filteredValidMoves = filteredValidMoves;
@@ -108,7 +109,7 @@ export class PieceSelectedState extends PlayerTurnState {
         const move = this.filteredValidMoves.find(move => move.to[0] == x && move.to[1] == y);
         if (move) {
             const completedMove = this.model.move(move);
-            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.current_time, completedMove, this.piece));
+            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.current_time, completedMove, this.piece, this.getRemainingTime()));
             this.player.changeCumulativeTime((this.current_time - this.start_time) / 1000);
         } else {
             this.piece.animateUnallowed();
@@ -135,12 +136,13 @@ export class PieceSelectedState extends PlayerTurnState {
 }
 
 export class PieceMovingState extends GameState {
-    constructor(model, player, startTime, moveTime, completedMove, piece) {
+    constructor(model, player, startTime, moveTime, completedMove, piece, remaining_time) {
         super(model);
         this.player = player;
         this.start_time = startTime;
         this.move_time = moveTime;
         this.completedMove = completedMove;
+        this.remaining_time = remaining_time;
         this.piece = piece;
 
         this.piece.animateMove(completedMove, () => {
@@ -148,7 +150,7 @@ export class PieceMovingState extends GameState {
             if ((!completedMove.promoted) && completedMove.captured) {
                 const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
                 if (captureMoves.length > 0) {
-                    this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to));
+                    this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
                     return;
                 }
             }
@@ -174,6 +176,10 @@ export class PieceMovingState extends GameState {
 
     spotlightOn() {
         return [this.piece.position[0], this.piece.position[2]];
+    }
+
+    getRemainingTime() {
+        return this.remaining_time;
     }
 }
 
