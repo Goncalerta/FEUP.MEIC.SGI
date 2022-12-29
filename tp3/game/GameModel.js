@@ -32,6 +32,10 @@ export class GameModel {
         this.nextMoves = [];
     }
 
+    getGameTime() {
+        return Math.floor((this.current_time - this.start_time) / 1000);
+    }
+
     executeMove(completedMove) {
         if (completedMove.promoted) {
             this.board[completedMove.to[1]][completedMove.to[0]] = this.getPlayerQueen(completedMove.by);

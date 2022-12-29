@@ -1,4 +1,4 @@
-import { getAppearance } from "../utils.js";
+import { getAppearance, interpolate } from "../utils.js";
 import { MyCircle } from "../MyCircle.js";
 import { easeOutCubic } from "../animations/EasingFunctions.js";
 import { PeriodicAnimation } from "../animations/PeriodicAnimation.js";
@@ -10,9 +10,17 @@ import { PeriodicAnimation } from "../animations/PeriodicAnimation.js";
 export class MyBoardHintGroup {
     MATERIAL = {
         shininess: 5,
-        emission: [0.05, 0.8, 0.01, 1.0],
+        emission: [0.05, 0.75, 0.01, 1.0],
         ambient: [0, 0.1, 0, 1.0],
         diffuse: [0, 0, 0, 1.0],
+        specular: [0, 0, 0, 1.0],
+    };
+
+    MATERIAL_GLOW = {
+        shininess: 5,
+        emission: [0.3, 1.0, 0.3, 1.0],
+        ambient: [0.2, 0.2, 0.2, 1.0],
+        diffuse: [0.05, 0.05, 0.05, 1.0],
         specular: [0, 0, 0, 1.0],
     };
 
@@ -32,7 +40,6 @@ export class MyBoardHintGroup {
         this.hintGeometry = new MyCircle(scene, tileSize*0.3, [0, 0, 0], 20);
         this.animation = new PeriodicAnimation(scene, 1, easeOutCubic, true);
         this.animation.start();
-        this.appearance = getAppearance(scene, this.MATERIAL);
     }
 
     /**
@@ -40,7 +47,7 @@ export class MyBoardHintGroup {
      */
     display() {
         const moves = this.model.state.getMoveHints();
-        this.appearance.apply();
+        getAppearance(this.scene, interpolate(this.MATERIAL, this.MATERIAL_GLOW, this.animation.get())).apply();
         for (let i = 0; i < moves.length; i++) {
             const [x, y] = moves[i];
             const position = [(x-3.5)*this.tileSize, -(y-3.5)*this.tileSize];
