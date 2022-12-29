@@ -201,7 +201,6 @@ export class MyChecker extends CGFobject {
                         });
 
                         captureAnimation.start(this.scene.currentTime - insideTime);
-                        this.player.changeScore(1); // TODO this should not be done inside MyChecker class
                     });
 
                     recoilAnimation.start(this.scene.currentTime - insideTime);

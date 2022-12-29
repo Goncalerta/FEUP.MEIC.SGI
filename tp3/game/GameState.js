@@ -126,6 +126,10 @@ export class PieceSelectedState extends PlayerTurnState {
         if (move) {
             const completedMove = this.model.move(move);
             this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.model.current_time, completedMove, this.piece, this.getRemainingTime()));
+
+            if (completedMove.captured) {
+                this.player.changeScore(1);
+            }
         } else {
             this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
