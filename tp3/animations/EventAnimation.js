@@ -36,10 +36,10 @@ export class EventAnimation {
     }
 
     start(t) {
+        this.onStartCallback.forEach(f => f(this.params));
         this.startTime = t;
         this.endTime = this.duration + t;
         this.scene.animate(this);
-        this.onStartCallback.forEach(f => f(this.params));
         this.update(t);
     }
 

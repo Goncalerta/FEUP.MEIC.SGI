@@ -21,12 +21,21 @@ export function popAndDisappear(t) {
     return Math.sqrt(1-(1.85*t-0.85)**2);
 }
 
-export function easeOutCubic(t) {
-    return 1 - (1 - t)**3;
+
+export function easeInQuad(t) {
+    return t**2;
+}
+
+export function easeOutQuad(t) {
+    return 1 - (1 - t)**2;
 }
 
 export function easeInCubic(t) {
     return t**3;
+}
+
+export function easeOutCubic(t) {
+    return 1 - (1 - t)**3;
 }
 
 export function loopbackFunction(f) {
