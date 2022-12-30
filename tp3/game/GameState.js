@@ -36,6 +36,10 @@ class GameState {
     getGameTime() {
         return this.model.current_time;
     }
+
+    triggerUndo(getChecker) {}
+
+    triggerReplay(getChecker) {}
 }
 
 export class PlayerTurnState extends GameState {
@@ -98,6 +102,12 @@ export class PlayerTurnState extends GameState {
     getRemainingTime() {
         return this.remaining_time;
     }
+
+    triggerUndo(getChecker) {
+        const completedMove = this.model.undo();
+        const piece = getChecker(...completedMove.to);
+        this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remaining_time));
+    }
 }
 
 export class PieceSelectedState extends PlayerTurnState {
@@ -125,7 +135,7 @@ export class PieceSelectedState extends PlayerTurnState {
         const move = this.filteredValidMoves.find(move => move.to[0] == x && move.to[1] == y);
         if (move) {
             const completedMove = this.model.move(move);
-            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.model.current_time, completedMove, this.piece, this.getRemainingTime()));
+            this.model.setGameState(new PieceMovingState(this.model, this.player, completedMove, this.piece, this.getRemainingTime()));
             this.player.changeCumulativeTime((this.model.current_time - this.start_time) / 1000);
         } else {
             this.piece.animateUnallowed();
@@ -151,15 +161,31 @@ export class PieceSelectedState extends PlayerTurnState {
     }
 }
 
-export class PieceMovingState extends GameState {
-    constructor(model, player, startTime, moveTime, completedMove, piece, remaining_time) {
+export class AnimationState extends GameState {
+    constructor(model, player, completedMove, piece, remaining_time) {
         super(model);
         this.player = player;
-        this.start_time = startTime;
-        this.move_time = moveTime;
         this.completedMove = completedMove;
         this.remaining_time = remaining_time;
         this.piece = piece;
+    }
+
+    getCurrentPlayer() {
+        return this.player;
+    }
+
+    spotlightOn() {
+        return [this.piece.position[0], this.piece.position[2]];
+    }
+
+    getRemainingTime() {
+        return this.remaining_time;
+    }
+}
+
+export class PieceMovingState extends AnimationState {
+    constructor(model, player, completedMove, piece, remaining_time) {
+        super(model, player, completedMove, piece, remaining_time);
 
         this.piece.animateMove(completedMove, () => {
             // Check for multicapture
@@ -185,17 +211,20 @@ export class PieceMovingState extends GameState {
     getHighlightedPieces() {
         return [this.completedMove.from];
     }
+}
 
-    getCurrentPlayer() {
-        return this.player;
+export class PieceMovingUndoState extends AnimationState {
+    constructor(model, player, completedMove, piece, remaining_time) {
+        super(model, player, completedMove, piece, remaining_time);
+
+        this.piece.animateUndo(completedMove, () => {
+            // TODO Check for multicapture
+            this.model.setGameState(new PlayerTurnState(this.model, completedMove.by, this.model.current_time));
+        });
     }
 
-    spotlightOn() {
-        return [this.piece.position[0], this.piece.position[2]];
-    }
-
-    getRemainingTime() {
-        return this.remaining_time;
+    getHighlightedPieces() {
+        return [this.completedMove.to];
     }
 }
 

@@ -35,9 +35,4 @@ export class Player {
     changeCumulativeTime(delta) {
         this.cumulativeTime += delta;
     }
-
-    getGameTimeLeft() {
-        const timeLeft = GameModel.GAME_TIME_LIMIT_PER_PLAYER - this.getCumulativeTime();
-        return timeLeft > 0 ? timeLeft : 0;
-    }
 }

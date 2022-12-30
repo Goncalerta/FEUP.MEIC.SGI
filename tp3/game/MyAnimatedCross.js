@@ -36,7 +36,8 @@ export class MyAnimatedCross {
         this.tileSize = tileSize;
         this.position = [(x-3.5)*this.tileSize, height, -(y-3.5)*this.tileSize];
         this.cross = new MyCross(scene, stroke);
-        this.animation = new EventAnimation(scene, duration, [smoothPeak, popAndDisappear], onEnd);
+        this.animation = new EventAnimation(scene, duration, [smoothPeak, popAndDisappear]);
+        this.animation.onEnd(onEnd);
     }
 
     start(t) {

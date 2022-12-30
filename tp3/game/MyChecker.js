@@ -1,6 +1,7 @@
 import { CGFobject } from '../../lib/CGF.js';
 import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, quadPeak, gravityUp, gravityDown } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
+import { EventAnimationChain } from '../animations/EventAnimationChain.js';
 import { arraysEqual, getAppearance, interpolate } from '../utils.js';
 
 /**
@@ -9,6 +10,7 @@ import { arraysEqual, getAppearance, interpolate } from '../utils.js';
 export class MyChecker extends CGFobject {
     LEAP_HEIGHT = 0.8;
     DEFAULT_TOP_OFFSET = 0.01;
+    MAX_MOVE_VELOCITY = 3;
 
     /**
      * @method constructor
@@ -60,7 +62,231 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
+    getPromotionAnimations() {
+        const gravity = 9.8;
+        const heightToReach = this.height * 30;
+        const upDuration = Math.sqrt(2 * heightToReach / gravity);
+
+        const upAnimation = new EventAnimation(this.scene, upDuration, gravityUp(gravity));
+        upAnimation.onUpdate((t) => {
+            this.position[1] = heightToReach * t;
+
+            if (this.position[1] > this.radius) {
+                this.rotationRatio = (1 - (this.position[1] - this.radius) / (heightToReach - this.radius)) * 3;
+            }
+        });
+        upAnimation.onEnd(() => {
+            this.position[1] = heightToReach;
+        });
+
+        const downAnimation = new EventAnimation(this.scene, upDuration, gravityDown(gravity));
+        downAnimation.onUpdate((t) => {
+            this.position[1] = heightToReach * (1 - t);
+            this.topOffset = t;
+
+            if (this.position[1] > this.radius) {
+                this.rotationRatio = (1 - (this.position[1] - this.radius) / (heightToReach - this.radius)) * 3;
+            } else {
+                this.rotationRatio = 0.5;
+            }
+        });
+        downAnimation.onEnd(() => {
+            this.position[1] = 0;
+            this.topOffset = 1;
+        });
+
+        return [upAnimation, downAnimation];
+    }
+
+    getMoveAnimations(endPosition, onTestCollision = null) {
+        const animation = new EventAnimation(this.scene, 1);
+
+        animation.onStart((params) => {
+            params.startPosition = this.position;
+            params.deltaPosition = [endPosition[0] - params.startPosition[0], endPosition[2] - params.startPosition[2]];
+            
+            const absDelta = Math.abs(params.deltaPosition[0])/this.tileSize;
+            const accelerationTime = 0.5;
+            const duration = 2 * accelerationTime + (absDelta - 1) / this.MAX_MOVE_VELOCITY;
+            const xRatio = accelerationTime / duration;
+            const yRatio = 0.5 / absDelta;
+            animation.setDuration(duration);
+            animation.easingFunction = accelDecel(easeInCubic, identity, easeOutCubic, xRatio, yRatio);
+        });
+
+
+        animation.onUpdate((t, params) => {
+            this.position = [
+                params.startPosition[0] + params.deltaPosition[0] * t,
+                0,
+                params.startPosition[2] + params.deltaPosition[1] * t,
+            ];
+
+            if (onTestCollision) {
+                onTestCollision(animation);
+            }
+        });
+
+        return [animation]; // TODO this will be 3 animations
+    }
+
+    getRecoilAnimations(capturedPiece, direction) {
+        const recoilAnimation = new EventAnimation(this.scene, 0.5, easeOutCubic);
+
+        recoilAnimation.onStart((params) => {
+            const recoilDistance = this.tileSize;
+            params.beginCaptured = [capturedPiece.position[0], capturedPiece.position[2]];
+            const displacementFactor = 2 * this.radius * Math.sqrt(2);
+            params.beginCapturer = [
+                capturedPiece.position[0] - displacementFactor * direction[0], 
+                capturedPiece.position[2] - displacementFactor * direction[1]
+            ];
+            params.deltaCaptured = [recoilDistance*direction[0], recoilDistance*direction[1]];
+            params.deltaCapturer = [- recoilDistance*direction[0], - recoilDistance*direction[1]];
+        });
+        
+
+        recoilAnimation.onUpdate((t, params) => {
+            this.position = [
+                params.beginCapturer[0] + params.deltaCapturer[0] * t,
+                0,
+                params.beginCapturer[1] + params.deltaCapturer[1] * t,
+            ];
+
+            capturedPiece.position = [
+                params.beginCaptured[0] + params.deltaCaptured[0] * t,
+                0,
+                params.beginCaptured[1] + params.deltaCaptured[1] * t,
+            ];
+        });
+
+        recoilAnimation.onEnd((params) => {
+            this.position = [
+                params.beginCapturer[0] + params.deltaCapturer[0],
+                0,
+                params.beginCapturer[1] + params.deltaCapturer[1],
+            ];
+
+            capturedPiece.position = [
+                params.beginCaptured[0] + params.deltaCaptured[0],
+                0,
+                params.beginCaptured[1] + params.deltaCaptured[1],
+            ];
+            // this.player.changeScore(1); // TODO this should not be done inside MyChecker class
+        });
+
+        return [recoilAnimation];
+    }
+
+    getCaptureAnimations() {
+        const captureAnimation = new EventAnimation(this.scene, 1, [identity, quadPeak]);
+        
+        captureAnimation.onStart((params) => {
+            params.begin = [this.position[0], this.position[2]];
+            params.end = this.scene.game.getDiscardBoard(this.player.getId()).fillSlot();
+            params.delta = [params.end[0] - params.begin[0], params.end[2] - params.begin[1]];
+            params.level = params.end[1] * (this.height + 0.001);
+        });
+
+        captureAnimation.onUpdate((t, params) => {
+            this.position = [
+                params.begin[0] + params.delta[0] * t[0],
+                Math.max(this.LEAP_HEIGHT * t[1], params.level),
+                params.begin[1] + params.delta[1] * t[0],
+            ];
+        });
+
+        captureAnimation.onEnd((params) => {
+            this.position = [params.end[0], Math.max(0, params.level), params.end[2]];
+            this.boardPosition = null;
+        });
+
+        if (this.topOffset > this.DEFAULT_TOP_OFFSET) {
+            const removeHeightAnimation = new EventAnimation(this.scene, 0.2, identity);
+
+            removeHeightAnimation.onStart((params) => {
+                params.begin = this.topOffset;
+                params.delta = this.DEFAULT_TOP_OFFSET - params.begin;
+            });
+
+            removeHeightAnimation.onUpdate((t, params) => {
+                this.topOffset = params.begin + params.delta * t;
+            });
+
+            removeHeightAnimation.onEnd(() => {
+                this.topOffset = this.DEFAULT_TOP_OFFSET;
+            });
+
+            return [captureAnimation, removeHeightAnimation];
+        }
+
+        return [captureAnimation];
+    }
+
+    animateUndo(move, onEndCallback) {
+
+    }
+
     animateMove(move, onEndCallback) {
+        const endPosition = this.calculatePosition(move.to);
+        
+        let onTestCollision = null;
+        if (move.captured) {
+            const capturedPiece = this.scene.game.getChecker(move.captured[0], move.captured[1]);
+
+            const deltaPosition = [endPosition[0] - this.position[0], endPosition[2] - this.position[2]];
+            const absDelta = Math.abs(deltaPosition[0]) / this.tileSize;
+            const direction = [deltaPosition[0] / absDelta, deltaPosition[1] / absDelta];
+            
+            onTestCollision = (animation) => {
+                // TODO confirmar com a professora se é isto que querem como collision detection
+                //      Para simplificar só usamos o xOz, ignorando o y.
+                //      Para simplificar, apenas verificamos colisão entre a peça que mexe a peça potencialmente capturável
+                //      Como nesta dimensão as peças são circulos com raios iguais, comparamos a distância em relação ao diametro
+                
+                const movingX = this.position[0];
+                const movingZ = this.position[2];
+                const capturedX = capturedPiece.position[0];
+                const capturedZ = capturedPiece.position[2];
+                const distance = Math.sqrt((movingX - capturedX) ** 2 + (movingZ - capturedZ) ** 2);
+                const insideDistance = 2 * this.radius - distance;
+                
+                if (insideDistance >= 0) {
+                    animation.interrupt();
+
+                    const animations = new EventAnimationChain();
+                    animations.push(...this.getRecoilAnimations(capturedPiece, direction));
+                    animations.push(...capturedPiece.getCaptureAnimations());
+                    animations.push(...this.getMoveAnimations(endPosition));
+                    
+                    if (move.promoted) {
+                        animations.push(...this.getPromotionAnimations());
+                    }
+                    animations.onEnd(() => {
+                        this.setPosition(move.to);
+                        onEndCallback();
+                    });
+                    
+                    const insideTime = insideDistance / this.MAX_MOVE_VELOCITY;
+                    animations.start(this.scene.currentTime - insideTime);
+                }
+            }
+        }
+
+        const animations = new EventAnimationChain();
+        animations.push(...this.getMoveAnimations(endPosition, onTestCollision));
+        if (move.promoted) {
+            animations.push(...this.getPromotionAnimations());
+        }
+        animations.onEnd(() => {
+            this.setPosition(move.to);
+            onEndCallback();
+        });
+        animations.start(this.scene.currentTime);
+    }
+
+    // TODO obsolete
+    oldAnimateMove(move, onEndCallback) {
         const startPosition = this.calculatePosition(move.from);
         const endPosition = this.calculatePosition(move.to);
         const deltaPosition = [endPosition[0] - startPosition[0], endPosition[2] - startPosition[2]];
@@ -212,6 +438,7 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
+    // TODO obsolete
     animatePromote(onEndCallback) {
         const gravity = 9.8;
         const heightToReach = this.height * 30;

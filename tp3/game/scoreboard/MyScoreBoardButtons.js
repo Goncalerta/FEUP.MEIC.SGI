@@ -12,8 +12,8 @@ export class MyScoreBoardButtons extends MyButtonGroup {
 
         // TODO use proper callbacks
         let pickingId = 401;
-        this.undoButton  = new MyButton(scene, pickingId++, () => {}, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
-        this.playButton  = new MyButton(scene, pickingId++, () => {}, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
+        this.undoButton  = new MyButton(scene, pickingId++, () => { gameModel.state.triggerUndo(this.scene.game.getChecker) }, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => { gameModel.state.triggerReplay(this.scene.game.getChecker) }, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
         // ^^
         this.scenarioButton = new MyButton(scene, pickingId++, () => { cameras.setFrontCamera() }, this.SCENARIO_TEXTURE_PATH, buttonColorRGBA);
         this.p1POVButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(1) }, this.EYES_TEXTURE_PATH, buttonColorRGBA);
