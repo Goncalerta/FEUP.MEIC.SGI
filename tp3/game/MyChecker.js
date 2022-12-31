@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad, delayedInLinear, delayedOutLinear } from '../animations/EasingFunctions.js';
+import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 import { EventAnimationChain } from '../animations/EventAnimationChain.js';
 import { arraysEqual, getAppearance, interpolate } from '../utils.js';

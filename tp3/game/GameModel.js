@@ -16,23 +16,23 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 export class GameModel {
     BOARD_SIZE = 8;
     
-    constructor(game, start_time, player1, player2) {
+    constructor(game, startTime, player1, player2) {
         this.game = game;
         this.initBoard();
 
         this.player1 = player1;
         this.player2 = player2;
 
-        this.state = new PlayerTurnState(this, this.player1, start_time);
+        this.state = new PlayerTurnState(this, this.player1, startTime);
 
-        this.start_time = start_time;
-        this.current_time = start_time;
+        this.current_time = startTime;
+        this.gameTime = 0;
         this.previousMoves = [];
         this.nextMoves = [];
     }
 
     getGameTime() {
-        return Math.floor((this.state.getGameTime() - this.start_time) / 1000);
+        return Math.floor(this.gameTime);
     }
 
     executeMove(completedMove) {
@@ -124,6 +124,9 @@ export class GameModel {
     }
 
     update(t) {
+        if (this.state.increaseGameTime()) {
+            this.gameTime += (t - this.current_time) / 1000;
+        }
         this.current_time = t;
         this.state.update(t);
     }

@@ -36,8 +36,8 @@ class GameState {
         return null;
     }
 
-    getGameTime() {
-        return this.model.current_time;
+    increaseGameTime() {
+        return false;
     }
 
     triggerUndo(getChecker) {}
@@ -88,7 +88,7 @@ export class PlayerTurnState extends GameState {
     }
 
     update(t) {
-        this.remaining_time = Math.max(0, this.turn_time_limit - Math.floor((t - this.start_time) / 1000));
+        this.remaining_time = Math.max(0, this.turn_time_limit - (t - this.start_time) / 1000);
         if (this.remaining_time == 0) {
             this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
         }
@@ -103,7 +103,11 @@ export class PlayerTurnState extends GameState {
     }
 
     getRemainingTime() {
-        return this.remaining_time;
+        return Math.ceil(this.remaining_time);
+    }
+
+    increaseGameTime() {
+        return true;
     }
 
     triggerUndo(getChecker) {
@@ -198,7 +202,11 @@ export class AnimationState extends GameState {
     }
 
     getRemainingTime() {
-        return this.remaining_time;
+        return Math.ceil(this.remaining_time);
+    }
+
+    increaseGameTime() {
+        return true;
     }
 }
 
@@ -417,10 +425,6 @@ export class GameOverState extends GameState {
         this.winner = winner;
         this.win_time = model.current_time;
         console.log("winner detected: TODO winning", winner);
-    }
-
-    getGameTime() {
-        return this.win_time;
     }
 
     triggerUndo(getChecker) {
