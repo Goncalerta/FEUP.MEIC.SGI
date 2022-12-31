@@ -88,6 +88,17 @@ export class GameModel {
         return move;
     }
 
+    undoAll() {
+        const moves = this.previousMoves;
+        this.previousMoves = [];
+        this.initBoard();
+
+        this.player1.score = 0;
+        this.player2.score = 0;
+
+        return moves;
+    }
+
     redo() {
         const move = this.nextMoves.pop();
         if (!move) {

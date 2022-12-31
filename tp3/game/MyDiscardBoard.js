@@ -71,6 +71,14 @@ export class MyDiscardBoard {
         return this.pieces.pop();
     }
 
+    takeAllPieces() {
+        const pieces = this.pieces.reverse();
+        this.pieces = [];
+        this.emptySlots = this.emptySlots.concat(this.occupiedSlots.reverse());
+        this.occupiedSlots = [];
+        return pieces;
+    }
+
     display() {
         this.material.apply();
         this.scene.pushMatrix();
