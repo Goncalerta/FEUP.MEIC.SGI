@@ -7,13 +7,14 @@ export class MyScoreBoardButtons extends MyButtonGroup {
     EYES_TEXTURE_PATH = "scenes/images/game/eyes.png";
     PLAY_TEXTURE_PATH = "scenes/images/game/play.png";
 
-    constructor(scene, gameModel, cameras, buttonColorRGBA) {
+    constructor(scene, game, cameras, buttonColorRGBA) {
         super(scene);
 
         // TODO use proper callbacks
         let pickingId = 401;
-        this.undoButton  = new MyButton(scene, pickingId++, () => { gameModel.state.triggerUndo(this.scene.game.getChecker) }, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
-        this.playButton  = new MyButton(scene, pickingId++, () => { gameModel.state.triggerReplay(this.scene.game.getChecker) }, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
+        const getChecker = game.getChecker.bind(game);
+        this.undoButton  = new MyButton(scene, pickingId++, () => { game.model.state.triggerUndo(getChecker) }, this.UNDO_TEXTURE_PATH, buttonColorRGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => { game.model.state.triggerReplay(getChecker) }, this.PLAY_TEXTURE_PATH, buttonColorRGBA);
         // ^^
         this.scenarioButton = new MyButton(scene, pickingId++, () => { cameras.setFrontCamera() }, this.SCENARIO_TEXTURE_PATH, buttonColorRGBA);
         this.p1POVButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(1) }, this.EYES_TEXTURE_PATH, buttonColorRGBA);

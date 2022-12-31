@@ -10,10 +10,10 @@ export class MyScoreBoard extends CGFobject {
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
     DELTA_TEXT = 0.1;
 
-    constructor(scene, gameModel, cameras, player1, player2, width=1, height=1, depth=1) {
+    constructor(scene, game, cameras, player1, player2, width=1, height=1, depth=1) {
         super(scene);
 
-        this.gameModel = gameModel;
+        this.gameModel = game.model;
         this.player1 = player1;
         this.player2 = player2;
 
@@ -24,7 +24,7 @@ export class MyScoreBoard extends CGFobject {
         this.font = new MyFont(scene, 0.2, this.TEXT_COLOR_RGBA);
         this.box = new MyScoreBoardBox(scene);
         
-        this.buttonGroup = new MyScoreBoardButtons(scene, gameModel, cameras, this.TEXT_COLOR_RGBA);
+        this.buttonGroup = new MyScoreBoardButtons(scene, game, cameras, this.TEXT_COLOR_RGBA);
 
         this.player1NameShort = player1.getName().substring(0, this.MAX_CHAR_NAME);
         this.player2NameShort = player2.getName().substring(0, this.MAX_CHAR_NAME);

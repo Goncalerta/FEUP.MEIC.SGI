@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { accelDecel, easeOutCubic, easeInCubic, identity, smoothPeak, quadPeak, gravityUp, gravityDown, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
+import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 import { EventAnimationChain } from '../animations/EventAnimationChain.js';
 import { arraysEqual, getAppearance, interpolate } from '../utils.js';
@@ -10,9 +10,10 @@ import { arraysEqual, getAppearance, interpolate } from '../utils.js';
 export class MyChecker extends CGFobject {
     JUMP_HEIGHT = 0.8;
     DEFAULT_TOP_OFFSET = 0.01;
-    MAX_MOVE_1D_VELOCITY = 3;
+    MAX_MOVE_1D_VELOCITY = 2.9;
     PROMOTION_HEIGHT = 3;
     GRAVITY = 9.8;
+    PROMOTION_FULL_TURNS = 5;
 
     /**
      * @method constructor
@@ -38,7 +39,7 @@ export class MyChecker extends CGFobject {
         this.player = player;
 
         this.height = height;
-        this.rotationRatio = 0;
+        this.rotation = 0;
 
         this.topOffset = topOffset;
     }
@@ -63,16 +64,22 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
-    getPromotionAnimations() {
+    getPromotionAnimations(reversed = false) {
         // TODO gravity or easeOutQuad - easeInQuad pair (1 second each)?
         const halfDuration = Math.sqrt(2 * this.PROMOTION_HEIGHT / this.GRAVITY);
 
         const upAnimation = new EventAnimation(this.scene, halfDuration, gravityUp(this.GRAVITY));
         upAnimation.onUpdate((t) => {
             this.position[1] = this.PROMOTION_HEIGHT * t;
+            if (reversed) {
+                this.topOffset = Math.max(1 - t, this.DEFAULT_TOP_OFFSET);
+            }
 
             if (this.position[1] > this.radius) {
-                this.rotationRatio = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
+                this.rotation = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
+                // if (reversed) {
+                //     this.rotation += 0.5;
+                // }
             }
         });
         upAnimation.onEnd(() => {
@@ -82,17 +89,23 @@ export class MyChecker extends CGFobject {
         const downAnimation = new EventAnimation(this.scene, halfDuration, gravityDown(this.GRAVITY));
         downAnimation.onUpdate((t) => {
             this.position[1] = this.PROMOTION_HEIGHT * (1 - t);
-            this.topOffset = t;
+            if (!reversed) {
+                this.topOffset = Math.max(t, this.DEFAULT_TOP_OFFSET);
+            }
 
             if (this.position[1] > this.radius) {
-                this.rotationRatio = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
+                this.rotation = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
+                // if (reversed) {
+                //     this.rotation += 0.5;
+                // }
             } else {
-                this.rotationRatio = 0.5;
+                // TODO a animação é gira, mas se pusermos em camara lenta ve-se que ha um corte em que ela roda 180º instantaneamente
+                this.rotation = reversed? 0 : 0.5;
             }
         });
         downAnimation.onEnd(() => {
             this.position[1] = 0;
-            this.topOffset = 1;
+            this.topOffset = reversed? this.DEFAULT_TOP_OFFSET : 1;
         });
 
         return [upAnimation, downAnimation];
@@ -205,65 +218,106 @@ export class MyChecker extends CGFobject {
         return [recoilAnimation];
     }
 
-    getJumpAnimations(endPosition) {
+    getChangeHeightAnimation(finalHeight) {
+        const changeHeightAnimation = new EventAnimation(this.scene, 0.25, identity);
+
+        changeHeightAnimation.onStart((params) => {
+            params.begin = this.topOffset;
+            params.delta = finalHeight - params.begin;
+        });
+
+        changeHeightAnimation.onUpdate((t, params) => {
+            this.topOffset = params.begin + params.delta * t;
+        });
+
+        changeHeightAnimation.onEnd(() => {
+            this.topOffset = finalHeight;
+        });
+
+        return changeHeightAnimation;
+    }
+
+    getJumpAnimations(endPosition, endBoardPosition, onStart = null, keepOrientation = true) {
         const onUpdate = (t, params) => {
             this.position = [
                 params.begin[0] + params.delta[0] * t[0],
                 params.begin[1] + params.delta[1] * t[1],
                 params.begin[2] + params.delta[2] * t[0],
             ];
-        };
-
-        const onEnd = (params) => {
-            this.position = [params.end[0], params.end[1], params.end[2]];
-            this.boardPosition = null;
+            this.rotation = params.rotationBegin + params.rotationDelta * t[0];
         };
 
         const upAnimation = new EventAnimation(this.scene, 0.5, [identity, easeOutQuad]);
         upAnimation.onStart((params) => {
+            if (onStart) {
+                onStart();
+            }
             params.begin = [this.position[0], this.position[1], this.position[2]];
             params.delta = [(endPosition[0] - this.position[0]) / 2, this.JUMP_HEIGHT - this.position[1], (endPosition[2] - this.position[2]) / 2];
             params.end = [params.begin[0] + params.delta[0], params.begin[1] + params.delta[1], params.begin[2] + params.delta[2]];
+            params.rotationBegin = this.rotation;
+            params.rotationDelta = keepOrientation ? 0 : -this.rotation / 2;
         });
         upAnimation.onUpdate(onUpdate);
-        upAnimation.onEnd(onEnd);
+        upAnimation.onEnd((params) => {
+            this.position = [params.end[0], params.end[1], params.end[2]];
+            this.rotation = keepOrientation ? this.rotation : this.rotation / 2;
+        });
 
         const downAnimation = new EventAnimation(this.scene, 0.5, [identity, easeInQuad]);
         downAnimation.onStart((params) => {
             params.begin = [this.position[0], this.position[1], this.position[2]];
             params.end = [endPosition[0], endPosition[1] * (this.height + 0.001), endPosition[2]];
             params.delta = [params.end[0] - params.begin[0], params.end[1] - params.begin[1], params.end[2] - params.begin[2]];
+            params.rotationBegin = this.rotation;
+            params.rotationDelta = keepOrientation ? 0 : -this.rotation;
         });
         downAnimation.onUpdate(onUpdate);
-        downAnimation.onEnd(onEnd);
+        downAnimation.onEnd((params) => {
+            this.position = [params.end[0], params.end[1], params.end[2]];
+            this.boardPosition = endBoardPosition;
+            this.rotation = keepOrientation ? this.rotation : 0;
+        });
 
         if (this.topOffset > this.DEFAULT_TOP_OFFSET) {
-            const removeHeightAnimation = new EventAnimation(this.scene, 0.2, identity);
-
-            removeHeightAnimation.onStart((params) => {
-                params.begin = this.topOffset;
-                params.delta = this.DEFAULT_TOP_OFFSET - params.begin;
-            });
-
-            removeHeightAnimation.onUpdate((t, params) => {
-                this.topOffset = params.begin + params.delta * t;
-            });
-
-            removeHeightAnimation.onEnd(() => {
-                this.topOffset = this.DEFAULT_TOP_OFFSET;
-            });
-
-            return [upAnimation, downAnimation, removeHeightAnimation];
+            return [upAnimation, downAnimation, this.getChangeHeightAnimation(this.DEFAULT_TOP_OFFSET)];
+        }
+        
+        if (keepOrientation && this.rotation === 0.5) {
+            return [upAnimation, downAnimation, this.getChangeHeightAnimation(1)];
         }
 
         return [upAnimation, downAnimation];
     }
 
-    animateUndo(move, onEndCallback) {
+    animateUndo(move, updateScore, onEndCallback) {
+        const endPosition = this.calculatePosition(move.from);
 
+        const deltaPosition = [endPosition[0] - this.position[0], endPosition[2] - this.position[2]];
+        const absDelta = Math.abs(deltaPosition[0]) / this.tileSize;
+        const direction = [deltaPosition[0] / absDelta, deltaPosition[1] / absDelta];
+
+        const animations = new EventAnimationChain();
+        if (move.promoted) {
+            animations.push(...this.getPromotionAnimations(true));
+        }
+        animations.push(...this.getMoveAnimations(direction, endPosition));
+        if (move.captured) {
+            const opponent = this.model.getOpponentId(this.player.getId());
+            const capturedPiece = this.scene.game.getDiscardBoard(opponent).takePiece();
+            const endBoardPosition = [move.captured[0], move.captured[1]];
+            const endPosition = this.calculatePosition(endBoardPosition);
+            animations.push(...capturedPiece.getJumpAnimations(endPosition, endBoardPosition, updateScore));
+        }
+        
+        animations.onEnd(() => {
+            this.setPosition(move.from);
+            onEndCallback();
+        });
+        animations.start(this.scene.currentTime);
     }
 
-    animateMove(move, onEndCallback) {
+    animateMove(move, updateScore, onEndCallback) {
         const endPosition = this.calculatePosition(move.to);
 
         const deltaPosition = [endPosition[0] - this.position[0], endPosition[2] - this.position[2]];
@@ -290,11 +344,11 @@ export class MyChecker extends CGFobject {
                 if (insideDistance >= 0) {
                     animation.interrupt();
 
-                    const discardSlot = this.scene.game.getDiscardBoard(capturedPiece.player.getId()).fillSlot();
+                    const discardSlot = this.scene.game.getDiscardBoard(capturedPiece.player.getId()).putPiece(capturedPiece);
 
                     const animations = new EventAnimationChain();
                     animations.push(...this.getRecoilAnimations(capturedPiece, direction));
-                    animations.push(...capturedPiece.getJumpAnimations(discardSlot));
+                    animations.push(...capturedPiece.getJumpAnimations(discardSlot, null, updateScore));
                     animations.push(...this.getMoveAnimations(direction, endPosition));
                     
                     if (move.promoted) {
@@ -358,9 +412,9 @@ export class MyChecker extends CGFobject {
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
         
-        this.scene.translate(this.position[0], this.position[1] + (this.rotationRatio == 0 ? this.height : 0), this.position[2]);
-        this.scene.rotate(this.rotationRatio * Math.PI * 2, 0, 0, 1);
-        this.scene.rotate(this.rotationRatio * Math.PI * 2, 0, 1, 0);
+        this.scene.translate(this.position[0], this.position[1] + (this.rotation == 0 ? this.height : 0), this.position[2]);
+        this.scene.rotate(this.rotation * Math.PI * 2, 0, 0, 1);
+        this.scene.rotate(this.rotation * Math.PI * 2, 0, 1, 0);
 
         if (this.player.getId() === 1) {
             this.scene.rotate(Math.PI, 0, 1, 0);

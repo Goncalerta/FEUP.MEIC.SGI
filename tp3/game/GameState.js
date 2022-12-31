@@ -105,6 +105,9 @@ export class PlayerTurnState extends GameState {
 
     triggerUndo(getChecker) {
         const completedMove = this.model.undo();
+        if (!completedMove) {
+            return; // TODO should we give any feedback?
+        }
         const piece = getChecker(...completedMove.to);
         this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remaining_time));
     }
@@ -115,7 +118,13 @@ export class PieceSelectedState extends PlayerTurnState {
         super(model, player, startTime, t, validMoves, turn_time_limit);
         this.piece = piece;
         this.piecePosition = piecePosition;
-        this.filteredValidMoves = filteredValidMoves;
+        if (filteredValidMoves) {
+            this.filteredValidMoves = filteredValidMoves;
+        } else {
+            const x = this.piece.boardPosition[0];
+            const y = this.piece.boardPosition[1];
+            this.filteredValidMoves = this.validMoves.filter(move => move.from[0] == x && move.from[1] == y);
+        }
     }
 
     selectPiece(piece, x, y) {
@@ -187,25 +196,29 @@ export class PieceMovingState extends AnimationState {
     constructor(model, player, completedMove, piece, remaining_time) {
         super(model, player, completedMove, piece, remaining_time);
 
-        this.piece.animateMove(completedMove, () => {
-            // Check for multicapture
-            if ((!completedMove.promoted) && completedMove.captured) {
-                const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
-                if (captureMoves.length > 0) {
-                    this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
-                    return;
+        this.piece.animateMove(
+            completedMove, 
+            () => this.model.getPlayer(this.completedMove.by).changeScore(1),
+            () => {
+                // Check for multicapture
+                if ((!completedMove.promoted) && completedMove.captured) {
+                    const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
+                    if (captureMoves.length > 0) {
+                        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
+                        return;
+                    }
                 }
-            }
 
-            let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
+                let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
 
-            // Check for game over
-            if (nextState.validMoves.length === 0) {
-                nextState = new GameOverState(this.model, this.player);
-            }
+                // Check for game over
+                if (nextState.validMoves.length === 0) {
+                    nextState = new GameOverState(this.model, this.player);
+                }
 
-            this.model.setGameState(nextState);
-        });
+                this.model.setGameState(nextState);
+            },
+        );
     }
 
     getHighlightedPieces() {
@@ -217,10 +230,19 @@ export class PieceMovingUndoState extends AnimationState {
     constructor(model, player, completedMove, piece, remaining_time) {
         super(model, player, completedMove, piece, remaining_time);
 
-        this.piece.animateUndo(completedMove, () => {
-            // TODO Check for multicapture
-            this.model.setGameState(new PlayerTurnState(this.model, completedMove.by, this.model.current_time));
-        });
+        const currentPlayer = this.model.getPlayer(this.completedMove.by)
+        this.piece.animateUndo(
+            completedMove, 
+            () => currentPlayer.changeScore(-1),
+            () => {
+                if (this.completedMove.multicapture) {
+                    const captureMoves = this.model.getValidMovesFor(this.completedMove.from[0], this.completedMove.from[1])[0];
+                    this.model.setGameState(new PieceSelectedState(this.model, currentPlayer, this.model.current_time, null, captureMoves, captureMoves, this.piece, completedMove.from, this.remaining_time));
+                } else {
+                    this.model.setGameState(new PieceSelectedState(this.model, currentPlayer, this.model.current_time, null, null, null, this.piece, completedMove.from));
+                }
+            },
+        );
     }
 
     getHighlightedPieces() {

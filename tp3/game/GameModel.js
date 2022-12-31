@@ -67,8 +67,9 @@ export class GameModel {
         const playerId = this.getPlayerId(...move.from);
         const promoted = move.to[1] === this.getPromotionRow(playerId) && !this.isQueen(...move.from);
         const captured = this.getCapturedPiece(move);
+        const multicapture = this.previousMoves.length > 0 && this.previousMoves[this.previousMoves.length - 1].by === playerId;
 
-        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted);
+        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted, multicapture);
 
         this.previousMoves.push(completedMove);
         this.nextMoves = [];
@@ -104,6 +105,10 @@ export class GameModel {
 
     getGameState() {
         return this.state;
+    }
+
+    getPlayer(playerId) {
+        return playerId === 1 ? this.player1 : this.player2;
     }
 
     getOpponent(player) {

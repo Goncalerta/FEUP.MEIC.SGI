@@ -46,6 +46,7 @@ export class MyDiscardBoard {
             this.geometry = new MyPatch(scene, 1, 20, 1, 20, [controlPoints[1], controlPoints[0]]);
         }
 
+        this.pieces = [];
         this.emptySlots = [];
         this.occupiedSlots = [];
         const step = 2 * (realHalfSize - padding) / 5 // five gaps to fit six pieces
@@ -57,16 +58,17 @@ export class MyDiscardBoard {
         }
     }
 
-    fillSlot() {
+    putPiece(piece) {
         const slot = this.emptySlots.pop();
         this.occupiedSlots.push(slot);
+        this.pieces.push(piece);
         return slot;
     }
 
-    emptySlot() {
+    takePiece() {
         const slot = this.occupiedSlots.pop();
         this.emptySlots.push(slot);
-        return slot;
+        return this.pieces.pop();
     }
 
     display() {

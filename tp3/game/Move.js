@@ -6,11 +6,12 @@ export class Move {
 }
 
 export class CompletedMove extends Move {
-    constructor(from, to, by, captured = null, promoted = false) {
+    constructor(from, to, by, captured = null, promoted = false, multicapture = false) {
         super(from, to);
         this.by = by;
         this.captured = captured;
         this.promoted = promoted;
+        this.multicapture = multicapture;
     }
 
     nextPlayerId() {
