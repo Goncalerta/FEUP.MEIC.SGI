@@ -402,7 +402,7 @@ export class FilmState extends GameState {
                     // Check for game over
                     if (this.remainingTime === 0 || nextState.validMoves.length === 0) {
                         nextState = new GameOverState(this.model, this.player);
-                    } else if (completedMove.consecutiveQueenMoves >= this.MAX_CYCLIC_MOVES) {
+                    } else if (this.currentMove.consecutiveQueenMoves >= this.MAX_CYCLIC_MOVES) {
                         nextState = new GameOverState(this.model, null);
                     }
 
