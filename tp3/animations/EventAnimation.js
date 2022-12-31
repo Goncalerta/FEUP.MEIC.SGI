@@ -8,24 +8,35 @@ export class EventAnimation {
      * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
      */
-    constructor(scene, duration, easingFunction=identity, onEnd=null, onUpdate=null) {
+    constructor(scene, duration, easingFunction=identity) {
         this.scene = scene;
         this.duration = duration * 1000;
         this.easingFunction = easingFunction;
-        this.onEndCallback = onEnd;
-        this.onUpdateCallback = onUpdate;
+        this.onStartCallback = [];
+        this.onEndCallback = [];
+        this.onUpdateCallback = [];
+        this.params = {};
         this.over = false;
     }
 
+    onStart(onStart) {
+        this.onStartCallback.push(onStart);
+    }
+
     onEnd(onEnd) {
-        this.onEndCallback = onEnd;
+        this.onEndCallback.push(onEnd);
     }
 
     onUpdate(onUpdate) {
-        this.onUpdateCallback = onUpdate;
+        this.onUpdateCallback.push(onUpdate);
+    }
+
+    setDuration(duration) {
+        this.duration = duration * 1000;
     }
 
     start(t) {
+        this.onStartCallback.forEach(f => f(this.params));
         this.startTime = t;
         this.endTime = this.duration + t;
         this.scene.animate(this);
@@ -53,9 +64,7 @@ export class EventAnimation {
                 return;
             }
     
-            if (this.onEndCallback) {
-                this.onEndCallback();
-            }
+            this.onEndCallback.forEach(f => f(this.params));
     
             this.interrupt();
 
@@ -70,8 +79,6 @@ export class EventAnimation {
             this.t = this.easingFunction(param);
         }
 
-        if (this.onUpdateCallback) {
-            this.onUpdateCallback(this.t);
-        }
+        this.onUpdateCallback.forEach(f => f(this.t, this.params));
     }
 }

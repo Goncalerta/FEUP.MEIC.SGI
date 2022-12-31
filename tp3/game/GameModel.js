@@ -15,25 +15,24 @@ const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
 export class GameModel {
     BOARD_SIZE = 8;
-    static GAME_TIME_LIMIT_PER_PLAYER = PlayerTurnState.TURN_TIME_LIMIT * 10; // TODO adjust value
     
-    constructor(game, start_time, player1, player2) {
+    constructor(game, startTime, player1, player2) {
         this.game = game;
         this.initBoard();
 
         this.player1 = player1;
         this.player2 = player2;
 
-        this.state = new PlayerTurnState(this, this.player1, start_time);
+        this.state = new PlayerTurnState(this, this.player1, startTime);
 
-        this.start_time = start_time;
-        this.current_time = start_time;
+        this.current_time = startTime;
+        this.gameTime = 0;
         this.previousMoves = [];
         this.nextMoves = [];
     }
 
     getGameTime() {
-        return Math.floor((this.state.getGameTime() - this.start_time) / 1000);
+        return Math.floor(this.gameTime);
     }
 
     executeMove(completedMove) {
@@ -68,8 +67,9 @@ export class GameModel {
         const playerId = this.getPlayerId(...move.from);
         const promoted = move.to[1] === this.getPromotionRow(playerId) && !this.isQueen(...move.from);
         const captured = this.getCapturedPiece(move);
+        const multicapture = this.previousMoves.length > 0 && this.previousMoves[this.previousMoves.length - 1].by === playerId;
 
-        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted);
+        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted, multicapture);
 
         this.previousMoves.push(completedMove);
         this.nextMoves = [];
@@ -86,6 +86,14 @@ export class GameModel {
         this.nextMoves.push(move);
         this.executeMoveReverse(move);
         return move;
+    }
+
+    prepareFilm() {
+        const moves = this.previousMoves;
+        this.player1.score = 0;
+        this.player2.score = 0;
+
+        return moves;
     }
 
     redo() {
@@ -107,11 +115,18 @@ export class GameModel {
         return this.state;
     }
 
+    getPlayer(playerId) {
+        return playerId === 1 ? this.player1 : this.player2;
+    }
+
     getOpponent(player) {
         return player.getId() === 1 ? this.player2 : this.player1;
     }
 
     update(t) {
+        if (this.state.increaseGameTime()) {
+            this.gameTime += (t - this.current_time) / 1000;
+        }
         this.current_time = t;
         this.state.update(t);
     }

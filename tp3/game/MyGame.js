@@ -27,7 +27,7 @@ export class MyGame {
         this.player2DiscardBoard = new MyDiscardBoard(scene, this.board.realHalfSize, this.TILE_SIZE, [0, 0, -discardBoardZ], -1);
 
         this.cameras = new MyGameCameras(scene);
-        this.scoreBoard = new MyScoreBoard(scene, this.model, this.cameras, this.player1, this.player2);
+        this.scoreBoard = new MyScoreBoard(scene, this, this.cameras, this.player1, this.player2);
 
         this.crosses = new Set();
     }

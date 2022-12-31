@@ -1,3 +1,6 @@
+import { EventAnimationChain } from "../animations/EventAnimationChain.js";
+import { arraysIncludes } from "../utils.js";
+
 class GameState {
     constructor(model) {
         this.model = model;
@@ -33,9 +36,13 @@ class GameState {
         return null;
     }
 
-    getGameTime() {
-        return this.model.current_time;
+    increaseGameTime() {
+        return false;
     }
+
+    triggerUndo(getChecker) {}
+
+    triggerReplay(getChecker) {}
 }
 
 export class PlayerTurnState extends GameState {
@@ -81,7 +88,7 @@ export class PlayerTurnState extends GameState {
     }
 
     update(t) {
-        this.remaining_time = Math.max(0, this.turn_time_limit - Math.floor((t - this.start_time) / 1000));
+        this.remaining_time = Math.max(0, this.turn_time_limit - (t - this.start_time) / 1000);
         if (this.remaining_time == 0) {
             this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
         }
@@ -96,7 +103,28 @@ export class PlayerTurnState extends GameState {
     }
 
     getRemainingTime() {
-        return this.remaining_time;
+        return Math.ceil(this.remaining_time);
+    }
+
+    increaseGameTime() {
+        return true;
+    }
+
+    triggerUndo(getChecker) {
+        const completedMove = this.model.undo();
+        if (!completedMove) {
+            return; // TODO should we give any feedback?
+        }
+        const piece = getChecker(...completedMove.to);
+        this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remaining_time));
+    }
+
+    triggerReplay(getChecker) {
+        const moves = this.model.prepareFilm();
+        if (moves.length == 0) {
+            return; // TODO should we give any feedback?
+        }
+        this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, this.remaining_time));
     }
 }
 
@@ -105,7 +133,13 @@ export class PieceSelectedState extends PlayerTurnState {
         super(model, player, startTime, t, validMoves, turn_time_limit);
         this.piece = piece;
         this.piecePosition = piecePosition;
-        this.filteredValidMoves = filteredValidMoves;
+        if (filteredValidMoves) {
+            this.filteredValidMoves = filteredValidMoves;
+        } else {
+            const x = this.piece.boardPosition[0];
+            const y = this.piece.boardPosition[1];
+            this.filteredValidMoves = this.validMoves.filter(move => move.from[0] == x && move.from[1] == y);
+        }
     }
 
     selectPiece(piece, x, y) {
@@ -125,11 +159,7 @@ export class PieceSelectedState extends PlayerTurnState {
         const move = this.filteredValidMoves.find(move => move.to[0] == x && move.to[1] == y);
         if (move) {
             const completedMove = this.model.move(move);
-            this.model.setGameState(new PieceMovingState(this.model, this.player, this.start_time, this.model.current_time, completedMove, this.piece, this.getRemainingTime()));
-
-            if (completedMove.captured) {
-                this.player.changeScore(1);
-            }
+            this.model.setGameState(new PieceMovingState(this.model, this.player, completedMove, this.piece, this.getRemainingTime()));
         } else {
             this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
@@ -154,39 +184,13 @@ export class PieceSelectedState extends PlayerTurnState {
     }
 }
 
-export class PieceMovingState extends GameState {
-    constructor(model, player, startTime, moveTime, completedMove, piece, remaining_time) {
+export class AnimationState extends GameState {
+    constructor(model, player, completedMove, piece, remaining_time) {
         super(model);
         this.player = player;
-        this.start_time = startTime;
-        this.move_time = moveTime;
         this.completedMove = completedMove;
         this.remaining_time = remaining_time;
         this.piece = piece;
-
-        this.piece.animateMove(completedMove, () => {
-            // Check for multicapture
-            if ((!completedMove.promoted) && completedMove.captured) {
-                const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
-                if (captureMoves.length > 0) {
-                    this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
-                    return;
-                }
-            }
-
-            let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
-
-            // Check for game over
-            if (nextState.validMoves.length === 0) {
-                nextState = new GameOverState(this.model, this.player);
-            }
-
-            this.model.setGameState(nextState);
-        });
-    }
-
-    getHighlightedPieces() {
-        return [this.completedMove.from];
     }
 
     getCurrentPlayer() {
@@ -198,7 +202,220 @@ export class PieceMovingState extends GameState {
     }
 
     getRemainingTime() {
-        return this.remaining_time;
+        return Math.ceil(this.remaining_time);
+    }
+
+    increaseGameTime() {
+        return true;
+    }
+}
+
+export class PieceMovingState extends AnimationState {
+    constructor(model, player, completedMove, piece, remaining_time) {
+        super(model, player, completedMove, piece, remaining_time);
+
+        this.piece.animateMove(
+            completedMove, 
+            () => this.model.getPlayer(this.completedMove.by).changeScore(1),
+            () => {
+                // Check for multicapture
+                if ((!completedMove.promoted) && completedMove.captured) {
+                    const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
+                    if (captureMoves.length > 0) {
+                        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
+                        return;
+                    }
+                }
+
+                let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
+
+                // Check for game over
+                if (nextState.validMoves.length === 0) {
+                    nextState = new GameOverState(this.model, this.player);
+                }
+
+                this.model.setGameState(nextState);
+            },
+        );
+    }
+
+    getHighlightedPieces() {
+        return [this.completedMove.from];
+    }
+}
+
+export class PieceMovingUndoState extends AnimationState {
+    constructor(model, player, completedMove, piece, remaining_time) {
+        super(model, player, completedMove, piece, remaining_time);
+
+        const movePlayer = this.model.getPlayer(this.completedMove.by)
+        this.piece.animateUndo(
+            completedMove, 
+            () => movePlayer.changeScore(-1),
+            () => {
+                if (this.completedMove.multicapture) {
+                    const captureMoves = this.model.getValidMovesFor(this.completedMove.from[0], this.completedMove.from[1])[0];
+                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.current_time, null, captureMoves, captureMoves, this.piece, completedMove.from, this.remaining_time));
+                } else {
+                    const remainingTime = this.player === movePlayer ? this.remaining_time : null;
+                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.current_time, null, null, null, this.piece, completedMove.from, remainingTime));
+                }
+            },
+        );
+    }
+
+    getHighlightedPieces() {
+        return [this.completedMove.to];
+    }
+}
+
+export class BeginFilmState extends GameState {
+    constructor(model, moves, getChecker, remainingTime = null) {
+        super(model);
+        this.moves = moves;
+        this.getChecker = getChecker;
+        this.remainingTime = remainingTime;
+
+        const animations = new EventAnimationChain();
+
+        const [player1_positions, player2_positions] = this.initPositions();
+        const next_player1_positions = [...player1_positions];
+        const next_player2_positions = [...player2_positions];
+
+        const pieces = [];
+        pieces.push(...this.model.game.player1DiscardBoard.takeAllPieces());
+        pieces.push(...this.model.game.player2DiscardBoard.takeAllPieces());
+        // There will be repeated pieces but that is fine; it's more efficient
+        // to iterate twice than to check for duplicates.
+        pieces.push(...this.model.game.checkers.pieces);
+
+        for (let i = 0; i < pieces.length; i++) {
+            const piece = pieces[i];
+            const player = piece.player;
+            const player_positions = player.getId() === 1 ? player1_positions : player2_positions;
+            const next_player_positions = player.getId() === 1 ? next_player1_positions : next_player2_positions;
+            
+            if (arraysIncludes(player_positions, piece.boardPosition)) {
+                continue;
+            }
+
+            while (true) {
+                const position = next_player_positions.shift();
+                const other = getChecker(...position);
+
+                if (other && other.player === piece.player) {
+                    continue;
+                }
+
+                if (other && other.player !== piece.player) {
+                    const dx = piece.player.getId() === 1 ? 1 : -1;
+                    const direction = [dx * piece.tileSize, 0];
+                    const adjacentPosition = [position[0] + dx, position[1]];
+                    other.boardPosition = adjacentPosition;
+                    animations.push(...other.getMoveAnimations(direction, piece.calculatePosition(adjacentPosition)));
+                }
+
+                piece.boardPosition = position;
+                animations.push(...piece.getJumpAnimations(piece.calculatePosition(position), position, null, false));
+                break;
+            }
+        }
+
+        animations.onEnd(() => {
+            this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
+        });
+
+        animations.start(this.model.current_time);
+    }
+
+    initPositions() {
+        const player1_positions = [];
+        const player2_positions = [];
+
+        for (let i = 0; i < this.model.BOARD_SIZE; i++) {
+            for (let j = 0; j < this.model.BOARD_SIZE; j++) {
+                if (i % 2 != j % 2) {
+                    continue;
+                }
+                
+                if (i < 3) {
+                    player1_positions.push([j, i]);
+                } else if (i > 4) {
+                    player2_positions.push([j, i]);
+                }
+            }
+        }
+
+        return [player1_positions, player2_positions];
+    }
+}
+
+export class FilmState extends GameState {
+    constructor(model, moves, getChecker, remainingTime = null) {
+        super(model);
+        this.moves = moves;
+        this.getChecker = getChecker;
+        this.moveIndex = -1;
+        this.nextMove();
+        this.remainingTime = remainingTime;
+
+        this.animateMove();
+    }
+
+    nextMove() {
+        this.moveIndex += 1;
+        this.currentMove = this.moves[this.moveIndex];
+        this.piece = this.getChecker(...this.currentMove.from);
+        this.player = this.model.getPlayer(this.currentMove.by);
+    }
+
+    animateMove() {
+        if (this.moveIndex < this.moves.length - 1) {
+            this.piece.animateMove(
+                this.currentMove,
+                () => this.player.changeScore(1),
+                () => {
+                    this.nextMove();
+                    this.animateMove();
+                },
+            );
+        } else {
+            this.piece.animateMove(
+                this.currentMove,
+                () => this.player.changeScore(1),
+                () => {
+                    // Check for multicapture
+                    if ((!this.currentMove.promoted) && this.currentMove.captured) {
+                        const captureMoves = this.model.getValidMovesFor(this.currentMove.to[0], this.currentMove.to[1])[0];
+                        if (captureMoves.length > 0) {
+                            this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.currentMove.to, this.remainingTime));
+                            return;
+                        }
+                    }
+    
+                    let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time, null, null, this.remainingTime);
+    
+                    // Check for game over
+                    if (this.remainingTime === 0 || nextState.validMoves.length === 0) {
+                        nextState = new GameOverState(this.model, this.player);
+                    }
+
+                    this.model.setGameState(nextState);
+                },
+            );
+        }
+    }
+
+    getCurrentPlayer() {
+        return this.player;
+    }
+
+    spotlightOn() {
+        return [this.piece.position[0], this.piece.position[2]];
+    }
+
+    getHighlightedPieces() {
+        return [this.currentMove.from];
     }
 }
 
@@ -210,7 +427,20 @@ export class GameOverState extends GameState {
         console.log("winner detected: TODO winning", winner);
     }
 
-    getGameTime() {
-        return this.win_time;
+    triggerUndo(getChecker) {
+        const completedMove = this.model.undo();
+        if (!completedMove) {
+            return; // TODO should we give any feedback?
+        }
+        const piece = getChecker(...completedMove.to);
+        this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, 0));
+    }
+
+    triggerReplay(getChecker) {
+        const moves = this.model.prepareFilm();
+        if (moves.length == 0) {
+            return; // TODO should we give any feedback?
+        }
+        this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, 0));
     }
 }

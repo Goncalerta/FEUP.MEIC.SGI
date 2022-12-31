@@ -15,10 +15,10 @@ export class MyScoreBoard extends MyMenu {
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
     DELTA_TEXT = 0.1;
 
-    constructor(scene, gameModel, cameras, player1, player2) {
+    constructor(scene, game, cameras, player1, player2) {
         super(scene);
 
-        this.gameModel = gameModel;
+        this.gameModel = game.model;
         this.player1 = player1;
         this.player2 = player2;
 
@@ -27,10 +27,9 @@ export class MyScoreBoard extends MyMenu {
 
         // buttons
         let pickingId = 401;
-        // TODO use proper callbacks
-        this.undoButton  = new MyButton(scene, pickingId++, () => {}, this.UNDO_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
-        this.playButton  = new MyButton(scene, pickingId++, () => {}, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
-        // ^^
+        const getChecker = game.getChecker.bind(game);
+        this.undoButton  = new MyButton(scene, pickingId++, () => { game.model.state.triggerUndo(getChecker) }, this.UNDO_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => { game.model.state.triggerReplay(getChecker) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioButton = new MyButton(scene, pickingId++, () => { cameras.setFrontCamera() }, this.SCENARIO_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.p1POVButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(1) }, this.EYES_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.p2POVButton = new MyButton(scene, pickingId++, () => { cameras.setPlayerCamera(2) }, this.EYES_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
