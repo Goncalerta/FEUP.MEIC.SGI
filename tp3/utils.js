@@ -136,7 +136,7 @@ export function interpolateCameras(o1, o2, t) {
         const far = interpolate(o1.far, o2.far, t);
         const position = interpolate(o1.position, o2.position, t);
         const target = interpolate(o1.target, o2.target, t);
-        const up = interpolate(o1._up, o2._up, t);
+        const up = interpolate(o1.getUp, o2._up, t);
         return new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, up);
 
     } else if (o1 instanceof CGFcamera && o2 instanceof CGFcamera) {
@@ -145,7 +145,10 @@ export function interpolateCameras(o1, o2, t) {
         const far = interpolate(o1.far, o2.far, t);
         const position = interpolate(o1.position, o2.position, t);
         const target = interpolate(o1.target, o2.target, t);
-        return new CGFcamera(fov, near, far, position, target);
+        const up = interpolate(o1._up, o2._up, t);
+        const camera = new CGFcamera(fov, near, far, position, target);
+        camera._up = up;
+        return camera;
 
     } else {
         // This is merely a hack to interpolate between perspective and ortho cameras
@@ -181,7 +184,11 @@ export function interpolateCameras(o1, o2, t) {
             const distance = calculateDistance(orthoCamera.position, orthoCamera.target);
             const orthoFov = leftRightTopBottomToFov(orthoCamera.left, orthoCamera.right, orthoCamera.top, orthoCamera.bottom, distance);
             const fov = interpolate(perspectiveCamera.fov, orthoFov, t);
-            return new CGFcamera(fov, near, far, position, target);
+            const up = interpolate(perspectiveCamera._up, orthoCamera._up, t);
+            const camera = new CGFcamera(fov, near, far, position, target);
+            camera._up = up;
+
+            return camera;
 
         } else { // result is ortho camera
             const distance = calculateDistance(perspectiveCamera.position, perspectiveCamera.target);

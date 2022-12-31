@@ -32,6 +32,10 @@ export class MyFont {
         this.elevated = elevated;
     }
 
+    setFontSize(fontSize) {
+        this.fontSize = fontSize;
+    }
+
     writeChar(char) {
         const charCode = char.charCodeAt(0);
         const charX = charCode % 16;
