@@ -50,7 +50,7 @@ export class MyScoreBoard extends MyMenu {
     }
 
     getDimensions() {
-        return new Dimensions(3, 2, 1);
+        return new Dimensions(3, 2, .4);
     }
 
     getLabels() {

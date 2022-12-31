@@ -1,15 +1,31 @@
 <sxs>
     <scene root="root" axis_length="0.5"/>
 
-    <views default="satelliteOverEarth">
+    <views default="centerView">
+        <perspective id="centerView" near="0.1" far="5000" angle="22.9">
+            <from x="10" y="10" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
+        <ortho id="orthoCenterView" near="0.1" far="5000" left="-5.5" right="5.5" top="2.75" bottom="-2.75" >
+            <from x="5" y="5.6" z="5" />
+            <to x="0" y="0.6" z="0" />
+            <up x="0" y="1" z="0" />
+        </ortho>
+
+        <perspective id="topCenterView" near="0.1" far="5000" angle="22.9">
+            <from x="15" y="20" z="0" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
         <perspective id="backEarth" near="0.1" far="5000" angle="22.9">
             <from x="-250" y="-40" z="-80" />
             <to x="0" y="-30" z="0" />
         </perspective>
 
         <perspective id="milkyWay" near="0.1" far="5000" angle="30">
-            <from x="0" y="7" z="-50" />
-            <to x="0" y="7" z="0" />
+            <from x="0" y="0.75" z="-50" />
+            <to x="0" y="0.75" z="0" />
         </perspective>
 
         <perspective id="moonView" near="0.1" far="5000" angle="45">
@@ -26,36 +42,36 @@
             <from x="30" y="30" z="30" />
             <to x="0" y="0" z="-17" />
             <up x="1" y="1" z="0" />
-         </ortho>
+        </ortho>
 
-         <perspective id="satelliteOverEarth" near="0.1" far="5000" angle="22.9">
-            <from x="30" y="30" z="30" />
-            <to x="0" y="0" z="0" />
+        <perspective id="satelliteOverEarth" near="0.1" far="5000" angle="22.9">
+            <from x="20" y="30" z="20" />
+            <to x="-10" y="0" z="-10" />
         </perspective>
 
         <perspective id="satelliteMainPanel" near="0.1" far="5000" angle="22.9">
-            <from x="15" y="20" z="0" />
-            <to x="0" y="0" z="0" />
+            <from x="5" y="20" z="-10" />
+            <to x="-10" y="0" z="-10" />
         </perspective>
 
         <perspective id="satelliteMainPanelBack" near="0.1" far="5000" angle="60">
-            <from x="-2" y="0.5" z="0" />
-            <to x="0" y="1.5" z="0" />
+            <from x="-12" y="0.5" z="-10" />
+            <to x="-10" y="1.5" z="-10" />
         </perspective>
 
         <perspective id="satelliteCenter" near="0.1" far="5000" angle="22.9">
-            <from x="3" y="1" z="3" />
-            <to x="0" y="0" z="0" />
+            <from x="-7" y="1" z="-7" />
+            <to x="-10" y="0" z="-10" />
         </perspective>
 
         <perspective id="satelliteBottom" near="0.1" far="5000" angle="22.9">
-            <from x="3" y="-10" z="3" />
-            <to x="0" y="0" z="0" />
+            <from x="-7" y="-10" z="-7" />
+            <to x="-10" y="0" z="-10" />
         </perspective>
 
         <ortho id="orthoSatellite" near="0.1" far="5000" left="-10" right="10" top="5" bottom="-5" >
-            <from x="30" y="30" z="30" />
-            <to x="0" y="0" z="0" />
+            <from x="20" y="30" z="20" />
+            <to x="-10" y="0" z="-10" />
             <up x="0" y="1" z="0" />
         </ortho>
 
@@ -284,6 +300,9 @@
         </primitive>
         <primitive id="sphere">
             <sphere radius="1" slices="150" stacks="150" />
+        </primitive>
+        <primitive id="cylinder">
+            <cylinder top="0.5" base="0.5" height="1" slices="150" stacks="150" />
         </primitive>
         <primitive id="equilateralTriangle">
             <triangle x1="0" y1="0" z1="0" 
@@ -733,10 +752,156 @@
                 <componentref id="sun" />
                 <componentref id="earth" />
                 <componentref id="moonRelated" />
+                <componentref id="table" />
             </children>
         </component>
 
-        <!-- ============ -->
+        <!-- ===== -->
+        <!-- Table -->
+        <component id="table">
+            <transformation>
+                <translate x="-0.5" y="-0.101" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="tableTop" />
+                <componentref id="tableLeg" />
+            </children>
+        </component>
+
+        <component id="tableLeg">
+            <transformation>
+                <scale x="0.6" y="2.5" z="0.6" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+                <componentref id="tableLegBottom" />
+            </children>
+        </component>
+
+        <component id="tableLegBottom">
+            <transformation>
+                <scale x="0.6" y="2.5" z="0.6" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="circle" />
+            </children>
+        </component>
+
+        <component id="tableTop">
+            <transformation>
+                <scale x="6" y="0.2" z="6" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="tableTopUp" />
+                <componentref id="tableTopDown" />
+                <componentref id="tableTopSide1" />
+                <componentref id="tableTopSide2" />
+                <componentref id="tableTopSide3" />
+                <componentref id="tableTopSide4" />
+            </children>
+        </component>
+
+        <component id="tableTopUp">
+            <transformation>
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tableTopDown">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tableTopSide1">
+            <transformation>
+                <rotate axis="y" angle="90" />
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tableTopSide2">
+            <transformation>
+                <rotate axis="z" angle="90" />
+                <rotate axis="y" angle="90" />
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tableTopSide3">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="tableTopSide4">
+            <transformation>
+                <rotate axis="z" angle="270" />
+                <rotate axis="y" angle="90" />
+                <translate x="0" y="0" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+
+        <!-- ============= -->
         <!-- Sun & Planets -->
         <component id="sun">
             <transformation>
@@ -1630,7 +1795,7 @@
             </children>
         </component>
 
-        <!-- ============ -->
+        <!-- ================= -->
         <!-- doubleSidedSquare -->
         <component id="doubleSidedSquare">
             <transformation>
@@ -1658,7 +1823,7 @@
             </children>
         </component>
 
-        <!-- ============ -->
+        <!-- ======= -->
         <!-- cubemap -->
         <component id="cubemap">
             <transformation>
@@ -1758,7 +1923,7 @@
             </children>
         </component>
 
-        <!-- ============ -->
+        <!-- ===== -->
         <!-- NURBS -->
         <component id="sleepingBag">
             <transformation>
