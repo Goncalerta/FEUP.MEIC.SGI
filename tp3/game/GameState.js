@@ -2,6 +2,8 @@ import { EventAnimationChain } from "../animations/EventAnimationChain.js";
 import { arraysIncludes } from "../utils.js";
 
 class GameState {
+    MAX_CYCLIC_MOVES = 20;
+
     constructor(model) {
         this.model = model;
     }
@@ -232,6 +234,8 @@ export class PieceMovingState extends AnimationState {
                 // Check for game over
                 if (nextState.validMoves.length === 0) {
                     nextState = new GameOverState(this.model, this.player);
+                } else if (completedMove.consecutiveQueenMoves >= this.MAX_CYCLIC_MOVES) {
+                    nextState = new GameOverState(this.model, null);
                 }
 
                 this.model.setGameState(nextState);
@@ -398,6 +402,8 @@ export class FilmState extends GameState {
                     // Check for game over
                     if (this.remainingTime === 0 || nextState.validMoves.length === 0) {
                         nextState = new GameOverState(this.model, this.player);
+                    } else if (completedMove.consecutiveQueenMoves >= this.MAX_CYCLIC_MOVES) {
+                        nextState = new GameOverState(this.model, null);
                     }
 
                     this.model.setGameState(nextState);

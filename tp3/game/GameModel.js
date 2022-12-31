@@ -65,11 +65,17 @@ export class GameModel {
 
     move(move) {
         const playerId = this.getPlayerId(...move.from);
-        const promoted = move.to[1] === this.getPromotionRow(playerId) && !this.isQueen(...move.from);
+        const isQueen = this.isQueen(...move.from);
+        const promoted = move.to[1] === this.getPromotionRow(playerId) && !isQueen;
         const captured = this.getCapturedPiece(move);
         const multicapture = this.previousMoves.length > 0 && this.previousMoves[this.previousMoves.length - 1].by === playerId;
+        
+        let consecutiveQueenMoves = 0; 
+        if (isQueen && !captured) {
+            consecutiveQueenMoves = this.previousMoves[this.previousMoves.length - 1].consecutiveQueenMoves + 1;
+        }
 
-        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted, multicapture);
+        const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted, multicapture, consecutiveQueenMoves);
 
         this.previousMoves.push(completedMove);
         this.nextMoves = [];
@@ -146,19 +152,7 @@ export class GameModel {
                     this.board[i][j] = TileState.EMPTY;
                 }
             }
-        }
-
-        // TODO remove: this helps to debug
-        //this.board = [
-        //    [0, -1, 0, -1, 0, -1, 0, -1],
-        //    [-1, 0, -1, 0, -1, 0, -1, 0],
-        //    [0, -1, 0, -1, 0, -1, 0, -1],
-        //    [-1, 0, -1, 0, -1, 1, -1, 0],
-        //    [0, -1, 0, -1, 2, -1, 0, -1],
-        //    [-1, 0, -1, 0, -1, 0, -1, 0],
-        //    [0, -1, 2, -1, 0, -1, 0, -1],
-        //    [-1, 0, -1, 0, -1, 0, -1, 0],
-        //];        
+        }     
     }
 
     getCapturedPiece(move) {
