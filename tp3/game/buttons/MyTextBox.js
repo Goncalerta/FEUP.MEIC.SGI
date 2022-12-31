@@ -21,10 +21,22 @@ export class MyTextBox extends CGFobject {
         this.elevated = elevated;
         this.content = startContent;
 
-        this.label = new MyLabel(scene, () => { return this.content }, colorRGBa, fontSize);
+        this.label = new MyLabel(scene, () => { return this.content }, colorRGBa, fontSize); // TODO is there a way to make this class extend MyLabel passing a method (with the content) to the super constructor?
         this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
 
         this.appearance = getAppearance(scene, this.MATERIAL);
+    }
+
+    scaleSize(scale) {
+        this.label.scaleSize(scale);
+    }
+
+    getFontSize() {
+        return this.label.getFontSize();
+    }
+
+    getLabelTrans() {
+        return this.label.getLabelTrans();
     }
 
     getContent() {

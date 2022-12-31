@@ -3,7 +3,7 @@ import { MyAnimatedCross } from './MyAnimatedCross.js';
 import { MyBoard } from './MyBoard.js';
 import { MyCheckerGroup } from './MyCheckerGroup.js';
 import { MyDiscardBoard } from './MyDiscardBoard.js';
-import { MyScoreBoard } from './scoreboard/MyScoreBoard.js';
+import { MyScoreBoard } from './menu/MyScoreBoard.js';
 import { Player } from './Player.js';
 import { MyGameCameras } from './MyGameCameras.js';
 
@@ -27,7 +27,7 @@ export class MyGame {
         this.player2DiscardBoard = new MyDiscardBoard(scene, this.board.realHalfSize, this.TILE_SIZE, [0, 0, -discardBoardZ], -1);
 
         this.cameras = new MyGameCameras(scene);
-        this.scoreBoard = new MyScoreBoard(scene, this.model, this.cameras, this.player1, this.player2, 3, 2, 1);
+        this.scoreBoard = new MyScoreBoard(scene, this.model, this.cameras, this.player1, this.player2);
 
         this.crosses = new Set();
     }

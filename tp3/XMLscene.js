@@ -1,7 +1,7 @@
 import { CGFscene, CGFshader, CGFaxis, CGFcamera, CGFappearance } from '../lib/CGF.js';
 import { interpolate, subtractVectors } from './utils.js';
 import { MyGame } from './game/MyGame.js';
-import { MyMainMenu } from './game/menu/main/MyMainMenu.js';
+import { MyMainMenu } from './game/menu/MyMainMenu.js';
 import { EventAnimation } from './animations/EventAnimation.js';
 
 export const GAME_SCENE_STATE = {

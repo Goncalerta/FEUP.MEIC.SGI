@@ -1,11 +1,10 @@
-import { MyMainMenuBox } from "./MyMainMenuBox.js";
-import { MyLabelButton } from "../../buttons/MyLabelButton.js";
-import { MyLabel } from "../../buttons/MyLabel.js";
-import { MyButton } from "../../buttons/MyButton.js";
-import { MyMenu } from "../MyMenu.js";
-import { textToLimitedCentered, removeFileExtension } from "../../../utils.js";
-import { MyTextBox } from "../../buttons/MyTextBox.js";
-import { Player } from "../../Player.js";
+import { MyLabelButton } from "../buttons/MyLabelButton.js";
+import { MyLabel } from "../buttons/MyLabel.js";
+import { MyButton } from "../buttons/MyButton.js";
+import { Dimensions, MyMenu } from "./MyMenu.js";
+import { textToLimitedCentered, removeFileExtension } from "../../utils.js";
+import { MyTextBox } from "../buttons/MyTextBox.js";
+import { Player } from "../Player.js";
 
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
@@ -19,7 +18,6 @@ export class MyMainMenu extends MyMenu {
         this.depth = 1;
         this.scenariosNames = scenariosNames;
         this.currentScenarioIndex = 0;
-        this.box = new MyMainMenuBox(scene);
 
         let pickingId = 501;
 
@@ -41,12 +39,12 @@ export class MyMainMenu extends MyMenu {
         this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.TEXT_COLOR_RGBA);
     }
 
-    getTitle() {
-        return this.title;
+    getDimensions() {
+        return new Dimensions(15, 15, 1);
     }
 
-    getBox() {
-        return this.box;
+    getTitle() {
+        return this.title;
     }
 
     getLabels() {
