@@ -34,7 +34,7 @@ export class MyScoreBoard extends CGFobject {
         const player1ScoreString = this.player1.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0");
         const player2ScoreString = this.player2.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0");
 
-        const totalTime = secondsToFormattedTime(this.gameModel.getGameTime()); // TODO: get total time from model (am i doing it right?)
+        const totalTime = secondsToFormattedTime(this.gameModel.getGameTime());
 
         const gameState = this.gameModel.getGameState();
         const currentPlayer = gameState.getCurrentPlayer();

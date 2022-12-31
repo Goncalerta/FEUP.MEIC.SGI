@@ -512,7 +512,7 @@ export class MySceneGraph {
 
         const defaultCamera = this.cameras[this.scene.selectedView];
         if (defaultCamera != null) {
-            this.scene.setCamera(defaultCamera);
+            this.scene.setCamera([defaultCamera]);
         } else {
             this.onXMLError(
                 'default camera with ID = ' + this.scene.selectedView + ' not found'

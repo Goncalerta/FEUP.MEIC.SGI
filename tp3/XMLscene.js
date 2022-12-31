@@ -117,16 +117,21 @@ export class XMLscene extends CGFscene {
 
     /**
      * Changes the camera that is currently active.
+     * @param {list} camerasToSet list of cameras to successively set
      */
-    setCamera(cameraToSet) {
-        if (cameraToSet == null) return;
+    setCamera(camerasToSet=[]) {
+        if (camerasToSet.length == 0) return;
 
         const prevCamera = this.camera;
         const cameraAnimation = new EventAnimation(this, 1);
 
+        const cameraToSet = camerasToSet[0];
+
         cameraAnimation.onEnd(() => {
             this.camera = interpolate(prevCamera, cameraToSet, 1.0)
             if (this.interface) this.interface.setActiveCamera(this.camera);
+            // TODO maybe this can be better expressed with an animation chain
+            this.setCamera(camerasToSet.slice(1));
         });
 
         cameraAnimation.onUpdate((t) => {
@@ -304,7 +309,7 @@ export class XMLscene extends CGFscene {
             .add(this, 'selectedView', this.graph.cameraIds)
             .name('Selected Camera')
             .onChange(() =>
-                this.setCamera(this.graph.cameras[this.selectedView])
+                this.setCamera([this.graph.cameras[this.selectedView]])
             );
         // Lights
         let i = 0;

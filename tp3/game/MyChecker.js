@@ -149,7 +149,6 @@ export class MyChecker extends CGFobject {
         uniformAnimation.onStart((params) => {
             params.startPosition = this.position;
             params.endPosition = [endPosition[0] - scaledDirection[0], endPosition[1], endPosition[2] - scaledDirection[1]];
-
             params.deltaPosition = [params.endPosition[0] - params.startPosition[0], params.endPosition[2] - params.startPosition[2]];
             uniformAnimation.setDuration(Math.abs(params.deltaPosition[0]) / this.tileSize / this.MAX_MOVE_1D_VELOCITY);
         });
