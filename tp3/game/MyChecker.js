@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
+import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad, delayedInLinear, delayedOutLinear } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 import { EventAnimationChain } from '../animations/EventAnimationChain.js';
 import { arraysEqual, getAppearance, interpolate } from '../utils.js';
@@ -40,6 +40,7 @@ export class MyChecker extends CGFobject {
 
         this.height = height;
         this.rotation = 0;
+        this.rotationDirection = null;
 
         this.topOffset = topOffset;
     }
@@ -143,7 +144,6 @@ export class MyChecker extends CGFobject {
                 params.startPosition[1], 
                 params.startPosition[2] + params.deltaPosition[1]
             ];
-            console.log(params)
         });
 
         uniformAnimation.onStart((params) => {
@@ -152,14 +152,12 @@ export class MyChecker extends CGFobject {
 
             params.deltaPosition = [params.endPosition[0] - params.startPosition[0], params.endPosition[2] - params.startPosition[2]];
             uniformAnimation.setDuration(Math.abs(params.deltaPosition[0]) / this.tileSize / this.MAX_MOVE_1D_VELOCITY);
-            console.log(params)
         });
 
         decelAnimation.onStart((params) => {
             params.startPosition = this.position;
             params.endPosition = endPosition;
             params.deltaPosition = [params.endPosition[0] - params.startPosition[0], params.endPosition[2] - params.startPosition[2]];
-            console.log(params)
         });
 
         const onEnd = (params) => {
@@ -215,7 +213,6 @@ export class MyChecker extends CGFobject {
                 0,
                 params.beginCaptured[1] + params.deltaCaptured[1],
             ];
-            // this.player.changeScore(1); // TODO this should not be done inside MyChecker class
         });
 
         return [recoilAnimation];
@@ -247,7 +244,7 @@ export class MyChecker extends CGFobject {
                 params.begin[1] + params.delta[1] * t[1],
                 params.begin[2] + params.delta[2] * t[0],
             ];
-            this.rotation = params.rotationBegin + params.rotationDelta * t[0]; // TODO ensure rotation never goes inside the board
+            this.rotation = params.rotationBegin + params.rotationDelta * t[0];
         };
 
         const upAnimation = new EventAnimation(this.scene, 0.5, [identity, easeOutQuad]);
@@ -260,25 +257,15 @@ export class MyChecker extends CGFobject {
             params.end = [params.begin[0] + params.delta[0], params.begin[1] + params.delta[1], params.begin[2] + params.delta[2]];
             params.rotationBegin = this.rotation;
             params.rotationDelta = keepPromotion ? 0 : -this.rotation / 2;
-            if (!keepPromotion) {
-                params.offsetBegin = this.topOffset;
-                params.offsetDelta = keepPromotion ? this.topOffset : 0;
+            if (params.rotationDelta !== 0) {
+                const orthogonal = [-params.delta[2], 0, params.delta[0]];
+                this.rotationDirection = [Math.abs(orthogonal[0])/orthogonal[0], 0, Math.abs(orthogonal[2])/orthogonal[2]];
             }
         });
         upAnimation.onUpdate(onUpdate);
-        if (!keepPromotion) {
-            upAnimation.onUpdate((t, params) => {
-                this.topOffset = Math.max(params.offsetBegin + params.offsetDelta * t[0], this.DEFAULT_TOP_OFFSET);
-            });
-        }
         upAnimation.onEnd((params) => {
             this.position = [params.end[0], params.end[1], params.end[2]];
-            this.rotation = keepPromotion ? this.rotation : this.rotation / 2;
-            if (!keepPromotion) {
-                this.topOffset = this.DEFAULT_TOP_OFFSET;
-            }
         });
-
         const downAnimation = new EventAnimation(this.scene, 0.5, [identity, easeInQuad]);
         downAnimation.onStart((params) => {
             params.begin = [this.position[0], this.position[1], this.position[2]];
@@ -292,10 +279,15 @@ export class MyChecker extends CGFobject {
             this.position = [params.end[0], params.end[1], params.end[2]];
             this.boardPosition = endBoardPosition;
             this.rotation = keepPromotion ? this.rotation : 0;
+            this.rotationDirection = null;
         });
 
         if (this.topOffset > this.DEFAULT_TOP_OFFSET) {
-            return [upAnimation, downAnimation, this.getChangeHeightAnimation(this.DEFAULT_TOP_OFFSET)];
+            if (keepPromotion) {
+                return [upAnimation, downAnimation, this.getChangeHeightAnimation(this.DEFAULT_TOP_OFFSET)];
+            } else {
+                return [this.getChangeHeightAnimation(this.DEFAULT_TOP_OFFSET), upAnimation, downAnimation];
+            }
         }
         
         if (keepPromotion && this.rotation === 0.5) {
@@ -427,9 +419,16 @@ export class MyChecker extends CGFobject {
         this.scene.registerForPick(this.pickingId, this);
         this.scene.pushMatrix();
         
-        this.scene.translate(this.position[0], this.position[1] + (this.rotation == 0 ? this.height : 0), this.position[2]);
-        this.scene.rotate(this.rotation * Math.PI * 2, 0, 0, 1);
-        this.scene.rotate(this.rotation * Math.PI * 2, 0, 1, 0);
+        this.scene.translate(0, this.height * (1 + this.topOffset) / 2, 0);
+        this.scene.translate(this.position[0], this.position[1], this.position[2]);
+        if (this.rotationDirection) {
+            this.scene.rotate(this.rotation * Math.PI * 2, this.rotationDirection[0], this.rotationDirection[1], this.rotationDirection[2]);
+        } else {
+            this.scene.rotate(this.rotation * Math.PI * 2, 0, 0, 1);
+            this.scene.rotate(this.rotation * Math.PI * 2, 0, 1, 0);
+        }
+        this.scene.translate(0, this.height * (1 + this.topOffset) / 2, 0);
+        
 
         if (this.player.getId() === 1) {
             this.scene.rotate(Math.PI, 0, 1, 0);
