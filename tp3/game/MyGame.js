@@ -11,7 +11,7 @@ export class MyGame {
     TILE_SIZE = 0.5;
     DISCARD_BOARD_GAP = 0.15;
 
-    constructor(scene, player1Name=Player.PLAYER_1_DEFAULT_NAME, player2Name=Player.PLAYER_2_DEFAULT_NAME) {
+    constructor(scene, playCallBack, player1Name=Player.PLAYER_1_DEFAULT_NAME, player2Name=Player.PLAYER_2_DEFAULT_NAME) {
         this.scene = scene;
 
         this.player1 = new Player(1, player1Name);
@@ -27,9 +27,10 @@ export class MyGame {
         this.player2DiscardBoard = new MyDiscardBoard(scene, this.board.realHalfSize, this.TILE_SIZE, [0, 0, -discardBoardZ], -1);
 
         this.cameras = new MyGameCameras(scene);
-        this.scoreBoard = new MyScoreBoard(scene, this, this.cameras, this.player1, this.player2);
+        this.scoreBoard = new MyScoreBoard(scene, this, this.cameras, this.player1, this.player2, playCallBack);
 
         this.crosses = new Set();
+        this.firstFrame = true;
     }
 
     setSpotlightPosition(x, y) {
@@ -83,6 +84,12 @@ export class MyGame {
     }
 
     display(pickMode) {
+        // TODO: any better place to do this to avoid checking every frame?
+        if (this.firstFrame) {
+            this.firstFrame = false;
+            this.cameras.setPlayerCamera(1);
+        }
+
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
         this.scene.translate(0, 1, -this.TILE_SIZE * (this.model.BOARD_SIZE / 2 + 2) );

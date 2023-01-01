@@ -3,12 +3,7 @@ import { interpolate, subtractVectors } from './utils.js';
 import { MyGame } from './game/MyGame.js';
 import { MyMainMenu } from './game/menu/MyMainMenu.js';
 import { EventAnimation } from './animations/EventAnimation.js';
-
-export const GAME_SCENE_STATE = {
-    NO_GAME: -1,
-    MAIN_MENU: 0,
-    PLAYING: 1,
-};
+import { CONFIG } from './game/config.js';
 
 /**
  * XMLscene class, representing the scene that is to be rendered.
@@ -17,26 +12,28 @@ export class XMLscene extends CGFscene {
     /**
      * @constructor
      * @param {MyInterface} myinterface
+     * @param {string} sceneName
      */
-    constructor(myinterface) {
+    constructor(myinterface, sceneName) {
         super();
 
         this.interface = myinterface;
+        this.sceneName = sceneName;
     }
 
     /**
      * Inits the game/main-menu objects
-     * @param {GAME_SCENE_STATE} game_scene_state 
-     * @param {list} scenariosNames 
      * @param {function} playCallBack
+     * @param {string} player1Name
+     * @param {string} player2Name
      */
-    initGame(game_scene_state=GAME_SCENE_STATE.NO_GAME, scenariosNames=[], playCallBack=(scenarioFileName, player1Name, player2Name) => {}, player1Name, player2Name) {
+    initGame(playCallBack=(scenarioFileName, player1Name, player2Name) => {}, player1Name, player2Name) {
         this.mainMenu = null;
         this.game = null;
-        if (game_scene_state == GAME_SCENE_STATE.MAIN_MENU) {
-            this.mainMenu = new MyMainMenu(this, this.interface.onClickText.bind(this.interface), scenariosNames, playCallBack, this.interface);
-        } else if (game_scene_state == GAME_SCENE_STATE.PLAYING) {
-            this.game = new MyGame(this, player1Name, player2Name);
+        if (this.sceneName == CONFIG.menu) {
+            this.mainMenu = new MyMainMenu(this, this.interface.onClickText.bind(this.interface), playCallBack, this.interface);
+        } else {
+            this.game = new MyGame(this, playCallBack, player1Name, player2Name);
         }
     }
 

@@ -10,8 +10,8 @@ export class MyGameCameras {
     constructor(scene) {
         this.scene = scene;
 
-        this.cameraP1    = new CGFcamera(this.CAMERA_ANGLE, this.CAMERA_NEAR, this.CAMERA_FAR, [ 2, 8, 10], this.CAMERA_TO_POSITION);
-        this.cameraP2    = new CGFcamera(this.CAMERA_ANGLE, this.CAMERA_NEAR, this.CAMERA_FAR, [ 2, 8,-10], this.CAMERA_TO_POSITION);
+        this.cameraP1    = new CGFcamera(this.CAMERA_ANGLE, this.CAMERA_NEAR, this.CAMERA_FAR, [ 3, 8, 10], this.CAMERA_TO_POSITION);
+        this.cameraP2    = new CGFcamera(this.CAMERA_ANGLE, this.CAMERA_NEAR, this.CAMERA_FAR, [ 3, 8,-10], this.CAMERA_TO_POSITION);
         this.cameraFront = new CGFcamera(this.CAMERA_ANGLE, this.CAMERA_NEAR, this.CAMERA_FAR, [12,  4,  0], this.CAMERA_TO_POSITION);
 
         this.currentCamera = null;

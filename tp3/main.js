@@ -1,7 +1,8 @@
 import {CGFapplication} from '../lib/CGF.js';
-import {XMLscene, GAME_SCENE_STATE} from './XMLscene.js';
+import {XMLscene} from './XMLscene.js';
 import {MyInterface} from './MyInterface.js';
 import {MySceneGraph} from './MySceneGraph.js';
+import {CONFIG} from './game/config.js';
 
 function getUrllets() {
     const lets = {};
@@ -28,13 +29,13 @@ function resetScene() {
     }
 }
 
-function changeScene(sceneName, player1Name, player2Name, game_scene_state=GAME_SCENE_STATE.PLAYING, scenariosNames=[]) {
+function changeScene(sceneName, player1Name, player2Name) {
     resetScene();
 
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);
     const myInterface = new MyInterface();
-    const myScene = new XMLscene(myInterface);
+    const myScene = new XMLscene(myInterface, sceneName);
 
     app.init();
 
@@ -48,25 +49,15 @@ function changeScene(sceneName, player1Name, player2Name, game_scene_state=GAME_
     const myGraph = new MySceneGraph(sceneName, myScene);
 
     // Game specific setup
-    myScene.initGame(game_scene_state, scenariosNames, changeScene, player1Name, player2Name);
+    myScene.initGame(changeScene, player1Name, player2Name);
 
     // start
     app.run();
 }
 
-function changeToMainMenu() {
-    const availableScenes = ["space.xml", "empty.xml"];
-    changeScene("main-menu.xml", null, null, GAME_SCENE_STATE.MAIN_MENU, availableScenes);
-}
-
 function main() {
-    const filename = getUrllets()['file'] || 'main-menu.xml';
-
-    if (filename == 'main-menu.xml') {
-        changeToMainMenu();
-    } else {
-        changeScene(filename);
-    }
+    const filename = getUrllets()['file'] || CONFIG.menu;
+    changeScene(filename);
 }
 
 main();
