@@ -1,7 +1,7 @@
 import { secondsToFormattedTime } from '../../utils.js';
 import { Dimensions, MyMenu } from './MyMenu.js';
-import { MyButton } from '../buttons/MyButton.js';
-import { MyLabelButton } from '../buttons/MyLabelButton.js';
+import { MyButton } from '../labels/MyButton.js';
+import { MyLabelButton } from '../labels/MyLabelButton.js';
 import { CONFIG } from '../config.js';
 import { GameOverState } from '../GameState.js';
 import { Player } from '../Player.js';
