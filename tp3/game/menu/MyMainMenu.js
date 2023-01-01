@@ -5,6 +5,7 @@ import { Dimensions, MyMenu } from "./MyMenu.js";
 import { textToLimitedCentered, removeFileExtension } from "../../utils.js";
 import { MyTextBox } from "../buttons/MyTextBox.js";
 import { Player } from "../Player.js";
+import { CONFIG } from "../config.js";
 
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
@@ -12,11 +13,11 @@ export class MyMainMenu extends MyMenu {
     LEFT_TEXTURE_PATH = "scenes/images/game/left.png";
     RIGHT_TEXTURE_PATH = "scenes/images/game/right.png";
 
-    constructor(scene, enableTextCallBack, scenariosNames=[], playCallBack=(scenarioFileName, player1Name, player2Name) => {}) {
+    constructor(scene, enableTextCallBack, playCallBack=(scenarioFileName, player1Name, player2Name) => {}) {
         super(scene);
 
         this.depth = 1;
-        this.scenariosNames = scenariosNames;
+        this.scenariosNames = CONFIG.scenes;
         this.currentScenarioIndex = 0;
 
         let pickingId = 501;
