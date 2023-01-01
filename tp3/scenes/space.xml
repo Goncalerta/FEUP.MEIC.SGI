@@ -791,7 +791,7 @@
         <!-- Table -->
         <component id="table">
             <transformation>
-                <translate x="-0.7" y="-0.101" z="0" />
+                <translate x="-0.7" y="-0.103" z="0" />
             </transformation>
             <materials>
                 <material id="tableMaterial" />
