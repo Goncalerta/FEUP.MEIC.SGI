@@ -136,7 +136,7 @@ export function interpolateCameras(o1, o2, t) {
         const far = interpolate(o1.far, o2.far, t);
         const position = interpolate(o1.position, o2.position, t);
         const target = interpolate(o1.target, o2.target, t);
-        const up = interpolate(o1.getUp, o2._up, t);
+        const up = interpolate(o1._up, o2._up, t);
         return new CGFcameraOrtho(left, right, bottom, top, near, far, position, target, up);
 
     } else if (o1 instanceof CGFcamera && o2 instanceof CGFcamera) {

@@ -1,9 +1,9 @@
-import { MyLabelButton } from "../buttons/MyLabelButton.js";
-import { MyLabel } from "../buttons/MyLabel.js";
-import { MyButton } from "../buttons/MyButton.js";
+import { MyLabelButton } from "../labels/MyLabelButton.js";
+import { MyLabel } from "../labels/MyLabel.js";
+import { MyButton } from "../labels/MyButton.js";
 import { Dimensions, MyMenu } from "./MyMenu.js";
 import { textToLimitedCentered, removeFileExtension } from "../../utils.js";
-import { MyTextBox } from "../buttons/MyTextBox.js";
+import { MyTextBox } from "../labels/MyTextBox.js";
 import { Player } from "../Player.js";
 import { CONFIG } from "../config.js";
 

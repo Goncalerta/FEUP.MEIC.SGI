@@ -1,5 +1,5 @@
 import { CGFobject } from '../../../lib/CGF.js';
-import { MyFont } from '../MyFont.js';
+import { MyFont } from './MyFont.js';
 
 export class MyLabel extends CGFobject {
     constructor(scene, getLabelString, colorRGBa=[0, 0, 0, 1], fontSize=1) {

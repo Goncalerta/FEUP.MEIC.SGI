@@ -1,6 +1,6 @@
-import { MyRectangle } from "../MyRectangle.js";
-import { CGFtexture, CGFshader } from "../../lib/CGF.js";
-import { getAppearance } from '../utils.js';
+import { MyRectangle } from "../../MyRectangle.js";
+import { CGFtexture, CGFshader } from "../../../lib/CGF.js";
+import { getAppearance } from '../../utils.js';
 
 
 export class MyFont {
