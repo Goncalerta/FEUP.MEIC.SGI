@@ -14,10 +14,10 @@ export class MyButton extends CGFobject {
     static TEXTURE_PATH = "scenes/images/game/wood.jpg";
     static DEFAULT_MATERIAL = {
         shininess: 0,
-        emission: [0.3, 0.24, 0.24, 1.0],
-        ambient: [0.7, 0.6, 0.6, 1.0],
-        diffuse: [0.9, 0.7, 0.7, 1.0],
-        specular: [0.8, 0.6, 0.6, 1.0],
+        emission: [0.25, 0.1, 0.1, 1.0],
+        ambient: [0.25, 0.2, 0.2, 1.0],
+        diffuse: [0.45, 0.4, 0.4, 1.0],
+        specular: [0.35, 0.3, 0.3, 1.0],
     };
 
     constructor(scene, pickingId, commandCallBack=null, iconPath=null, iconColor=[1,1,1,1], material=MyButton.DEFAULT_MATERIAL, texturePath=MyButton.TEXTURE_PATH) {
@@ -65,8 +65,8 @@ export class MyButton extends CGFobject {
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.currentDepth + 0.001);
-        this.scene.scale(MyButton.WIDTH, MyButton.HEIGHT, 1);
+        this.scene.translate(0, 0, this.currentDepth + 0.01);
+        this.scene.scale(MyButton.WIDTH*0.8, MyButton.HEIGHT*0.8, 1);
 
         if (this.iconAppearance) {
             this.scene.setActiveShaderSimple(this.iconShader);

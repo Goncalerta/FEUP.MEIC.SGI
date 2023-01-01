@@ -120,6 +120,9 @@
     </lights>
 
     <textures>
+        <texture id="tableTopTexture" file="scenes/images/space/table_top.jpg" />
+        <texture id="tableTopSideTexture" file="scenes/images/space/table_top_side.jpg" />
+        <texture id="boardTexture" file="scenes/images/game/wood.jpg" />
         <texture id="earthDayTexture" file="scenes/images/space/earth_day.jpg" />
         <texture id="moonTexture" file="scenes/images/space/moon.jpg" />
         <texture id="sunTexture" file="scenes/images/space/sun.jpg" />
@@ -145,6 +148,30 @@
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="tableMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="0.8" a="1.0" />
+            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        </material>
+        <material id="tableTopMaterial" shininess="10">
+            <emission r="0.35" g="0.32" b="0.32" a="1.0" />
+            <ambient r="1.0" g="1.0" b="0.8" a="1.0" />
+            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        </material>
+        <material id="tableLegMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1.0" />
+            <specular r="0.9" g="0.9" b="0.9" a="1.0" />
+        </material>
+        <material id="boardMaterial" shininess="10">
+            <emission r="0.25" g="0.22" b="0.22" a="1.0" />
+            <ambient r="0.7" g="0.6" b="0.6" a="1.0" />
+            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <specular r="0.08" g="0.06" b="0.06" a="1.0" />
         </material>
         <material id="cubemapMaterial" shininess="1">
             <emission r="0.4" g="0.4" b="0.4" a="1.0" />
@@ -296,7 +323,7 @@
             <cylinder top="0.5" base="1.25" height="1" slices="150" stacks="150" />
         </primitive>
         <primitive id="legBase">
-            <cylinder top="0.5" base="1" height="1" slices="150" stacks="150" />
+            <cylinder top="0.9" base="0.5" height="0.1" slices="150" stacks="150" />
         </primitive>
         <primitive id="square">
             <rectangle x1="0" y1="0" x2="1" y2="1" />
@@ -736,7 +763,7 @@
             <materials>
                 <material id="defaultMaterial" />
             </materials>
-            <texture id="metalTilesTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <componentref id="noCubeMap" />
                 <componentref id="cubemap" />
@@ -756,6 +783,7 @@
                 <componentref id="earth" />
                 <componentref id="moonRelated" />
                 <componentref id="table" />
+                <componentref id="boardSupport" />
             </children>
         </component>
 
@@ -763,10 +791,10 @@
         <!-- Table -->
         <component id="table">
             <transformation>
-                <translate x="-0.5" y="-0.101" z="0" />
+                <translate x="-0.7" y="-0.101" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -777,13 +805,13 @@
 
         <component id="tableLeg">
             <transformation>
-                <!-- <scale x="0.6" y="3" z="0.6" />
-                <rotate axis="x" angle="90" /> -->
+                <scale x="0.75" y="3.8" z="0.75" />
+                <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableLegMaterial" />
             </materials>
-            <texture id="inherit" />
+            <texture id="whiteMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="cylinder" />
                 <componentref id="tableLegBase" />
@@ -793,8 +821,7 @@
 
         <component id="tableLegBase">
             <transformation>
-                <!-- <scale x="0.6" y="2.5" z="0.6" />
-                <rotate axis="x" angle="90" /> -->
+                <translate x="0" y="0" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -807,8 +834,9 @@
 
         <component id="tableLegBaseBottom">
             <transformation>
-                <!-- <scale x="0.6" y="2.5" z="0.6" />
-                <rotate axis="x" angle="90" /> -->
+                <translate x="0" y="0" z="1.1" />
+                <rotate axis="x" angle="90" />
+                <scale x="1.2" y="1.2" z="1.2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -821,13 +849,13 @@
 
         <component id="tableTop">
             <transformation>
-                <scale x="6" y="0.2" z="6" />
+                <scale x="6.5" y="0.2" z="6.5" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableTopMaterial" />
             </materials>
-            <texture id="inherit" />
+            <texture id="tableTopTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="tableTopUp" />
                 <componentref id="tableTopDown" />
@@ -840,6 +868,7 @@
 
         <component id="tableTopUp">
             <transformation>
+                <rotate axis="x" angle="180" />
                 <translate x="0" y="0" z="0.5" />
             </transformation>
             <materials>
@@ -852,11 +881,10 @@
         </component>
         <component id="tableTopDown">
             <transformation>
-                <rotate axis="x" angle="180" />
                 <translate x="0" y="0" z="0.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -865,6 +893,7 @@
         </component>
         <component id="tableTopSide1">
             <transformation>
+                <rotate axis="x" angle="180" />
                 <rotate axis="y" angle="90" />
                 <translate x="0" y="0" z="0.5" />
             </transformation>
@@ -879,13 +908,14 @@
         <component id="tableTopSide2">
             <transformation>
                 <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="0" y="0" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="rectanglePatch" />
             </children>
@@ -907,15 +937,45 @@
         <component id="tableTopSide4">
             <transformation>
                 <rotate axis="z" angle="270" />
+                <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="0" y="0" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="rectanglePatch" />
+            </children>
+        </component>
+        <component id="boardSupport">
+            <transformation>
+                <translate x="-3.2" y="1.8" z="0" />
+                <scale x="0.75" y="1.8" z="2.6" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="boardMaterial" />
+            </materials>
+            <texture id="boardTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="cylinder" />
+                <componentref id="boardSupportTop" />
+            </children>
+        </component>
+        <component id="boardSupportTop">
+            <transformation>
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="-90" />
+                <scale x="0.66667" y="0.66667" z="0.66667" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="semicirclePatch" />
             </children>
         </component>
 

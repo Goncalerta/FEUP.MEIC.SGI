@@ -30,7 +30,7 @@ export class MyGame {
         this.scoreBoard = new MyScoreBoard(scene, this, this.cameras, this.player1, this.player2, playCallBack);
 
         this.crosses = new Set();
-        this.firstFrame = true;
+        // this.firstFrame = true; TODO
     }
 
     setSpotlightPosition(x, y) {
@@ -85,10 +85,10 @@ export class MyGame {
 
     display(pickMode) {
         // TODO: any better place to do this to avoid checking every frame?
-        if (this.firstFrame) {
-            this.firstFrame = false;
-            this.cameras.setPlayerCamera(1);
-        }
+        // if (this.firstFrame) {
+        //     this.firstFrame = false;
+        //     this.cameras.setPlayerCamera(1);
+        // }
 
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
