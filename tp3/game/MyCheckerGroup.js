@@ -10,8 +10,8 @@ import { MyChecker } from "./MyChecker.js";
 export class MyCheckerGroup {
     MATERIAL_P1 = {
         shininess: 5,
-        emission: [0.05, 0.05, 0.05, 1.0],
-        ambient: [0.01, 0.01, 0.01, 1.0],
+        emission: [0.1, 0.1, 0.1, 1.0],
+        ambient: [0.1, 0.1, 0.1, 1.0],
         diffuse: [0.15, 0.15, 0.15, 1.0],
         specular: [0.96, 0.95, 0.95, 1.0],
     };
