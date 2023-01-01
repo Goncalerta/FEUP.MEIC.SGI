@@ -3,6 +3,8 @@ import { Dimensions, MyMenu } from './MyMenu.js';
 import { MyButton } from '../buttons/MyButton.js';
 import { MyLabelButton } from '../buttons/MyLabelButton.js';
 import { CONFIG } from '../config.js';
+import { GameOverState } from '../GameState.js';
+import { Player } from '../Player.js';
 
 export class MyScoreBoard extends MyMenu {
     UNDO_TEXTURE_PATH = "scenes/images/game/undo.png";
@@ -11,7 +13,7 @@ export class MyScoreBoard extends MyMenu {
     PLAY_TEXTURE_PATH = "scenes/images/game/play.png";
     FRONTAL_TEXTURE_PATH = "scenes/images/game/front.png";
 
-    MAX_CHAR_NAME = 5;
+    MAX_CHAR_NAME = Player.PLAYER_LENGTH;
     MAX_SCORE_SIZE = 2;
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
     DELTA_TEXT = 0.1;
@@ -41,12 +43,31 @@ export class MyScoreBoard extends MyMenu {
         this.capturesLabel = new MyLabelButton(scene, () => { return `   CAPTURES` }, this.frontalPOVButton, this.TEXT_COLOR_RGBA);
         this.player1Label = new MyLabelButton(scene, () => { return `${this.player1NameShort}    ${this.player1.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0")}` }, this.p1POVButton, this.TEXT_COLOR_RGBA);
         this.player2Label = new MyLabelButton(scene, () => { return `${this.player2NameShort}    ${this.player2.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0")}` }, this.p2POVButton, this.TEXT_COLOR_RGBA);
-        this.currentLabel = new MyLabelButton(scene, () => { return `    CURRENT` }, this.undoButton, this.TEXT_COLOR_RGBA);
-        this.currentPlayerLabel = new MyLabelButton(scene, () => { 
+        this.currentLabel = new MyLabelButton(scene, () => {
             const gameState = this.gameModel.getGameState();
-            const currentPlayer = gameState.getCurrentPlayer();
-            const currentPlayerName = currentPlayer == null ? "-".repeat(this.MAX_CHAR_NAME) : currentPlayer.getName().substring(0, this.MAX_CHAR_NAME);
-            return `${currentPlayerName} ${secondsToFormattedTime(gameState.getRemainingTime())}` 
+            if (gameState instanceof GameOverState) {
+                return `  GAME OVER`;
+            }
+            return `    CURRENT`
+        }, this.undoButton, this.TEXT_COLOR_RGBA);
+        this.currentPlayerLabel = new MyLabelButton(scene, () => {
+            const gameState = this.gameModel.getGameState();
+            if (gameState instanceof GameOverState) {
+                const winner = gameState.getWinner();
+                if (winner == null) {
+                    return "IT'S A DRAW";
+                } else {
+                    const winnerName = winner.getName().substring(0, this.MAX_CHAR_NAME);
+                    return `${winnerName}  WINS`;
+                }
+            } else {
+                const currentPlayer = gameState.getCurrentPlayer();
+                if (currentPlayer == null) {
+                    return ' '.repeat(this.MAX_CHAR_NAME) + ' 00:00';
+                }
+                const currentPlayerName = currentPlayer.getName().substring(0, this.MAX_CHAR_NAME);
+                return `${currentPlayerName} ${secondsToFormattedTime(gameState.getRemainingTime())}` 
+            }
         }, this.playButton, this.TEXT_COLOR_RGBA);
 
     }

@@ -433,6 +433,10 @@ export class GameOverState extends GameState {
         console.log("winner detected: TODO winning", winner);
     }
 
+    getWinner() {
+        return this.winner;
+    }
+
     triggerUndo(getChecker) {
         const completedMove = this.model.undo();
         if (!completedMove) {
