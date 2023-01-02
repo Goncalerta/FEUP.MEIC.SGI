@@ -115,7 +115,7 @@ export class PlayerTurnState extends GameState {
     triggerUndo(getChecker) {
         const completedMove = this.model.undo();
         if (!completedMove) {
-            return; // TODO should we give any feedback?
+            return;
         }
         const piece = getChecker(...completedMove.to);
         this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remaining_time));
@@ -124,7 +124,7 @@ export class PlayerTurnState extends GameState {
     triggerReplay(getChecker) {
         const moves = this.model.prepareFilm();
         if (moves.length == 0) {
-            return; // TODO should we give any feedback?
+            return;
         }
         this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, this.remaining_time));
     }
@@ -442,7 +442,7 @@ export class GameOverState extends GameState {
     triggerUndo(getChecker) {
         const completedMove = this.model.undo();
         if (!completedMove) {
-            return; // TODO should we give any feedback?
+            return;
         }
         const piece = getChecker(...completedMove.to);
         this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, 0));
@@ -451,7 +451,7 @@ export class GameOverState extends GameState {
     triggerReplay(getChecker) {
         const moves = this.model.prepareFilm();
         if (moves.length == 0) {
-            return; // TODO should we give any feedback?
+            return;
         }
         this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, 0));
     }

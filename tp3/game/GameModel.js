@@ -48,7 +48,6 @@ export class GameModel {
         this.current_time = startTime;
         this.gameTime = 0;
         this.previousMoves = [];
-        this.nextMoves = [];
     }
 
     /**
@@ -115,7 +114,6 @@ export class GameModel {
         const completedMove = new CompletedMove(move.from, move.to, playerId, captured, promoted, multicapture, consecutiveQueenMoves);
 
         this.previousMoves.push(completedMove);
-        this.nextMoves = [];
         this.executeMove(completedMove);
         return completedMove;
     }
@@ -130,7 +128,6 @@ export class GameModel {
             return;
         }
 
-        this.nextMoves.push(move);
         this.executeMoveReverse(move);
         return move;
     }
@@ -145,21 +142,6 @@ export class GameModel {
         this.player2.score = 0;
 
         return moves;
-    }
-
-    /**
-     * Redoes the last undone move.
-     * @returns {CompletedMove} The redone move.
-     */
-    redo() { // TODO: delete this and associated code? like this.nextMoves...
-        const move = this.nextMoves.pop();
-        if (!move) {
-            return;
-        }
-
-        this.previousMoves.push(move);
-        this.executeMove(move);
-        return move;
     }
 
     /**

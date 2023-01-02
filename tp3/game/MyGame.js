@@ -27,7 +27,7 @@ export class MyGame {
         this.player1 = new Player(1, player1Name);
         this.player2 = new Player(2, player2Name);
 
-        const startTime = new Date().getTime(); // TODO start time (depends on main menu logic probably)
+        const startTime = new Date().getTime();
         this.model = new GameModel(this, startTime, this.player1, this.player2);
         this.checkers = new MyCheckerGroup(scene, this.model, this.player1, this.player2, this.TILE_SIZE);
         this.board = new MyBoard(scene, this.model, this.TILE_SIZE);

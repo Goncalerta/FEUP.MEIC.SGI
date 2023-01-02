@@ -6,12 +6,10 @@ export function quad(a, h, k) {
     return (t) => a*(t-h)**2 + k;
 }
 
-// TODO maybe this can be better expressed with a loopback animation? (maybe not because of the place it is used in)
 export function smoothPeak(t) {
     return 1.27325359122*Math.exp(-5*Math.abs(t-0.5)**1.7) - 0.27325359122;
 }
 
-// TODO maybe this can be better expressed with an animation chain? (but would that be worth it?) (maybe not because of the place it is used in)
 export function popAndDisappear(t) {
     return Math.sqrt(1-(1.85*t-0.85)**2);
 }
