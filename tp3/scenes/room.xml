@@ -306,6 +306,178 @@
     </primitives>
 
     <animations>
+        <keyframeanim id="footballAnimation">
+                <keyframe instant="0">
+                    <translation x="0" y="0" z="0" />
+                    <rotation axis="z" angle="0" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="3">
+                    <translation x="0" y="0" z="0" />
+                    <rotation axis="z" angle="0" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="5">
+                    <translation x="-11.15" y="0" z="0" />
+                    <rotation axis="z" angle="720" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="7">
+                    <translation x="0.05" y="0" z="0" />
+                    <rotation axis="z" angle="0" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="9">
+                    <translation x="-11.15" y="0" z="0" />
+                    <rotation axis="z" angle="720" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="11">
+                    <translation x="0.05" y="0" z="0" />
+                    <rotation axis="z" angle="0" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="13">
+                    <translation x="-11.15" y="0" z="0" />
+                    <rotation axis="z" angle="720" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="15">
+                    <translation x="0.05" y="0" z="0" />
+                    <rotation axis="z" angle="0" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+                <keyframe instant="15.1">
+                    <translation x="0" y="0" z="0" />
+                    <rotation axis="z" angle="5" />
+                    <rotation axis="y" angle="0" />
+                    <rotation axis="x" angle="0" />
+                    <scale x="1" y="1" z="1" />
+                </keyframe>
+        </keyframeanim>
+        <keyframeanim id="doorKnobAnimation">
+            <keyframe instant="0">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="5.6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="6.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="7.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="15.6">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="16">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="16.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="17">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="-30" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+            <keyframe instant="17.5">
+                <translation x="0" y="0" z="0" />
+                <rotation axis="z" angle="0" />
+                <rotation axis="y" angle="0" />
+                <rotation axis="x" angle="0" />
+                <scale x="1" y="1" z="1" />
+            </keyframe>
+        </keyframeanim>
     </animations>
 
     <components>
@@ -326,7 +498,7 @@
                 <componentref id="wardrobe" />
                 <componentref id="bed" />
                 <componentref id="bedside" />
-                <componentref id="football" />
+                <componentref id="footballAnimated" />
                 <componentref id="wallsFloor" />
             </children>
         </component>
@@ -524,11 +696,37 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="doorKnobHandle" />
-                <componentref id="doorKnobJoint" />
+                <componentref id="doorKnobHandlePartAnimated" />
+                <componentref id="knobJointPart" />
             </children>
         </component>
-        <component id="doorKnobHandle">
+        <component id="doorKnobHandlePartAnimated">
+            <transformation>
+                <translate x="-0.35" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="knobMaterial" />
+            </materials>
+            <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <componentref id="doorKnobHandlePartAnimation" />
+            </children>
+            <animation id="doorKnobAnimation" />
+        </component>
+        <component id="doorKnobHandlePartAnimation">
+            <transformation>
+                <translate x="0.35" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="knobMaterial" />
+            </materials>
+            <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <componentref id="doorKnobHandlePart" />
+            </children>
+            
+        </component>
+        <component id="doorKnobHandlePart">
             <transformation>
                 <translate x="0" y="0" z="0.3" />
                 <scale x="0.7" y="0.15" z="0.1" />
@@ -543,7 +741,22 @@
             </children>
             <highlighted r="1.0" g="0.6" b="0.5" scale_h="1.05" />
         </component>
-        <component id="doorKnobJoint">
+        <component id="knobHandlePart">
+            <transformation>
+                <translate x="0" y="0" z="0.3" />
+                <scale x="0.7" y="0.15" z="0.1" />
+                <rotate axis="y" angle="90" />
+            </transformation>
+            <materials>
+                <material id="knobMaterial" />
+            </materials>
+            <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+            <highlighted r="1.0" g="0.6" b="0.5" scale_h="1.05" />
+        </component>
+        <component id="knobJointPart">
             <transformation>
                 <translate x="-0.35" y="0" z="0" />
             </transformation>
@@ -1203,8 +1416,8 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="doorKnobHandle" />
-                <componentref id="doorKnobJoint" />
+                <componentref id="knobHandlePart" />
+                <componentref id="knobJointPart" />
             </children>
         </component>
         <component id="wardrobeKnobRight">
@@ -1216,8 +1429,8 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="doorKnobHandle" />
-                <componentref id="doorKnobJoint" />
+                <componentref id="knobHandlePart" />
+                <componentref id="knobJointPart" />
             </children>
         </component>
         <component id="wardrobeBox">
@@ -1681,9 +1894,21 @@
 
         <!-- ======== -->
         <!-- football -->
-        <component id="football">
+        <component id="footballAnimated">
             <transformation>
                 <translate x="7.75" y="-5.51" z="17.75" />
+            </transformation>
+            <materials>
+                <material id="footballMaterial" />
+            </materials>
+            <texture id="footballTexture" length_s="1.0" length_t="1.0" />
+            <children>
+                <componentref id="football" />
+            </children>
+            <animation id="footballAnimation" />
+        </component>
+        <component id="football">
+            <transformation>
                 <scale x="0.7" y="0.7" z="0.7" />
             </transformation>
             <materials>
