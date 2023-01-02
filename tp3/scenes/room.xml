@@ -50,8 +50,15 @@
     <textures>
         <texture id="darkWoodTexture" file="scenes/images/room/dark_wood.png" />
         <texture id="doorWoodTexture" file="scenes/images/room/door_wood.png" />
+        <texture id="drawerFrontTexture" file="scenes/images/room/drawer_front.png" />
+        <texture id="drawerBackTexture" file="scenes/images/room/drawer_back.png" />
+        <texture id="floorTexture" file="scenes/images/room/floor_wood.jpg" />
         <texture id="boardTexture" file="scenes/images/game/wood.jpg" />
         <texture id="shinyMetalTexture" file="scenes/images/room/shiny_metal.png" />
+        <texture id="lampTexture" file="scenes/images/room/lamp.png" />
+        <texture id="pillowTexture" file="scenes/images/room/pillow.png" />
+        <texture id="bedSheetsTexture" file="scenes/images/room/bed_sheets.jpg" />
+        <texture id="bedSheetsBackTexture" file="scenes/images/room/bed_sheets_back.jpg" />
         <texture id="footballTexture" file="scenes/images/room/football.png" />
     </textures>
 
@@ -179,7 +186,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="none" />
             <children>
                 <primitiveref id="string" />
             </children>
@@ -204,7 +211,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="lampTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="cone" />
                 <primitiveref id="coneInside" />
@@ -342,7 +349,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="darkWoodTexture" />
+            <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="tableTop" />
                 <componentref id="tableLegs" />
@@ -1028,23 +1035,9 @@
                 <componentref id="wardrobeSide1" />
                 <componentref id="wardrobeSide2" />
                 <componentref id="wardrobeSide3" />
-                <componentref id="wardrobeSide4" />
             </children>
         </component>
         <component id="wardrobeSide1">
-            <transformation>
-                <rotate axis="x" angle="180" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
-        <component id="wardrobeSide2">
             <transformation>
                 <rotate axis="x" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -1058,7 +1051,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="wardrobeSide3">
+        <component id="wardrobeSide2">
             <transformation>
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
@@ -1070,7 +1063,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="wardrobeSide4">
+        <component id="wardrobeSide3">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -1154,22 +1147,20 @@
         <component id="bedBox">
             <transformation>
                 <scale x="8" y="3.4" z="18" />
+                <rotate axis="y" angle="180" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="darkWoodTexture" />
             <children>
                 <componentref id="bedTop" />
-                <componentref id="bedBottom" />
                 <componentref id="bedSideTop1" />
                 <componentref id="bedSideTop2" />
                 <componentref id="bedSideTop3" />
-                <componentref id="bedSideTop4" />
                 <componentref id="bedSideBottom1" />
                 <componentref id="bedSideBottom2" />
                 <componentref id="bedSideBottom3" />
-                <componentref id="bedSideBottom4" />
             </children>
         </component>
         <component id="bedPillowLeft">
@@ -1199,11 +1190,13 @@
         <component id="bedPillow">
             <transformation>
                 <scale x="1.6" y="0.5" z="1.25" />
+                <rotate axis="x" angle="90" />
+                <rotate axis="y" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="pillowTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -1212,33 +1205,20 @@
         <component id="bedSideTop1">
             <transformation>
                 <rotate axis="x" angle="180" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
+                <rotate axis="y" angle="90" />
+                <translate x="0.5" y="-0.5" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
+                <rotate axis="z" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
         </component>
         <component id="bedSideTop2">
-            <transformation>
-                <rotate axis="x" angle="180" />
-                <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
-                <scale x="1" y="0.5" z="1" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
-        <component id="bedSideTop3">
             <transformation>
                 <translate x="-0.5" y="0" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
@@ -1246,22 +1226,23 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="bedSheetsBackTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="bedSideTop4">
+        <component id="bedSideTop3">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
+                <translate x="-0.5" y="0" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
+                <rotate axis="z" angle="-90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1269,6 +1250,7 @@
         <component id="bedSideBottom1">
             <transformation>
                 <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="90" />
                 <translate x="-0.5" y="0" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
             </transformation>
@@ -1282,21 +1264,6 @@
         </component>
         <component id="bedSideBottom2">
             <transformation>
-                <rotate axis="x" angle="180" />
-                <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="0" z="0.5" />
-                <scale x="1" y="0.5" z="1" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
-        <component id="bedSideBottom3">
-            <transformation>
                 <translate x="-0.5" y="-0.5" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
             </transformation>
@@ -1308,7 +1275,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="bedSideBottom4">
+        <component id="bedSideBottom3">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -1333,22 +1300,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
-        <component id="bedBottom">
-            <transformation>
-                <rotate axis="z" angle="-90" />
-                <rotate axis="x" angle="-90" />
-                <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
+            <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1445,7 +1397,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="lampTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="cylinder" />
                 <primitiveref id="cylinderInside" />
@@ -1458,14 +1410,12 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="drawerBackTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="bedsideTableTop" />
-                <componentref id="bedsideTableBottom" />
                 <componentref id="bedsideTableSide1" />
                 <componentref id="bedsideTableSide2" />
                 <componentref id="bedsideTableSide3" />
-                <componentref id="bedsideTableSide4" />
             </children>
         </component>
         <component id="bedsideTableSide1">
@@ -1476,7 +1426,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="drawerFrontTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1496,18 +1446,6 @@
             </children>
         </component>
         <component id="bedsideTableSide3">
-            <transformation>
-                <translate x="-0.5" y="-0.5" z="0.5" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
-        <component id="bedsideTableSide4">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -1536,22 +1474,9 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="bedsideTableBottom">
-            <transformation>
-                <rotate axis="z" angle="-90" />
-                <rotate axis="x" angle="-90" />
-                <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="-0.5" z="0.5" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="inherit" />
-            <children>
-                <primitiveref id="square" />
-            </children>
-        </component>
 
+        <!-- ======== -->
+        <!-- football -->
         <component id="football">
             <transformation>
                 <translate x="7.75" y="-5.51" z="17.75" />
@@ -1567,8 +1492,8 @@
             <highlighted r="0.6" g="0.6" b="0.6" scale_h="1.1" />
         </component>
         
-        <!-- ======= -->
-        <!-- wall -->
+        <!-- ===== -->
+        <!-- walls -->
         <component id="wallsFloor">
             <transformation>
                 <translate x="8.4" y="2.8" z="0" />
@@ -1595,7 +1520,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="wallPositiveXTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1608,7 +1533,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="wallNegativeXTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1622,7 +1547,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="ceilingTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1649,7 +1574,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="wallPositiveZTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1661,7 +1586,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="wallNegativeZTexture" length_s="1.0" length_t="1.0" />
+            <texture id="none" />
             <children>
                 <primitiveref id="square" />
             </children>
