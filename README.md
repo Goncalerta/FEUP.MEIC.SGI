@@ -46,7 +46,7 @@
 -   Scene - Animated Space Habitat Satellite
     -   This scene depicts a habitat space satellite orbiting the Earth. The moon and the sun are also visible, as well as background stars.
     -   The scene is an improvement over the one from TP1. Now, on the hidden face of the moon, an alien sets a camp, visible using the *alienTent* or *moonView* cameras.
-    -   The XML file can be found in [tp2/scenes/space.xml](./scenes/space.xml).
+    -   The XML file can be found in [tp2/scenes/space.xml](./tp2/scenes/space.xml).
 
 
 ----
@@ -71,9 +71,9 @@
 -   Scene - Animated Space Habitat Satellite
     -   This scene depicts a habitat space satellite orbiting the Earth. The moon and the sun are also visible, as well as background stars. There is an alien camping in the hidden face of the moon.
     -   The scene is an improvement over the one from TP2. The satellite is no longer the center of the scene, as now a giant floating table is orbiting the earth to bring you the ultimate interplanetary checkers game experience. 
-    -   The XML file can be found in [tp3/scenes/space.xml](./scenes/space.xml).
+    -   The XML file can be found in [tp3/scenes/space.xml](./tp3/scenes/space.xml).
 -   Scene - Bedroom
     -   This scene depicts a bedroom with a table, two chairs, a bed, a bedside table with a lamp, a wardrobe, a ball, a door and a lamp.
     -   The scene is new in the TP3.
-    -   The XML file can be found in [tp3/scenes/room.xml](./scenes/room.xml).
+    -   The XML file can be found in [tp3/scenes/room.xml](./tp3/scenes/room.xml).
 

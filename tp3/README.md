@@ -49,9 +49,9 @@
 
 ## Screenshots
 
-![Screenshot 1](./screenshots/1.jpg)
-![Screenshot 2](./screenshots/2.jpg)
-![Screenshot 3](./screenshots/3.jpg)
-![Screenshot 4](./screenshots/4.jpg)
-![Screenshot 5](./screenshots/5.jpg)
-![Screenshot 6](./screenshots/6.jpg)
+![Screenshot 1](./screenshots/SGI3_T4_G02_1.jpg)
+![Screenshot 2](./screenshots/SGI3_T4_G02_2.jpg)
+![Screenshot 3](./screenshots/SGI3_T4_G02_3.jpg)
+![Screenshot 4](./screenshots/SGI3_T4_G02_4.jpg)
+![Screenshot 5](./screenshots/SGI3_T4_G02_5.jpg)
+![Screenshot 6](./screenshots/SGI3_T4_G02_6.jpg)
