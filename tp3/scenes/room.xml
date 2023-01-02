@@ -17,6 +17,12 @@
             <from x="11" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
+
+        <ortho id="orthoTable" near="0.1" far="5000" left="-7" right="7" top="3.75" bottom="-3.75" >
+            <from x="7" y="2.4" z="7" />
+            <to x="0" y="-0.2" z="0" />
+            <up x="0" y="1" z="0" />
+        </ortho>
     </views>
 
     <ambient>
