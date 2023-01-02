@@ -2,7 +2,7 @@ import { MyLabelButton } from "../labels/MyLabelButton.js";
 import { MyLabel } from "../labels/MyLabel.js";
 import { MyButton } from "../labels/MyButton.js";
 import { Dimensions, MyMenu } from "./MyMenu.js";
-import { textToLimitedCentered, removeFileExtension } from "../../utils.js";
+import { textToLimitedCentered, removeFileExtension, isOnlyWhiteSpaces } from "../../utils.js";
 import { MyTextBox } from "../labels/MyTextBox.js";
 import { Player } from "../Player.js";
 import { CONFIG } from "../config.js";
@@ -33,19 +33,17 @@ export class MyMainMenu extends MyMenu {
             const player1Name = this.player1NameTextBox.getContent();
             const player2Name = this.player2NameTextBox.getContent();
 
-            if (player1Name.length == 0) {
-                this.player1NameTextBox.setError();
-                return;
-            }
-
-            if (player2Name.length == 0) {
-                this.player2NameTextBox.setError();
-                return;
-            }
+            let error1 = isOnlyWhiteSpaces(player1Name);
+            let error2 = isOnlyWhiteSpaces(player2Name);
 
             if (player1Name == player2Name) {
-                this.player1NameTextBox.setError();
-                this.player2NameTextBox.setError();
+                error1 = true;
+                error2 = true;
+            }
+
+            if (error1 || error2) {
+                this.player1NameTextBox.setError(error1);
+                this.player2NameTextBox.setError(error2);
                 return;
             }
 

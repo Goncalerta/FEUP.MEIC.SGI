@@ -76,8 +76,8 @@ export class MyTextBox extends CGFobject {
         this.enableTextCallBack(this.write.bind(this), this.pickingId);
     }
 
-    setError() {
-        this.error = true;
+    setError(isError=true) {
+        this.error = isError;
     }
 
     display(displayFont) {
