@@ -1,5 +1,5 @@
 import { CGFobject } from '../../lib/CGF.js';
-import { easeOutCubic, easeInCubic, identity, gravityUp, gravityDown, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
+import { easeOutCubic, easeInCubic, identity, easeInQuad, easeOutQuad } from '../animations/EasingFunctions.js';
 import { EventAnimation } from '../animations/EventAnimation.js';
 import { EventAnimationChain } from '../animations/EventAnimationChain.js';
 import { arraysEqual, getAppearance, interpolate } from '../utils.js';
@@ -11,9 +11,8 @@ export class MyChecker extends CGFobject {
     JUMP_HEIGHT = 0.8;
     DEFAULT_TOP_OFFSET = 0.01;
     MAX_MOVE_1D_VELOCITY = 2.9;
-    PROMOTION_HEIGHT = 3;
-    GRAVITY = 9.8;
-    PROMOTION_FULL_TURNS = 5;
+    PROMOTION_HEIGHT = 2.5;
+    PROMOTION_FULL_TURNS = 1;
 
     /**
      * @method constructor
@@ -66,10 +65,10 @@ export class MyChecker extends CGFobject {
     }
 
     getPromotionAnimations(reversed = false) {
-        // TODO gravity or easeOutQuad - easeInQuad pair (1 second each)?
-        const halfDuration = Math.sqrt(2 * this.PROMOTION_HEIGHT / this.GRAVITY);
+        const halfDuration = 1;
+        const heightToTurn = this.PROMOTION_HEIGHT - this.radius;
 
-        const upAnimation = new EventAnimation(this.scene, halfDuration, gravityUp(this.GRAVITY));
+        const upAnimation = new EventAnimation(this.scene, halfDuration, easeOutQuad);
         upAnimation.onUpdate((t) => {
             this.position[1] = this.PROMOTION_HEIGHT * t;
             if (reversed) {
@@ -77,35 +76,30 @@ export class MyChecker extends CGFobject {
             }
 
             if (this.position[1] > this.radius) {
-                this.rotation = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
-                // if (reversed) {
-                //     this.rotation += 0.5;
-                // }
+                const percentage = (this.position[1] - this.radius) / heightToTurn;
+                this.rotation = percentage * (this.PROMOTION_FULL_TURNS + 0.5);
             }
         });
         upAnimation.onEnd(() => {
             this.position[1] = this.PROMOTION_HEIGHT;
+            this.rotation = this.PROMOTION_FULL_TURNS + 0.5;
         });
 
-        const downAnimation = new EventAnimation(this.scene, halfDuration, gravityDown(this.GRAVITY));
+        const downAnimation = new EventAnimation(this.scene, halfDuration, easeInQuad);
         downAnimation.onUpdate((t) => {
             this.position[1] = this.PROMOTION_HEIGHT * (1 - t);
             if (!reversed) {
-                this.topOffset = Math.max(t, this.DEFAULT_TOP_OFFSET);
+               this.topOffset = Math.max(t, this.DEFAULT_TOP_OFFSET);
             }
 
             if (this.position[1] > this.radius) {
-                this.rotation = (1 - (this.position[1] - this.radius) / (this.PROMOTION_HEIGHT - this.radius)) * 3;
-                // if (reversed) {
-                //     this.rotation += 0.5;
-                // }
-            } else {
-                // TODO a animação é gira, mas se pusermos em camara lenta ve-se que ha um corte em que ela roda 180º instantaneamente
-                this.rotation = reversed? 0 : 0.5;
+                const percentage = (this.position[1] - this.radius) / heightToTurn;
+                this.rotation = percentage * (this.PROMOTION_FULL_TURNS + 0.5) + t * 0.5;
             }
         });
         downAnimation.onEnd(() => {
             this.position[1] = 0;
+            this.rotation = 0.5;
             this.topOffset = reversed? this.DEFAULT_TOP_OFFSET : 1;
         });
 

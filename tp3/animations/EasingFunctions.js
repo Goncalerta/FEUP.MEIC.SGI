@@ -36,14 +36,6 @@ export function loopbackFunction(f) {
     return (t) => t > 0.5? f(2 - 2*t) : f(2*t);
 }
 
-export function gravityUp(g) {
-    return (t) => 1 - 1 / (1 + g * t**2);
-}
-
-export function gravityDown(g) {
-    return (t) => 1 / (1 + g * (1 - t)**2);
-}
-
 export function quadMin(min) {
     const h = 0.5;
     const k = min;
