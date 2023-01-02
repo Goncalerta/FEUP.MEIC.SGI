@@ -14,70 +14,8 @@
         </ortho>
 
         <perspective id="topCenterView" near="0.1" far="5000" angle="22.9">
-            <from x="15" y="20" z="0" />
+            <from x="11" y="20" z="0" />
             <to x="0" y="0" z="0" />
-        </perspective>
-
-        <perspective id="backEarth" near="0.1" far="5000" angle="22.9">
-            <from x="-250" y="-40" z="-80" />
-            <to x="0" y="-30" z="0" />
-        </perspective>
-
-        <perspective id="milkyWay" near="0.1" far="5000" angle="30">
-            <from x="0" y="0.75" z="-50" />
-            <to x="0" y="0.75" z="0" />
-        </perspective>
-
-        <perspective id="moonView" near="0.1" far="5000" angle="45">
-            <from x="-65" y="-65" z="-130" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-
-        <perspective id="lightspeed" near="0.1" far="5000" angle="179">
-            <from x="0" y="-130" z="40" />
-            <to x="25" y="20" z="20" />
-        </perspective>
-
-        <ortho id="orthoMoon" near="0.1" far="5000" left="-20" right="20" top="10" bottom="-10" >
-            <from x="30" y="30" z="30" />
-            <to x="0" y="0" z="-17" />
-            <up x="1" y="1" z="0" />
-        </ortho>
-
-        <perspective id="satelliteOverEarth" near="0.1" far="5000" angle="22.9">
-            <from x="20" y="30" z="20" />
-            <to x="-10" y="0" z="-10" />
-        </perspective>
-
-        <perspective id="satelliteMainPanel" near="0.1" far="5000" angle="22.9">
-            <from x="5" y="20" z="-10" />
-            <to x="-10" y="0" z="-10" />
-        </perspective>
-
-        <perspective id="satelliteMainPanelBack" near="0.1" far="5000" angle="60">
-            <from x="-12" y="0.5" z="-10" />
-            <to x="-10" y="1.5" z="-10" />
-        </perspective>
-
-        <perspective id="satelliteCenter" near="0.1" far="5000" angle="22.9">
-            <from x="-7" y="1" z="-7" />
-            <to x="-10" y="0" z="-10" />
-        </perspective>
-
-        <perspective id="satelliteBottom" near="0.1" far="5000" angle="22.9">
-            <from x="-7" y="-10" z="-7" />
-            <to x="-10" y="0" z="-10" />
-        </perspective>
-
-        <ortho id="orthoSatellite" near="0.1" far="5000" left="-10" right="10" top="5" bottom="-5" >
-            <from x="20" y="30" z="20" />
-            <to x="-10" y="0" z="-10" />
-            <up x="0" y="1" z="0" />
-        </ortho>
-
-        <perspective id="alienTent" near="0.1" far="5000" angle="22.9">
-            <from x="-66.0" y="-65.5" z="-125.3" />
-            <to x="-65.1" y="-58.7" z="-117.8" />
         </perspective>
     </views>
 
@@ -87,8 +25,15 @@
     </ambient>
 
     <lights>
-        <omni id="sunlight" enabled="1">
-            <location x="15" y="5" z="0" w="1.0" />
+        <omni id="roomlight" enabled="1">
+            <location x="8.4" y="8" z="0" w="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
+        </omni>
+        <omni id="bedsideLight" enabled="0">
+            <location x="11.65" y="-1.2" z="19" w="1.0" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -130,11 +75,43 @@
         <primitive id="chairBackCylinder">
             <cylinder top="0.08" base="0.115" height="2.3" slices="150" stacks="150" />
         </primitive>
+        <primitive id="string">
+            <cylinder top="0.05" base="0.05" height="4" slices="40" stacks="40" />
+        </primitive>
+        <primitive id="cylinder">
+            <cylinder top="1" base="1" height="0.75" slices="40" stacks="40" />
+        </primitive>
+        <primitive id="cylinderInside">
+            <cylinder top="1" base="1" height="0.75" slices="40" stacks="40" inside="1" />
+        </primitive>
+        <primitive id="cone">
+            <cylinder top="1.75" base="0" height="1.2" slices="40" stacks="40" />
+        </primitive>
+        <primitive id="bedsideLightHalfBody">
+            <cylinder top="0.75" base="1" height="0.6" slices="40" stacks="40" />
+        </primitive>
+        <primitive id="coneInside">
+            <cylinder top="1.75" base="0" height="1.2" slices="40" stacks="40" inside="1" />
+        </primitive>
         <primitive id="knobJoint">
             <cylinder top="0.1" base="0.2" height="0.3" slices="60" stacks="60" />
         </primitive>
         <primitive id="sphere">
             <sphere radius="1" slices="150" stacks="150" />
+        </primitive>
+        <primitive id="semicirclePatch">
+            <patch degree_u="1" parts_u="50" degree_v="3" parts_v="50">
+                <!-- radius = 3/4 * height -->
+                <controlpoint x="0.75" y="0" z="0" />
+                <controlpoint x="0.75" y="0" z="1" />
+                <controlpoint x="-0.75" y="0" z="1" />
+                <controlpoint x="-0.75" y="0" z="0" />
+                <!-- Fill the circle -->
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+                <controlpoint x="0" y="0" z="0" />
+            </patch>
         </primitive>
     </primitives>
 
@@ -150,12 +127,72 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="roomLight" />
                 <componentref id="table" />
+                <componentref id="tableLight" />
                 <componentref id="chairLeft" />
                 <componentref id="chairRight" />
-                <componentref id="wallsFloor" />
                 <componentref id="door" />
                 <componentref id="wardrobe" />
+                <componentref id="bed" />
+                <componentref id="bedside" />
+                <componentref id="football" />
+                <componentref id="wallsFloor" />
+            </children>
+        </component>
+
+        <!-- ========== -->
+        <!-- Room Light -->
+        <component id="roomLight">
+            <transformation>
+                <translate x="8.4" y="12" z="0" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="roomLightString" />
+                <componentref id="roomLightBulb" />
+                <componentref id="roomLightCone" />
+            </children>
+        </component>
+        <component id="roomLightString">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="string" />
+            </children>
+        </component>
+        <component id="roomLightBulb">
+            <transformation>
+                <translate x="0" y="0" z="4" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="roomLightCone">
+            <transformation>
+                <translate x="0" y="0" z="3.25" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cone" />
+                <primitiveref id="coneInside" />
             </children>
         </component>
 
@@ -265,6 +302,7 @@
             <children>
                 <primitiveref id="sphere" />
             </children>
+            <highlighted r="1.0" g="0.6" b="0.5" scale_h="1.05" />
         </component>
         <component id="doorKnobJoint">
             <transformation>
@@ -921,7 +959,6 @@
         <component id="wardrobe">
             <transformation>
                 <translate x="15.85" y="0" z="-18.5" />
-                
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1082,6 +1119,438 @@
                 <primitiveref id="square" />
             </children>
         </component>
+
+        <!-- === -->
+        <!-- Bed -->
+        <component id="bed">
+            <transformation>
+                <translate x="16.75" y="-4.5" z="11" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedBox" />
+                <componentref id="bedPillowLeft" />
+                <componentref id="bedPillowRight" />
+            </children>
+        </component>
+        <component id="bedBox">
+            <transformation>
+                <scale x="8" y="3.4" z="18" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedTop" />
+                <componentref id="bedBottom" />
+                <componentref id="bedSideTop1" />
+                <componentref id="bedSideTop2" />
+                <componentref id="bedSideTop3" />
+                <componentref id="bedSideTop4" />
+                <componentref id="bedSideBottom1" />
+                <componentref id="bedSideBottom2" />
+                <componentref id="bedSideBottom3" />
+                <componentref id="bedSideBottom4" />
+            </children>
+        </component>
+        <component id="bedPillowLeft">
+            <transformation>
+                <translate x="2" y="1.8" z="7" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedPillow" />
+            </children>
+        </component>
+        <component id="bedPillowRight">
+            <transformation>
+                <translate x="-2" y="1.8" z="7" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedPillow" />
+            </children>
+        </component>
+        <component id="bedPillow">
+            <transformation>
+                <scale x="1.6" y="0.5" z="1.25" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+            <highlighted r="0.9" g="0.93" b="1.0" scale_h="1.18" />
+        </component>
+        <component id="bedSideTop1">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideTop2">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideTop3">
+            <transformation>
+                <translate x="-0.5" y="0" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideTop4">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideBottom1">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <translate x="-0.5" y="0" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideBottom2">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="0" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideBottom3">
+            <transformation>
+                <translate x="-0.5" y="-0.5" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedSideBottom4">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="0" z="0.5" />
+                <scale x="1" y="0.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedTop">
+            <transformation>
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedBottom">
+            <transformation>
+                <rotate axis="z" angle="-90" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- ======= -->
+        <!-- Bedside -->
+        <component id="bedside">
+            <transformation>
+                <translate x="10.5" y="-4.3" z="18.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedsideTable" />
+                <componentref id="bedsideLight" />
+            </children>
+        </component>
+        <component id="bedsideLight">
+            <transformation>
+                <translate x="1.15" y="3.8" z="0.5" />
+                <scale x="0.75" y="1" z="0.75" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedsideLightBodyBottom" />
+                <componentref id="bedsideLightBodyTop" />
+                <componentref id="bedsideLightBodyDisk" />
+                <componentref id="bedsideLightBulb" />
+                <componentref id="bedsideLightCylinder" />
+            </children>
+        </component>
+        <component id="bedsideLightBodyBottom">
+            <transformation>
+                <translate x="0" y="0" z="1.95" />
+                <rotate axis="x" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="bedsideLightHalfBody" />
+            </children>
+        </component>
+        <component id="bedsideLightBodyTop">
+            <transformation>
+                <translate x="0" y="0" z="0.75" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="bedsideLightHalfBody" />
+            </children>
+        </component>
+        <component id="bedsideLightBodyDisk">
+            <transformation>
+                <translate x="0" y="0" z="0.75" />
+                <rotate axis="x" angle="-90" />
+                <scale x="1.29" y="1.29" z="1.29" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="circle" />
+            </children>
+        </component>
+        <component id="bedsideLightBulb">
+            <transformation>
+                <translate x="0" y="0" z="0.7" />
+                <scale x="0.2" y="0.2" z="0.2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="bedsideLightCylinder">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="cylinder" />
+                <primitiveref id="cylinderInside" />
+            </children>
+        </component>
+        <component id="bedsideTable">
+            <transformation>
+                <scale x="4" y="3.8" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="bedsideTableTop" />
+                <componentref id="bedsideTableBottom" />
+                <componentref id="bedsideTableSide1" />
+                <componentref id="bedsideTableSide2" />
+                <componentref id="bedsideTableSide3" />
+                <componentref id="bedsideTableSide4" />
+            </children>
+        </component>
+        <component id="bedsideTableSide1">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedsideTableSide2">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedsideTableSide3">
+            <transformation>
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedsideTableSide4">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedsideTableTop">
+            <transformation>
+                <rotate axis="z" angle="90" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="bedsideTableBottom">
+            <transformation>
+                <rotate axis="z" angle="-90" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <component id="football">
+            <transformation>
+                <translate x="7.75" y="-5.5" z="17.75" />
+                <scale x="0.7" y="0.7" z="0.7" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+            <highlighted r="0.6" g="0.6" b="0.6" scale_h="1.1" />
+        </component>
         
         <!-- ======= -->
         <!-- wall -->
@@ -1180,6 +1649,33 @@
             <texture id="wallNegativeZTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- ====== -->
+        <!-- circle -->
+        <component id="circle">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="semicirclePatch" />
+                <componentref id="semicircleComplement" />
+            </children>
+        </component>
+        <component id="semicircleComplement">
+            <transformation>
+                <rotate axis="y" angle="180" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="semicirclePatch" />
             </children>
         </component>
     </components>

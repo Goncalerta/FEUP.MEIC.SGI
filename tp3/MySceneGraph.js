@@ -1249,7 +1249,7 @@ export class MySceneGraph {
 
                 this.primitives[primitiveId] = triangle;
             } else if (primitiveType == 'cylinder') {
-                // <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
+                // <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" inside="ii" />
 
                 // base
                 const base = this.reader.getFloat(grandChildren[0], 'base', false);
@@ -1296,13 +1296,20 @@ export class MySceneGraph {
                     continue;
                 }
 
+                // inside
+                let inside = this.reader.getInteger(grandChildren[0], 'inside', false);
+                if (!(inside != null && !isNaN(inside))) {
+                    inside = 0;
+                }
+
                 const cylinder = new MyCylinder(
                     this.scene,
                     base,
                     top,
                     height,
                     slices,
-                    stacks
+                    stacks,
+                    inside
                 );
 
                 this.primitives[primitiveId] = cylinder;

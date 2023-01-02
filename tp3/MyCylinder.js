@@ -14,13 +14,14 @@ export class MyCylinder extends CGFobject {
      * @param {integer} slices - Number of divisions around the Z axis (circumference)
      * @param {integer} stacks - Number of divisions along the Z axis
      */
-    constructor(scene, baseRadius, topRadius, height, slices, stacks) {
+    constructor(scene, baseRadius, topRadius, height, slices, stacks, inside = false) {
         super(scene);
         this.baseRadius = baseRadius;
         this.topRadius = topRadius;
         this.height = height;
         this.slices = Math.ceil(slices);
         this.stacks = Math.ceil(stacks);
+        this.inside = inside;
         this.initBuffers();
     }
 
@@ -68,13 +69,17 @@ export class MyCylinder extends CGFobject {
                 // the current normal is a vector at the origin leaned
                 // accordingly to the cylinder leaning, and rotated
                 // to the current angle around it
-                this.normals.push(
-                    ...normalizeVector([
-                        cosLeaningAngle * cosCurrentAngle,
-                        cosLeaningAngle * sinCurrentAngle,
-                        sinLeaningAngle
-                    ])
-                );
+                const normal = normalizeVector([
+                    cosLeaningAngle * cosCurrentAngle,
+                    cosLeaningAngle * sinCurrentAngle,
+                    sinLeaningAngle
+                ]);
+                if (this.inside) {
+                    normal[0] = -normal[0];
+                    normal[1] = -normal[1];
+                    normal[2] = -normal[2];
+                }
+                this.normals.push(...normal);
 
                 this.texCoords.push(j / this.slices, 1 - i / this.stacks);
             }
@@ -88,16 +93,29 @@ export class MyCylinder extends CGFobject {
                 // index of the vertex on top of the vertex in the current stack
                 const indexVertexTop = indexVertex + this.slices + 1;
 
-                this.indices.push(
-                    indexVertex,
-                    indexVertex + 1,
-                    indexVertexTop + 1
-                );
-                this.indices.push(
-                    indexVertex,
-                    indexVertexTop + 1,
-                    indexVertexTop
-                );
+                if (this.inside) {
+                    this.indices.push(
+                        indexVertex,
+                        indexVertexTop + 1,
+                        indexVertex + 1
+                    );
+                    this.indices.push(
+                        indexVertex,
+                        indexVertexTop,
+                        indexVertexTop + 1
+                    );
+                } else {
+                    this.indices.push(
+                        indexVertex,
+                        indexVertex + 1,
+                        indexVertexTop + 1
+                    );
+                    this.indices.push(
+                        indexVertex,
+                        indexVertexTop + 1,
+                        indexVertexTop
+                    );
+                }
             }
         }
 
