@@ -45,7 +45,7 @@ export class GameModel {
 
         this.state = new PlayerTurnState(this, this.player1, startTime);
 
-        this.current_time = startTime;
+        this.currentTime = startTime;
         this.gameTime = 0;
         this.previousMoves = [];
     }
@@ -199,9 +199,9 @@ export class GameModel {
      */
     update(t) {
         if (this.state.increaseGameTime()) {
-            this.gameTime += (t - this.current_time) / 1000;
+            this.gameTime += (t - this.currentTime) / 1000;
         }
-        this.current_time = t;
+        this.currentTime = t;
         this.state.update(t);
     }
 
@@ -399,6 +399,7 @@ export class GameModel {
         const currentPlayerId = this.getPlayerId(x, y);
         const isQueen = this.isQueen(x, y);
 
+        // Depending on the player and type of piece, different directions are allowed for the move
         let directions = [];
         if (isQueen) {
             directions.push(...P1_FORWARD_DIRECTIONS);
@@ -412,6 +413,7 @@ export class GameModel {
         const nonCaptureMoves = [];
         const captureMoves = [];
 
+        // For each direction, try to propagate one step at a time.
         for (let i = 0; i < directions.length; i++) {
             const direction = directions[i];
             let currentX = x;
@@ -431,9 +433,11 @@ export class GameModel {
                         continue;
                     }
 
-                    break;
+                    break; // Only queens may move more than one tile.
                 }
 
+                // If the current tile is not empty, it either is an opponent piece (must check if capturable).
+                // Or it is a friendly piece (cannot move further in this direction).
                 if (this.getPlayerId(currentX, currentY) !== currentPlayerId) {
                     currentX += direction[0];
                     currentY += direction[1];

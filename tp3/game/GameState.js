@@ -120,9 +120,9 @@ export class PlayerTurnState extends GameState {
      * @param {Number} startTime - Turn start time.
      * @param {Number} t - Current time.
      * @param {Array} validMoves - Valid moves.
-     * @param {Number} turn_time_limit - Turn time limit.
+     * @param {Number} turnTimeLimit - Turn time limit.
      */
-    constructor(model, player, startTime, t = null, validMoves = null, turn_time_limit=null) {
+    constructor(model, player, startTime, t = null, validMoves = null, turnTimeLimit=null) {
         super(model);
         this.player = player;
 
@@ -134,13 +134,15 @@ export class PlayerTurnState extends GameState {
             }
         }
 
-        this.start_time = startTime;
-        if (turn_time_limit !== null) {
-            this.turn_time_limit = turn_time_limit;
+        this.startTime = startTime;
+        if (turnTimeLimit !== null) {
+            // Receive the limit from the previous state.
+            this.turnTimeLimit = turnTimeLimit;
         } else if (this.validMoves.length == 1) {
-            this.turn_time_limit = PlayerTurnState.ONE_MOVE_TIME_LIMT;
+            // If only one move is possible, the player has only one minute to play.
+            this.turnTimeLimit = PlayerTurnState.ONE_MOVE_TIME_LIMT;
         } else {
-            this.turn_time_limit = PlayerTurnState.TURN_TIME_LIMIT;
+            this.turnTimeLimit = PlayerTurnState.TURN_TIME_LIMIT;
         }
         this.update(t !== null? t : startTime);
     }
@@ -157,12 +159,12 @@ export class PlayerTurnState extends GameState {
             return;
         }
 
-        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.start_time, this.model.current_time, this.validMoves, filteredValidMoves, piece, [x, y], this.turn_time_limit));
+        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.startTime, this.model.currentTime, this.validMoves, filteredValidMoves, piece, [x, y], this.turnTimeLimit));
     }
 
     update(t) {
-        this.remaining_time = Math.max(0, this.turn_time_limit - (t - this.start_time) / 1000);
-        if (this.remaining_time == 0) {
+        this.remainingTime = Math.max(0, this.turnTimeLimit - (t - this.startTime) / 1000);
+        if (this.remainingTime == 0) {
             this.model.setGameState(new GameOverState(this.model, this.model.getOpponent(this.player)))
         }
     }
@@ -176,7 +178,7 @@ export class PlayerTurnState extends GameState {
     }
 
     getRemainingTime() {
-        return Math.ceil(this.remaining_time);
+        return Math.ceil(this.remainingTime);
     }
 
     increaseGameTime() {
@@ -189,7 +191,7 @@ export class PlayerTurnState extends GameState {
             return;
         }
         const piece = getChecker(...completedMove.to);
-        this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remaining_time));
+        this.model.setGameState(new PieceMovingUndoState(this.model, this.player, completedMove, piece, this.remainingTime));
     }
 
     triggerReplay(getChecker) {
@@ -197,7 +199,7 @@ export class PlayerTurnState extends GameState {
         if (moves.length == 0) {
             return;
         }
-        this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, this.remaining_time));
+        this.model.setGameState(new BeginFilmState(this.model, moves, getChecker, this.remainingTime));
     }
 }
 
@@ -215,10 +217,10 @@ export class PieceSelectedState extends PlayerTurnState {
      * @param {Array} filteredValidMoves - Valid moves for the selected piece.
      * @param {MyChecker} piece - Selected piece.
      * @param {Array} piecePosition - Selected piece position.
-     * @param {Number} turn_time_limit - Turn time limit.
+     * @param {Number} turnTimeLimit - Turn time limit.
      */
-    constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition, turn_time_limit=null) {
-        super(model, player, startTime, t, validMoves, turn_time_limit);
+    constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition, turnTimeLimit=null) {
+        super(model, player, startTime, t, validMoves, turnTimeLimit);
         this.piece = piece;
         this.piecePosition = piecePosition;
         if (filteredValidMoves) {
@@ -232,7 +234,7 @@ export class PieceSelectedState extends PlayerTurnState {
 
     selectPiece(piece, x, y) {
         if (x == this.piecePosition[0] && y == this.piecePosition[1]) {
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.model.current_time, this.validMoves, this.turn_time_limit));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.startTime, this.model.currentTime, this.validMoves, this.turnTimeLimit));
             return;
         }
 
@@ -251,7 +253,7 @@ export class PieceSelectedState extends PlayerTurnState {
         } else {
             this.piece.animateUnallowed();
             this.model.game.makeCross(x, y);
-            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.start_time, this.model.current_time, null, this.turn_time_limit));
+            this.model.setGameState(new PlayerTurnState(this.model, this.player, this.startTime, this.model.currentTime, null, this.turnTimeLimit));
         }
     }
 
@@ -283,13 +285,13 @@ export class AnimationState extends GameState {
      * @param {Player} player - Current player.
      * @param {Move} completedMove - Completed move.
      * @param {MyChecker} piece - Moving piece.
-     * @param {Number} remaining_time - Remaining time.
+     * @param {Number} remainingTime - Remaining time.
      */
-    constructor(model, player, completedMove, piece, remaining_time) {
+    constructor(model, player, completedMove, piece, remainingTime) {
         super(model);
         this.player = player;
         this.completedMove = completedMove;
-        this.remaining_time = remaining_time;
+        this.remainingTime = remainingTime;
         this.piece = piece;
     }
 
@@ -302,7 +304,7 @@ export class AnimationState extends GameState {
     }
 
     getRemainingTime() {
-        return Math.ceil(this.remaining_time);
+        return Math.ceil(this.remainingTime);
     }
 
     increaseGameTime() {
@@ -320,10 +322,10 @@ export class PieceMovingState extends AnimationState {
      * @param {Player} player - Current player.
      * @param {Move} completedMove - Completed move.
      * @param {MyChecker} piece - Moving piece.
-     * @param {Number} remaining_time - Remaining time.
+     * @param {Number} remainingTime - Remaining time.
      */
-    constructor(model, player, completedMove, piece, remaining_time) {
-        super(model, player, completedMove, piece, remaining_time);
+    constructor(model, player, completedMove, piece, remainingTime) {
+        super(model, player, completedMove, piece, remainingTime);
 
         this.piece.animateMove(
             completedMove, 
@@ -333,12 +335,12 @@ export class PieceMovingState extends AnimationState {
                 if ((!completedMove.promoted) && completedMove.captured) {
                     const captureMoves = this.model.getValidMovesFor(this.completedMove.to[0], this.completedMove.to[1])[0];
                     if (captureMoves.length > 0) {
-                        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remaining_time));
+                        this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.currentTime, null, captureMoves, captureMoves, this.piece, this.completedMove.to, this.remainingTime));
                         return;
                     }
                 }
 
-                let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time);
+                let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.currentTime);
 
                 // Check for game over
                 if (nextState.validMoves.length === 0) {
@@ -367,11 +369,11 @@ export class PieceMovingUndoState extends AnimationState {
      * @param {Player} player - Current player.
      * @param {Move} completedMove - Completed move.
      * @param {MyChecker} piece - Moving piece.
-     * @param {Number} remaining_time - Remaining time.
-     * @param {Number} turn_time_limit - Turn time limit.
+     * @param {Number} remainingTime - Remaining time.
+     * @param {Number} turnTimeLimit - Turn time limit.
      */
-    constructor(model, player, completedMove, piece, remaining_time) {
-        super(model, player, completedMove, piece, remaining_time);
+    constructor(model, player, completedMove, piece, remainingTime) {
+        super(model, player, completedMove, piece, remainingTime);
 
         const movePlayer = this.model.getPlayer(this.completedMove.by)
         this.piece.animateUndo(
@@ -379,11 +381,13 @@ export class PieceMovingUndoState extends AnimationState {
             () => movePlayer.changeScore(-1),
             () => {
                 if (this.completedMove.multicapture) {
+                    // Guarantee that the valid moves on the multicapture are consistent.
                     const captureMoves = this.model.getValidMovesFor(this.completedMove.from[0], this.completedMove.from[1])[0];
-                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.current_time, null, captureMoves, captureMoves, this.piece, completedMove.from, this.remaining_time));
+                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.currentTime, null, captureMoves, captureMoves, this.piece, completedMove.from, this.remainingTime));
                 } else {
-                    const remainingTime = this.player === movePlayer ? this.remaining_time : null;
-                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.current_time, null, null, null, this.piece, completedMove.from, remainingTime));
+                    // If the current player changed, reset the timer.
+                    const remainingTime = this.player === movePlayer ? this.remainingTime : null;
+                    this.model.setGameState(new PieceSelectedState(this.model, movePlayer, this.model.currentTime, null, null, null, this.piece, completedMove.from, remainingTime));
                 }
             },
         );
@@ -424,6 +428,7 @@ export class BeginFilmState extends GameState {
         // to iterate twice than to check for duplicates.
         pieces.push(...this.model.game.checkers.pieces);
 
+        // Take all pieces from the current positions and put them in starting positions.
         for (let i = 0; i < pieces.length; i++) {
             const piece = pieces[i];
             const player = piece.player;
@@ -431,18 +436,19 @@ export class BeginFilmState extends GameState {
             const next_player_positions = player.getId() === 1 ? next_player1_positions : next_player2_positions;
             
             if (arraysIncludes(player_positions, piece.boardPosition)) {
-                continue;
+                continue; // Already in starting position, do nothing.
             }
 
             while (true) {
-                const position = next_player_positions.shift();
+                const position = next_player_positions.shift(); // This is the position we want to fill in this iteration.
                 const other = getChecker(...position);
 
                 if (other && other.player === piece.player) {
-                    continue;
+                    continue; // Already filled, try another position.
                 }
 
                 if (other && other.player !== piece.player) {
+                    // The opponent is here. Move the piece away to make room.
                     const dx = piece.player.getId() === 1 ? 1 : -1;
                     const direction = [dx * piece.tileSize, 0];
                     const adjacentPosition = [position[0] + dx, position[1]];
@@ -450,6 +456,7 @@ export class BeginFilmState extends GameState {
                     animations.push(...other.getMoveAnimations(direction, piece.calculatePosition(adjacentPosition)));
                 }
 
+                // This position is good. Jump into it.
                 piece.boardPosition = position;
                 animations.push(...piece.getJumpAnimations(piece.calculatePosition(position), position, null, false));
                 break;
@@ -460,6 +467,7 @@ export class BeginFilmState extends GameState {
             const demoteAnimations = new EventAnimationChain();
             const pieces = [...this.model.game.checkers.pieces];
 
+            // Demote queens that may still be in the board.
             for (let i = 0; i < pieces.length; i++) {
                 const piece = pieces[i];
                 
@@ -472,17 +480,18 @@ export class BeginFilmState extends GameState {
                 demoteAnimations.onEnd(() => {
                     this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
                 });
-                demoteAnimations.start(this.model.current_time);
+                demoteAnimations.start(this.model.currentTime);
             } else {
+                // No queens, so start immediately.
                 this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
             }
         });
 
-        animations.start(this.model.current_time);
+        animations.start(this.model.currentTime);
     }
 
     /**
-     * Initializes the positions of the pieces.
+     * Initializes the starting positions of the pieces for each player.
      * @returns {Array} Array with the positions of the pieces.
      */
     initPositions() {
@@ -548,6 +557,7 @@ export class FilmState extends GameState {
                 this.currentMove,
                 () => this.player.changeScore(1),
                 () => {
+                    // All moves but the last only need to go to the next on end.
                     this.nextMove();
                     this.animateMove();
                 },
@@ -557,16 +567,18 @@ export class FilmState extends GameState {
                 this.currentMove,
                 () => this.player.changeScore(1),
                 () => {
+                    // After the last move, do the necessary checks to resume the game the correct state.
+                    
                     // Check for multicapture
                     if ((!this.currentMove.promoted) && this.currentMove.captured) {
                         const captureMoves = this.model.getValidMovesFor(this.currentMove.to[0], this.currentMove.to[1])[0];
                         if (captureMoves.length > 0) {
-                            this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.current_time, null, captureMoves, captureMoves, this.piece, this.currentMove.to, this.remainingTime));
+                            this.model.setGameState(new PieceSelectedState(this.model, this.player, this.model.currentTime, null, captureMoves, captureMoves, this.piece, this.currentMove.to, this.remainingTime));
                             return;
                         }
                     }
     
-                    let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.current_time, null, null, this.remainingTime);
+                    let nextState = new PlayerTurnState(this.model, this.model.getOpponent(this.player), this.model.currentTime, null, null, this.remainingTime);
     
                     // Check for game over
                     if (this.remainingTime === 0 || nextState.validMoves.length === 0) {
@@ -607,7 +619,6 @@ export class GameOverState extends GameState {
     constructor(model, winner) {
         super(model);
         this.winner = winner;
-        this.win_time = model.current_time;
     }
 
     /**

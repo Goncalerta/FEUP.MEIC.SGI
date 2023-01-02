@@ -82,7 +82,7 @@ export class MyGame {
         }, height);
 
         this.crosses.add(cross);
-        cross.start(this.model.current_time);
+        cross.start(this.model.currentTime);
     }
 
     /**

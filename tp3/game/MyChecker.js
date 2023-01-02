@@ -222,7 +222,6 @@ export class MyChecker extends CGFobject {
             params.deltaCapturer = [- recoilDistance*direction[0], - recoilDistance*direction[1]];
         });
         
-
         recoilAnimation.onUpdate((t, params) => {
             this.position = [
                 params.beginCapturer[0] + params.deltaCapturer[0] * t,
@@ -305,8 +304,11 @@ export class MyChecker extends CGFobject {
             params.delta = [(endPosition[0] - this.position[0]) / 2, this.JUMP_HEIGHT - this.position[1], (endPosition[2] - this.position[2]) / 2];
             params.end = [params.begin[0] + params.delta[0], params.begin[1] + params.delta[1], params.begin[2] + params.delta[2]];
             params.rotationBegin = this.rotation;
+            // If we do not want to keep promotion, we will want to rotate the piece until the rotation is 0.
+            // Otherwise we will not rotate
             params.rotationDelta = keepPromotion ? 0 : -this.rotation / 2;
             if (params.rotationDelta !== 0) {
+                // Set the rotation axis perpendicular to the direction of the horizontal move
                 const orthogonal = [-params.delta[2], 0, params.delta[0]];
                 if (orthogonal[0] !== 0) {
                     orthogonal[0] = Math.abs(orthogonal[0])/orthogonal[0];
@@ -329,6 +331,7 @@ export class MyChecker extends CGFobject {
             params.end = [endPosition[0], endPosition[1] * (this.height + 0.001), endPosition[2]];
             params.delta = [params.end[0] - params.begin[0], params.end[1] - params.begin[1], params.end[2] - params.begin[2]];
             params.rotationBegin = this.rotation;
+            // Finish rotation if we do not want to keep promotion
             params.rotationDelta = keepPromotion ? 0 : -this.rotation;
         });
         downAnimation.onUpdate(onUpdate);
@@ -404,6 +407,9 @@ export class MyChecker extends CGFobject {
         if (move.captured) {
             const capturedPiece = this.scene.game.getChecker(move.captured[0], move.captured[1]);
 
+            // Collision test on each update of the moving piece's position.
+            // It's position is compared with the capturable piece, in order to see if they collide.
+            // Since they have the same height, only horizontal distance is measured.
             onTestCollision = (animation) => {
                 const movingX = this.position[0];
                 const movingZ = this.position[2];
@@ -473,7 +479,7 @@ export class MyChecker extends CGFobject {
     display() {
 
         const selected = this.model.state.getSelectedPiece() === this;
-        let material;
+        let material; // Find material based on piece state
         if (selected) {
             material = this.materials["selected"];
         } else {
@@ -506,6 +512,7 @@ export class MyChecker extends CGFobject {
         
 
         if (this.player.getId() === 1) {
+            // Rotate so that the crown faces the appropriate direction
             this.scene.rotate(Math.PI, 0, 1, 0);
         }
         this.scene.rotate(Math.PI / 2, 1, 0, 0);

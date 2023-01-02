@@ -274,6 +274,7 @@ export class XMLscene extends CGFscene {
             }
         }
 
+        // Initialize game spotlight
         this.lights[7].setPosition(0, 3, 0, 1);
         this.lights[7].setAmbient(0, 0, 0, 1);
         this.lights[7].setDiffuse(1, 1, 1, 1);
@@ -545,6 +546,7 @@ export class XMLscene extends CGFscene {
         this.lights[7].update();
 
         if (this.sceneInited) {
+            // Display game or menu depending on the current state.
             if (this.game !== null) {
                 this.game.display(this.pickMode);
             } else if (this.mainMenu !== null) {

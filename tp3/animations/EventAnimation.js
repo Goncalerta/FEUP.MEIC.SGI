@@ -17,7 +17,7 @@ export class EventAnimation {
         this.onStartCallback = [];
         this.onEndCallback = [];
         this.onUpdateCallback = [];
-        this.params = {};
+        this.params = {}; // Parameters shared by onStart, onUpdate and onEnd callbacks
         this.over = false;
     }
 

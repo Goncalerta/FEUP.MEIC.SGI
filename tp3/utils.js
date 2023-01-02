@@ -183,7 +183,7 @@ export function interpolateCameras(o1, o2, t) {
         return camera;
 
     } else {
-        // This is merely a hack to interpolate between perspective and ortho cameras
+        // This is needed to interpolate between perspective and ortho cameras
 
         function fovToLeftRightTopBottom(fov, distance, aspect=1) {
             const top = distance * Math.tan(fov / 2);

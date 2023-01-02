@@ -1,5 +1,5 @@
 /**
- * Represents a generic animation, which may change more than just transformations, and which is triggered by a runtime event.
+ * Represents a chain of EventAnimations which execute one after the other.
  */
 export class EventAnimationChain {
     /**
