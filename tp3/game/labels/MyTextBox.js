@@ -20,6 +20,14 @@ export class MyTextBox extends CGFobject {
         specular: [0.8, 0.6, 0.6, 1.0]
     };
 
+    MATERIAL_ERROR = {
+        shininess: 1,
+        emission: [1, 0.2, 0.2, 1.0],
+        ambient: [1, 0.2, 0.2, 1.0],
+        diffuse: [1, 0.2, 0.2, 1.0],
+        specular: [1, 0.2, 0.2, 1.0]
+    };
+
     constructor(scene, pickingId, enableTextCallBack, shader, startContent="", maxSize=10, colorRGBa=[0, 0, 0, 1], fontSize=1, elevated=0.01) {
         super(scene);
 
@@ -32,8 +40,11 @@ export class MyTextBox extends CGFobject {
         this.label = new MyLabel(scene, () => { return this.content }, shader, colorRGBa, fontSize); // TODO is there a way to make this class extend MyLabel passing a method (with the content) to the super constructor?
         this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
 
-        this.selectedAppearance = getAppearance(scene, this.MATERIAL_SELECTED);
         this.unselectedAppearance = getAppearance(scene, this.MATERIAL_UNSELECTED);
+        this.selectedAppearance = getAppearance(scene, this.MATERIAL_SELECTED);
+        this.errorAppearance = getAppearance(scene, this.MATERIAL_ERROR);
+
+        this.error = false;
     }
 
     scaleSize(scale) {
@@ -61,7 +72,12 @@ export class MyTextBox extends CGFobject {
     }
 
     onClick() {
+        this.error = false;
         this.enableTextCallBack(this.write.bind(this), this.pickingId);
+    }
+
+    setError() {
+        this.error = true;
     }
 
     display(displayFont) {
@@ -70,7 +86,9 @@ export class MyTextBox extends CGFobject {
         } else {
             this.scene.registerForPick(this.pickingId, this);
 
-            if (this.scene.selectedPickingId === this.pickingId) {
+            if (this.error) {
+                this.errorAppearance.apply();
+            } else if (this.scene.selectedPickingId === this.pickingId) {
                 this.selectedAppearance.apply();
             } else {
                 this.unselectedAppearance.apply();

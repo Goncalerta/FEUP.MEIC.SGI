@@ -29,7 +29,28 @@ export class MyMainMenu extends MyMenu {
         this.player2NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, this.getShader(), Player.PLAYER_2_DEFAULT_NAME, Player.PLAYER_LENGTH);
 
         // Buttons
-        this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName(), this.player1NameTextBox.getContent(), this.player2NameTextBox.getContent()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => {
+            const player1Name = this.player1NameTextBox.getContent();
+            const player2Name = this.player2NameTextBox.getContent();
+
+            if (player1Name.length == 0) {
+                this.player1NameTextBox.setError();
+                return;
+            }
+
+            if (player2Name.length == 0) {
+                this.player2NameTextBox.setError();
+                return;
+            }
+
+            if (player1Name == player2Name) {
+                this.player1NameTextBox.setError();
+                this.player2NameTextBox.setError();
+                return;
+            }
+
+            playCallBack(this.getCurrentScenarioFileName(), player1Name, player2Name)
+        }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
