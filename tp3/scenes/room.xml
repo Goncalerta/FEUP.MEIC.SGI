@@ -184,6 +184,38 @@
             <diffuse r="0.7" g="0.5" b="0.4" a="1.0" />
             <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
+
+        <!-- Non-standard materials (press M) -->
+        <material id="darkRedWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.35" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.9" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.8" g="0.6" b="0.6" a="1.0" />
+        </material>
+        <material id="bedDarkRedWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.45" g="0.25" b="0.25" a="1.0" />
+            <diffuse r="0.9" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.8" g="0.6" b="0.6" a="1.0" />
+        </material>
+        <material id="tableTopDarkRedMaterial" shininess="10">
+            <emission r="0.05" g="0.05" b="0.05" a="1.0" />
+            <ambient r="0.35" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.9" g="0.7" b="0.7" a="1.0" />
+            <specular r="0.8" g="0.6" b="0.6" a="1.0" />
+        </material>
+        <material id="purplePillowMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.83" g="0.6" b="0.99" a="1.0" />
+            <diffuse r="0.64" g="0.4" b="0.8" a="1.0" />
+            <specular r="0.15" g="0.15" b="0.15" a="1.0" />
+        </material>
+        <material id="greenPillowMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.6" g="0.99" b="0.83" a="1.0" />
+            <diffuse r="0.4" g="0.8" b="0.64" a="1.0" />
+            <specular r="0.15" g="0.15" b="0.15" a="1.0" />
+        </material>
     </materials>
 
     <transformations>
@@ -435,6 +467,7 @@
             </transformation>
             <materials>
                 <material id="darkWoodMaterial" />
+                <material id="darkRedWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -545,6 +578,7 @@
             </transformation>
             <materials>
                 <material id="darkWoodMaterial" />
+                <material id="darkRedWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -563,6 +597,7 @@
             </transformation>
             <materials>
                 <material id="tableTopMaterial" />
+                <material id="tableTopDarkRedMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -729,6 +764,7 @@
             </transformation>
             <materials>
                 <material id="darkWoodMaterial" />
+                <material id="darkRedWoodMaterial" />
             </materials>
             <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1050,6 +1086,7 @@
             </transformation>
             <materials>
                 <material id="darkWoodMaterial" />
+                <material id="darkRedWoodMaterial" />
             </materials>
             <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1146,6 +1183,7 @@
             </transformation>
             <materials>
                 <material id="darkWoodMaterial" />
+                <material id="darkRedWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1310,6 +1348,7 @@
             </transformation>
             <materials>
                 <material id="bedDarkWoodMaterial" />
+                <material id="bedDarkRedWoodMaterial" />
             </materials>
             <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1327,7 +1366,9 @@
                 <translate x="2" y="1.8" z="7" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="pillowMaterial" />
+                <material id="purplePillowMaterial" />
+                <material id="greenPillowMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1339,7 +1380,10 @@
                 <translate x="-2" y="1.8" z="7" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="pillowMaterial" />
+                <material id="greenPillowMaterial" />
+                <material id="purplePillowMaterial" />
+                <material id="greenPillowMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1354,6 +1398,14 @@
             </transformation>
             <materials>
                 <material id="pillowMaterial" />
+                <material id="greenPillowMaterial" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="purplePillowMaterial" />
+                <material id="inherit" />
+                <material id="inherit" />
+                <material id="purplePillowMaterial" />
+                <material id="greenPillowMaterial" />
             </materials>
             <texture id="pillowTexture" length_s="1.0" length_t="1.0" />
             <children>
