@@ -516,7 +516,7 @@ export class XMLscene extends CGFscene {
             if (this.game !== null) {
                 this.game.display(this.pickMode);
             } else if (this.mainMenu !== null) {
-                this.mainMenu.display();
+                this.mainMenu.display(this.pickMode);
             }
 
             // Displays the scene (MySceneGraph function).

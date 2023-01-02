@@ -3,8 +3,8 @@ import { MyButton } from "./MyButton.js";
 
 // A label with a button on the right. Optionally, a button on the left.
 export class MyLabelButton extends MyLabel {
-    constructor(scene, getLabelString, rightButton, colorRGBa=[0, 0, 0, 1], leftButton=null, fontSize=1) {
-        super(scene, getLabelString, colorRGBa, fontSize);
+    constructor(scene, getLabelString, rightButton, shader, colorRGBa=[0, 0, 0, 1], leftButton=null, fontSize=1) {
+        super(scene, getLabelString, shader, colorRGBa, fontSize);
 
         this.rightButton = rightButton;
         this.leftButton = leftButton;
@@ -22,26 +22,34 @@ export class MyLabelButton extends MyLabel {
         return labelTrans;
     }
 
-    display() {
+    display(displayFont) {
         this.scene.pushMatrix();
         if (this.leftButton == null) {
             this.scene.translate(-MyButton.WIDTH /2 * this.fontSize, 0, 0);
         }
 
-        super.display();
+        if (displayFont) {
+            super.display(displayFont);
+        }
 
         if (this.leftButton != null) {
             this.scene.pushMatrix();
             this.scene.translate(-super.getLabelTrans() - MyButton.WIDTH/2 * this.fontSize, 0, 0);
             this.scene.scale(this.fontSize, this.fontSize, this.fontSize);
-            this.leftButton.display();
+            if (displayFont) {
+                this.leftButton.setShaderValues(this.shader);
+            }
+            this.leftButton.display(displayFont);
             this.scene.popMatrix();
         }
 
         this.scene.pushMatrix();
         this.scene.translate(super.getLabelTrans() + MyButton.WIDTH/2 * this.fontSize, 0, 0);
         this.scene.scale(this.fontSize, this.fontSize, this.fontSize);
-        this.rightButton.display();
+        if (displayFont) {
+            this.rightButton.setShaderValues(this.shader);
+        }
+        this.rightButton.display(displayFont);
         this.scene.popMatrix();
 
         this.scene.popMatrix();

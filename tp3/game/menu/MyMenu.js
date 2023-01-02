@@ -1,4 +1,4 @@
-import {CGFobject} from '../../../lib/CGF.js';
+import {CGFobject,CGFshader} from '../../../lib/CGF.js';
 import { MyMenuBox } from './MyMenuBox.js';
 
 export class MyMenu extends CGFobject {
@@ -6,6 +6,11 @@ export class MyMenu extends CGFobject {
         super(scene);
 
         this.box = new MyMenuBox(scene);
+        this.transparentShader = new CGFshader(scene.gl, "shaders/transparent.vert", "shaders/transparent.frag");
+    }
+
+    getShader() {
+        return this.transparentShader;
     }
 
     getDimensions() {
@@ -55,7 +60,7 @@ export class MyMenu extends CGFobject {
         }
     }
 
-    display() {
+    displayBase(displayFont) {
         this.scaleTitleAndLabels(this.getScaleFactor());
 
         const dimensions = this.getDimensions();
@@ -73,16 +78,18 @@ export class MyMenu extends CGFobject {
         this.scene.pushMatrix();
 
         // box
-        this.scene.pushMatrix();
-        this.scene.scale(dimensions.width, dimensions.height, dimensions.depth);
-        this.box.display();
-        this.scene.popMatrix();
+        if (!displayFont) {
+            this.scene.pushMatrix();
+            this.scene.scale(dimensions.width, dimensions.height, dimensions.depth);
+            this.box.display();
+            this.scene.popMatrix();
+        }
 
         this.scene.translate(0, halfVertical, dimensions.depth/2.0);
 
         // title
         if (title != null) {
-            title.display();
+            title.display(displayFont);
             this.scene.translate(0, -1.1 * title.getFontSize() * 2, 0);
         }
 
@@ -93,7 +100,7 @@ export class MyMenu extends CGFobject {
             const label = labels[i];
             if (label !== null) {
                 fontSize = label.getFontSize();
-                label.display();
+                label.display(displayFont);
             }
             this.scene.translate(0, -1.1 * fontSize, 0);
         }
@@ -102,6 +109,15 @@ export class MyMenu extends CGFobject {
         this.scene.popMatrix();
 
         this.scaleTitleAndLabels(1 / this.getScaleFactor());
+    }
+
+    display(pickMode) {
+        this.displayBase(false);
+        if (!pickMode) {
+            this.scene.setActiveShaderSimple(this.transparentShader);
+            this.displayBase(true);
+            this.scene.setActiveShaderSimple(this.scene.defaultShader);
+        }
     }
 }
 

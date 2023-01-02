@@ -25,11 +25,10 @@ export class MyButton extends CGFobject {
 
         this.pickingId = pickingId;
         this.commandCallBack = commandCallBack;
+        this.iconColor = iconColor;
 
         const iconTexture = iconPath ? new CGFtexture(scene, iconPath) : null;
-        this.iconAppearance = iconTexture ? getAppearance(scene, material, iconTexture) : null;
-        this.iconShader = new CGFshader(scene.gl, "shaders/transparent.vert", "shaders/transparent.frag");
-        this.iconShader.setUniformsValues({ colorRGBa: iconColor });
+        this.iconAppearance = getAppearance(scene, material, iconTexture);
 
         const boxTexture = texturePath ? new CGFtexture(scene, texturePath) : null;
         const boxAppearance = getAppearance(scene, material, boxTexture);
@@ -37,6 +36,13 @@ export class MyButton extends CGFobject {
         this.box = new MyBox(scene, boxAppearance);
         this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
         this.currentDepth = MyButton.DEPTH;
+    }
+
+    setShaderValues(shader) {
+        shader.setUniformsValues({
+            dims: [0, 0],
+            colorRGBa: this.iconColor
+        });
     }
 
     onClick() {
@@ -55,28 +61,22 @@ export class MyButton extends CGFobject {
         pressAnimation.start(this.scene.currentTime);
     }
 
-    display() {
-        this.scene.registerForPick(this.pickingId, this);
-
+    display(displayFont) {
         this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.currentDepth / 2);
-        this.scene.scale(MyButton.WIDTH, MyButton.HEIGHT, this.currentDepth);
-        this.box.display();
-        this.scene.popMatrix();
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.currentDepth + 0.01);
-        this.scene.scale(MyButton.WIDTH*0.8, MyButton.HEIGHT*0.8, 1);
-
-        if (this.iconAppearance) {
-            this.scene.setActiveShaderSimple(this.iconShader);
+        if (displayFont) {
+            this.scene.translate(0, 0, this.currentDepth + 0.01);
+            this.scene.scale(MyButton.WIDTH*0.8, MyButton.HEIGHT*0.8, 1);
             this.iconAppearance.apply();
             this.quad.display();
-            this.scene.setActiveShaderSimple(this.scene.defaultShader);
+        } else {
+            this.scene.registerForPick(this.pickingId, this);
+            this.scene.translate(0, 0, this.currentDepth / 2);
+            this.scene.scale(MyButton.WIDTH, MyButton.HEIGHT, this.currentDepth);
+            this.box.display();
+            this.scene.registerForPick(-1, null);
         }
 
         this.scene.popMatrix();
-
-        this.scene.registerForPick(-1, null);
     }
 }

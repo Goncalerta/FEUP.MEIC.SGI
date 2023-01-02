@@ -23,21 +23,21 @@ export class MyMainMenu extends MyMenu {
         let pickingId = 501;
 
         // TextBoxes to player names
-        this.player1Label = new MyLabel(this.scene, () => { return "PLAYER1" }, this.TEXT_COLOR_RGBA);
-        this.player1NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, Player.PLAYER_1_DEFAULT_NAME, Player.PLAYER_LENGTH);
-        this.player2Label = new MyLabel(this.scene, () => { return "PLAYER2" }, this.TEXT_COLOR_RGBA);
-        this.player2NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, Player.PLAYER_2_DEFAULT_NAME, Player.PLAYER_LENGTH);
+        this.player1Label = new MyLabel(this.scene, () => { return "PLAYER1" }, this.getShader(), this.TEXT_COLOR_RGBA);
+        this.player1NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, this.getShader(), Player.PLAYER_1_DEFAULT_NAME, Player.PLAYER_LENGTH);
+        this.player2Label = new MyLabel(this.scene, () => { return "PLAYER2" }, this.getShader(), this.TEXT_COLOR_RGBA);
+        this.player2NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, this.getShader(), Player.PLAYER_2_DEFAULT_NAME, Player.PLAYER_LENGTH);
 
         // Buttons
         this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName(), this.player1NameTextBox.getContent(), this.player2NameTextBox.getContent()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 
-        this.chooseScenarioLabelButton = new MyLabelButton(scene, this.getCurrentScenarioName.bind(this), this.scenarioRightButton, this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
-        this.playLabelButton = new MyLabelButton(scene, () => { return "PLAY" }, this.playButton, this.TEXT_COLOR_RGBA, this.playButton2);
+        this.chooseScenarioLabelButton = new MyLabelButton(scene, this.getCurrentScenarioName.bind(this), this.scenarioRightButton, this.getShader(), this.TEXT_COLOR_RGBA, this.scenarioLeftButton);
+        this.playLabelButton = new MyLabelButton(scene, () => { return "PLAY" }, this.playButton, this.getShader(), this.TEXT_COLOR_RGBA, this.playButton2);
 
-        this.title = new MyLabel(this.scene, () => { return "CHECKERS" }, this.TEXT_COLOR_RGBA, 1.5);
-        this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.TEXT_COLOR_RGBA);
+        this.title = new MyLabel(this.scene, () => { return "CHECKERS" }, this.getShader(), this.TEXT_COLOR_RGBA, 1.5);
+        this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.getShader(), this.TEXT_COLOR_RGBA);
     }
 
     getDimensions() {

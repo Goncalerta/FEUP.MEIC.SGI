@@ -18,29 +18,33 @@ export class MyFont {
         this.scene = scene;
         
         this.fontSize = fontSize;
+        this.colorRGBa = colorRGBa;
 
         this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
         this.texture = new CGFtexture(scene, this.TEXTURE_PATH);
         this.appearance = getAppearance(scene, this.MATERIAL, this.texture);
 
-        this.textShader = new CGFshader(scene.gl, "shaders/font.vert", "shaders/font.frag");
-        this.textShader.setUniformsValues({
-            'dims': [16, 16],
-            'colorRGBa': colorRGBa
-        });
-
         this.elevated = elevated;
+    }
+
+    setShaderValues(shader) {
+        shader.setUniformsValues({
+            dims: [16, 16],
+            colorRGBa: this.colorRGBa
+        });
     }
 
     setFontSize(fontSize) {
         this.fontSize = fontSize;
     }
 
-    writeChar(char) {
+    writeChar(char, shader) {
         const charCode = char.charCodeAt(0);
         const charX = charCode % 16;
         const charY = Math.floor(charCode / 16);
-        this.textShader.setUniformsValues({'charCoords': [charX, charY]});
+        shader.setUniformsValues({
+            charCoords: [charX, charY]
+        });
 
         this.scene.pushMatrix();
         this.scene.scale(this.fontSize, this.fontSize, 1);
@@ -48,16 +52,12 @@ export class MyFont {
         this.scene.popMatrix();
     }
 
-    writeCenteredEqualLines(stringToDisplay, writeRigid=true) {
+    writeCenteredEqualLines(stringToDisplay, shader) {
         const lines = stringToDisplay.split('\n');
         const numLines = lines.length;
 
-        this.scene.setActiveShaderSimple(this.textShader);
         this.appearance.apply();
-
-        if (writeRigid) {
-            this.scene.pushMatrix();
-        }
+        this.scene.pushMatrix();
 
         this.scene.translate(0.5 * this.fontSize, (numLines/2.0 - 0.5) * this.fontSize, this.elevated);
 
@@ -70,7 +70,7 @@ export class MyFont {
             this.scene.translate(-transCenter, 0, 0);
 
             for (let j = 0; j < lineLength; j++) {
-                this.writeChar(line[j]);
+                this.writeChar(line[j], shader);
                 this.scene.translate(this.fontSize, 0, 0);
             }
 
@@ -78,11 +78,7 @@ export class MyFont {
             this.scene.translate(-transCenter, -this.fontSize, 0);
         }
 
-        if (writeRigid) {
-            this.scene.popMatrix();
-        }
-
-        this.scene.setActiveShaderSimple(this.scene.defaultShader);
+        this.scene.popMatrix();
     }
 
     getTransAmountCenteredEqualLines(stringToDisplay) {
