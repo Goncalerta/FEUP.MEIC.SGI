@@ -48,7 +48,11 @@
     </lights>
 
     <textures>
+        <texture id="darkWoodTexture" file="scenes/images/room/dark_wood.png" />
+        <texture id="doorWoodTexture" file="scenes/images/room/door_wood.png" />
         <texture id="boardTexture" file="scenes/images/game/wood.jpg" />
+        <texture id="shinyMetalTexture" file="scenes/images/room/shiny_metal.png" />
+        <texture id="footballTexture" file="scenes/images/room/football.png" />
     </textures>
 
     <materials>
@@ -56,6 +60,12 @@
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+        <material id="completelyBlackMaterial" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
+            <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
         <material id="wallMaterial" shininess="1">
@@ -135,7 +145,6 @@
             <children>
                 <componentref id="roomLight" />
                 <componentref id="table" />
-                <componentref id="tableLight" />
                 <componentref id="chairLeft" />
                 <componentref id="chairRight" />
                 <componentref id="door" />
@@ -225,7 +234,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -253,7 +262,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="doorFrameRight">
@@ -266,7 +275,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="doorFrameTop">
@@ -280,7 +289,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="doorKnob">
@@ -300,11 +309,12 @@
             <transformation>
                 <translate x="0" y="0" z="0.3" />
                 <scale x="0.7" y="0.15" z="0.1" />
+                <rotate axis="y" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -317,7 +327,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="knobJoint" />
             </children>
@@ -330,9 +340,9 @@
                 <translate x="-0.7" y="-0.203" z="0" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="darkWoodTexture" />
             <children>
                 <componentref id="tableTop" />
                 <componentref id="tableLegs" />
@@ -344,9 +354,9 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="tableTopMaterial" />
+                <material id="inherit" />
             </materials>
-            <texture id="tableTopTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <componentref id="tableTopUp" />
                 <componentref id="tableTopDown" />
@@ -398,14 +408,13 @@
         <component id="tableTopSide2">
             <transformation>
                 <rotate axis="z" angle="90" />
-                <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="square" />
             </children>
@@ -427,14 +436,13 @@
         <component id="tableTopSide4">
             <transformation>
                 <rotate axis="z" angle="270" />
-                <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -464,7 +472,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="tableLeg2">
@@ -476,7 +484,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="tableLeg3">
@@ -488,7 +496,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="tableLeg4">
@@ -500,7 +508,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
 
@@ -538,7 +546,7 @@
             <materials>
                 <material id="tableMaterial" />
             </materials>
-            <texture id="inherit" />
+            <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="chairBack" />
                 <componentref id="chairSit" />
@@ -613,7 +621,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairBackRight">
@@ -626,7 +634,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairBackTopJoint">
@@ -641,7 +649,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairBackBottomJoint">
@@ -656,7 +664,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairSit">
@@ -667,7 +675,7 @@
             <materials>
                 <material id="tableTopMaterial" />
             </materials>
-            <texture id="tableTopTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <componentref id="chairSitUp" />
                 <componentref id="chairSitDown" />
@@ -726,7 +734,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -755,7 +763,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="tableTopSideTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -786,7 +794,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairLeg2">
@@ -799,7 +807,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairLeg3">
@@ -812,7 +820,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairLeg4">
@@ -825,7 +833,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairJoinLeft">
@@ -839,7 +847,7 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
         <component id="chairJoinRight">
@@ -853,30 +861,30 @@
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="leg" />
+                <componentref id="woodBlock" />
             </children>
         </component>
 
-        <!-- === -->
-        <!-- Leg -->
-        <component id="leg">
+        <!-- ========== -->
+        <!-- Wood Block -->
+        <component id="woodBlock">
             <transformation>
                 <scale x="0.5" y="1" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
-                <componentref id="legTop" />
-                <componentref id="legBottom" />
-                <componentref id="legSide1" />
-                <componentref id="legSide2" />
-                <componentref id="legSide3" />
-                <componentref id="legSide4" />
+                <componentref id="woodBlockTop" />
+                <componentref id="woodBlockBottom" />
+                <componentref id="woodBlockSide1" />
+                <componentref id="woodBlockSide2" />
+                <componentref id="woodBlockSide3" />
+                <componentref id="woodBlockSide4" />
             </children>
         </component>
-        <component id="legSide1">
+        <component id="woodBlockSide1">
             <transformation>
                 <rotate axis="x" angle="180" />
                 <translate x="-0.5" y="-0.5" z="0.5" />
@@ -889,7 +897,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="legSide2">
+        <component id="woodBlockSide2">
             <transformation>
                 <rotate axis="x" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -903,7 +911,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="legSide3">
+        <component id="woodBlockSide3">
             <transformation>
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
@@ -915,7 +923,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="legSide4">
+        <component id="woodBlockSide4">
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
@@ -929,7 +937,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="legTop">
+        <component id="woodBlockTop">
             <transformation>
                 <rotate axis="z" angle="90" />
                 <rotate axis="x" angle="-90" />
@@ -944,7 +952,7 @@
                 <primitiveref id="square" />
             </children>
         </component>
-        <component id="legBottom">
+        <component id="woodBlockBottom">
             <transformation>
                 <rotate axis="z" angle="-90" />
                 <rotate axis="x" angle="-90" />
@@ -980,7 +988,7 @@
             <transformation>
                 <translate x="0" y="0.5" z="0" />
                 <rotate axis="z" angle="180" />
-                <translate x="1.5" y="0" z="3" />
+                <translate x="1.5" y="0" z="1.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -993,7 +1001,7 @@
         </component>
         <component id="wardrobeKnobRight">
             <transformation>
-                <translate x="1.5" y="0.5" z="3" />
+                <translate x="1.5" y="0.5" z="1.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1012,7 +1020,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="wardrobeFrontLeft" />
                 <componentref id="wardrobeFrontRight" />
@@ -1079,7 +1087,7 @@
         <component id="wardrobeFrontLeft">
             <transformation>
                 <translate x="-0.25" y="0" z="0" />
-                <scale x="0.5" y="1" z="1" />
+                <scale x="0.499" y="1" z="1" />
                 <rotate axis="z" angle="270" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
@@ -1088,15 +1096,15 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
         </component>
         <component id="wardrobeFrontRight">
             <transformation>
-                <translate x="0.25" y="0" z="0" />
-                <scale x="0.5" y="1" z="1" />
+                <translate x="0.2505" y="0" z="0" />
+                <scale x="0.499" y="1" z="1" />
                 <rotate axis="z" angle="270" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
@@ -1105,20 +1113,21 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="square" />
             </children>
         </component>
         <component id="wardrobeBack">
             <transformation>
-                <rotate axis="z" angle="90" />
+                <translate x="0" y="0.05" z="0" />
+                <rotate axis="z" angle="270" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="completelyBlackMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1545,13 +1554,13 @@
 
         <component id="football">
             <transformation>
-                <translate x="7.75" y="-5.5" z="17.75" />
+                <translate x="7.75" y="-5.51" z="17.75" />
                 <scale x="0.7" y="0.7" z="0.7" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" />
+            <texture id="footballTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="sphere" />
             </children>
