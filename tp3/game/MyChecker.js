@@ -78,6 +78,9 @@ export class MyChecker extends CGFobject {
             if (this.position[1] > this.radius) {
                 const percentage = (this.position[1] - this.radius) / heightToTurn;
                 this.rotation = percentage * (this.PROMOTION_FULL_TURNS + 0.5);
+                if (reversed) {
+                    this.rotation += (1 - t) * 0.5;
+                }
             }
         });
         upAnimation.onEnd(() => {
@@ -94,12 +97,15 @@ export class MyChecker extends CGFobject {
 
             if (this.position[1] > this.radius) {
                 const percentage = (this.position[1] - this.radius) / heightToTurn;
-                this.rotation = percentage * (this.PROMOTION_FULL_TURNS + 0.5) + t * 0.5;
+                this.rotation = percentage * (this.PROMOTION_FULL_TURNS + 0.5);
+                if (!reversed) {
+                    this.rotation += t * 0.5;
+                }
             }
         });
         downAnimation.onEnd(() => {
             this.position[1] = 0;
-            this.rotation = 0.5;
+            this.rotation = reversed? 0 : 0.5;
             this.topOffset = reversed? this.DEFAULT_TOP_OFFSET : 1;
         });
 
