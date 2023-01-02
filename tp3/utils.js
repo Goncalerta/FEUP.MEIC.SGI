@@ -2,7 +2,8 @@ import { CGFappearance, CGFcamera, CGFcameraOrtho } from "../lib/CGF.js";
 
 /**
  * Converts degrees to radians
- * @param {float} degrees 
+ * @param {float} degrees
+ * @returns {float} radians
  */
 export function degreeToRad(degrees) {
     return degrees * Math.PI / 180;
@@ -11,6 +12,7 @@ export function degreeToRad(degrees) {
 /**
  * Calculates the unit vector of the given vector
  * @param {list} vector to normalize
+ * @returns {list} normalized vector
  */
 export function normalizeVector(vector) {
     const norm = calculateNorm(vector);
@@ -28,15 +30,17 @@ export function normalizeVector(vector) {
  * Calculates the cross product between two vectors
  * @param {list} a
  * @param {list} b
+ * @returns {list} cross product
  */
 export function crossProduct([a1, a2, a3], [b1, b2, b3]) {
     return [a2 * b3 - a3 * b2, a3 * b1 - a1 * b3, a1 * b2 - a2 * b1];
 }
 
 /**
- * Subtracts v2 to v1: returns v1-v2
+ * Subtracts v2 to v1
  * @param {list} v1
  * @param {list} v2
+ * @returns {list} v1-v2
  */
 export function subtractVectors(v1, v2) {
     if (v1 == null || v2 == null || v1.length != v2.length) {
@@ -57,6 +61,7 @@ export function subtractVectors(v1, v2) {
 /**
  * Calculates the norm of a vector
  * @param {list} vector
+ * @returns {float} norm
  */
 export function calculateNorm(vector) {
     let sumSquared = 0;
@@ -71,6 +76,7 @@ export function calculateNorm(vector) {
  * Calculates the distance between two points
  * @param {list} v1
  * @param {list} v2
+ * @returns {float} distance
  */
 export function calculateDistance(v1, v2) {
     return calculateNorm(subtractVectors(v1, v2));
@@ -81,7 +87,7 @@ export function calculateDistance(v1, v2) {
  * @param {list} textureCoords
  * @param {float} lengthS
  * @param {float} lengthT
- * @return Modified texture coords
+ * @returns {list} textureCoords
  */
 export function applyLengthsToTextureCoords(textureCoords, lengthS, lengthT) {
     const textureCoordsCopy = [...textureCoords];
@@ -95,6 +101,13 @@ export function applyLengthsToTextureCoords(textureCoords, lengthS, lengthT) {
     return textureCoordsCopy;
 }
 
+/**
+ * Gets an appearance from a material and a texture
+ * @param {CGFscene} scene
+ * @param {Object} material
+ * @param {CGFtexture} texture
+ * @returns {CGFappearance} appearance
+ */
 export function getAppearance(scene, material, texture=null) {
     const appearance = new CGFappearance(scene);
     appearance.setEmission(...material.emission);
@@ -108,6 +121,12 @@ export function getAppearance(scene, material, texture=null) {
     return appearance;
 }
 
+/**
+ * Checks if 2 arrays are equal
+ * @param {list} a
+ * @param {list} b
+ * @returns {boolean} true if equal, false otherwise
+ */
 export function arraysEqual(a, b) {
     if (a === b) return true;
     if (a == null || b == null) return false;
@@ -119,6 +138,12 @@ export function arraysEqual(a, b) {
     return true;
 }
 
+/**
+ * Checks if array includes an element
+ * @param {list} a - array
+ * @param {list} el - element
+ * @returns {boolean} true if included, false otherwise
+ */
 export function arraysIncludes(a, el) {
     for (let i = 0; i < a.length; i++) {
         if (arraysEqual(a[i], el)) return true;
@@ -126,6 +151,13 @@ export function arraysIncludes(a, el) {
     return false;
 }
 
+/**
+ * Interpolates 2 camera objects. Works for both CGFcamera and CGFcameraOrtho.
+ * @param {CGFcamera} o1 - camera 1
+ * @param {CGFcamera} o2 - camera 2
+ * @param {float} t - interpolation factor (0 <= t <= 1)
+ * @returns {CGFcamera|CGFcameraOrtho} interpolated camera
+ */
 export function interpolateCameras(o1, o2, t) {
     if (o1 instanceof CGFcameraOrtho && o2 instanceof CGFcameraOrtho) {
         const left = interpolate(o1.left, o2.left, t);
@@ -202,6 +234,13 @@ export function interpolateCameras(o1, o2, t) {
     }
 }
 
+/**
+ * Interpolates 2 objects. Works for numbers, arrays, CGFcamera, CGFcameraOrtho and objects.
+ * @param {number|Array|CGFcamera|CGFcameraOrtho|Object} o1 - object 1
+ * @param {number|Array|CGFcamera|CGFcameraOrtho|Object} o2 - object 2
+ * @param {float} t - interpolation factor (0 <= t <= 1)
+ * @returns {number|Array|CGFcamera|CGFcameraOrtho|Object} interpolated object
+ */
 export function interpolate(o1, o2, t) {
     if (typeof o1 === 'number') {
         return o1 + (o2 - o1) * t;
@@ -225,12 +264,24 @@ export function interpolate(o1, o2, t) {
     }
 }
 
+/**
+ * Formats a given number of seconds into a string of the form mm:ss
+ * @param {number} seconds - number of seconds
+ * @returns {string} formatted time
+ */
 export function secondsToFormattedTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secondsLeft = seconds % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${secondsLeft < 10 ? '0' : ''}${secondsLeft}`;
 }
 
+/**
+ * Formats a given string to have at most maxChars characters, centered.
+ * If the string is longer than maxChars, it is truncated and '..' is added at the end.
+ * @param {string} text - text to format
+ * @param {number} maxChars - maximum number of characters
+ * @returns {string} formatted text
+ */
 export function textToLimitedCentered(text, maxChars) {
     if (text.length == maxChars) {
         return text;
@@ -242,10 +293,20 @@ export function textToLimitedCentered(text, maxChars) {
     }
 }
 
+/**
+ * Removes the file extension from a given filename
+ * @param {string} filename - filename
+ * @returns {string} filename without extension
+ */
 export function removeFileExtension(filename) {
     return filename.substring(0, filename.lastIndexOf('.'));
 }
 
+/**
+ * Checks if a given string is empty or contains only white spaces
+ * @param {string} text - text to check
+ * @returns {boolean} true if the string is empty or contains only white spaces, false otherwise
+ */
 export function isOnlyWhiteSpaces(text) {
     return text.trim().length == 0;
 }

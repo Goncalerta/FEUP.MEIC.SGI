@@ -1,3 +1,6 @@
+/**
+ * MyAnimation class, representing an animation of transformations.
+ */
 export class MyAnimation {
     /**
      * @constructor

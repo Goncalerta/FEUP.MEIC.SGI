@@ -1,16 +1,13 @@
 import {CGFobject} from '../lib/CGF.js';
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyCross class, representing a cross.
  */
 export class MyCross extends CGFobject {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param stroke Stroke of the cross
      */
     constructor(scene, stroke) {
         super(scene);
@@ -20,7 +17,7 @@ export class MyCross extends CGFobject {
     }
 
     /**
-     * Initializes the rectangle buffers
+     * Initializes the cross buffers
      */
     initBuffers() {
         this.vertices = [

@@ -23,11 +23,18 @@ export class PeriodicAnimation {
         }
     }
 
+    /**
+     * Starts the animation.
+     */
     start() {
         this.scene.animate(this);
         this.t = 0;
     }
 
+    /**
+     * Get the animation'c current time.
+     * @returns {number} Current time.
+     */
     get() {
         return this.t;
     }

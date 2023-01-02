@@ -1,5 +1,8 @@
 import { MyAnimation } from "./MyAnimation.js";
 
+/**
+ * MyKeyframeAnimation class, representing a keyframe animation.
+ */
 export class MyKeyframeAnimation extends MyAnimation {
     /**
      * @constructor

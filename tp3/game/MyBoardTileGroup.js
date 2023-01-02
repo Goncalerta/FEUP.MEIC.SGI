@@ -1,7 +1,7 @@
 import { MyRectangle } from "../MyRectangle.js";
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyBoardTileGroup class, representing the board tiles.
  */
 export class MyBoardTileGroup {
     NUM_TILES_SIDE = 8;
@@ -9,10 +9,8 @@ export class MyBoardTileGroup {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param model Reference to MyGameModel object.
+     * @param tileSize Size of the tiles
      */
     constructor(scene, model, tileSize) {
         this.scene = scene;
@@ -22,13 +20,17 @@ export class MyBoardTileGroup {
         this.tile = new MyRectangle(scene, -tileSize / 2, tileSize / 2, -tileSize / 2, tileSize / 2);
     }
 
+    /**
+     * Handles the click on the board
+     * @param {Number} id ID of the clicked tile
+     */
     onClick(id) {
         const position = [id % 10, Math.floor(id / 10) % 10];
         this.model.state.selectTile(...position);
     }
 
     /**
-     * Displays the checker
+     * Displays the board tiles.
      */
     display() {
         for (let i = 0; i < this.NUM_TILES_SIDE; i++) {

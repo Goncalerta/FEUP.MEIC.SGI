@@ -6,6 +6,9 @@ export const Transformations = {
     Scaling: 4
 };
 
+/**
+ * MyTransformation class, representing a transformation.
+ */
 export class MyTransformation {
     /**
      * @constructor

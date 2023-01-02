@@ -1,10 +1,10 @@
 import { MyCross } from "../MyCross.js";
 import { EventAnimation } from "../animations/EventAnimation.js";
-import { identity, popAndDisappear, smoothPeak } from "../animations/EasingFunctions.js";
+import { popAndDisappear, smoothPeak } from "../animations/EasingFunctions.js";
 import { getAppearance, interpolate } from "../utils.js";
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyAnimatedCross class, representing a pulsar animated cross.
  */
 export class MyAnimatedCross {
     MATERIAL = {
@@ -26,10 +26,13 @@ export class MyAnimatedCross {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param x X position of the cross.
+     * @param y Y position of the cross.
+     * @param tileSize Size of a tile.
+     * @param onEnd Callback function to be called when the animation ends.
+     * @param height Height of the cross.
+     * @param stroke Stroke of the cross.
+     * @param duration Duration of the animation.
      */
     constructor(scene, x, y, tileSize, onEnd, height = 0.01, stroke = 0.2, duration = 1) {
         this.scene = scene;
@@ -40,10 +43,17 @@ export class MyAnimatedCross {
         this.animation.onEnd(onEnd);
     }
 
+    /**
+     * Starts the animation.
+     * @param {number} t Current time.
+     */
     start(t) {
         this.animation.start(t);
     }
 
+    /**
+     * Displays the animated cross.
+     */
     display() {
         const [tColor, tSize] = this.animation.get();
 
