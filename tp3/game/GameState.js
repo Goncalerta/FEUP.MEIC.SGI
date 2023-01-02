@@ -300,6 +300,9 @@ export class BeginFilmState extends GameState {
             const next_player_positions = player.getId() === 1 ? next_player1_positions : next_player2_positions;
             
             if (arraysIncludes(player_positions, piece.boardPosition)) {
+                if (piece.isQueen()) {
+                    animations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
+                }
                 continue;
             }
 

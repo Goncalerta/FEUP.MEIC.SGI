@@ -258,7 +258,15 @@ export class MyChecker extends CGFobject {
             params.rotationDelta = keepPromotion ? 0 : -this.rotation / 2;
             if (params.rotationDelta !== 0) {
                 const orthogonal = [-params.delta[2], 0, params.delta[0]];
-                this.rotationDirection = [Math.abs(orthogonal[0])/orthogonal[0], 0, Math.abs(orthogonal[2])/orthogonal[2]];
+                if (orthogonal[0] !== 0) {
+                    orthogonal[0] = Math.abs(orthogonal[0])/orthogonal[0];
+                }
+                if (orthogonal[2] !== 0) {
+                    orthogonal[2] = Math.abs(orthogonal[2])/orthogonal[2];
+                }
+                if (orthogonal[0] !== 0 || orthogonal[2] !== 0) {
+                    this.rotationDirection = orthogonal;
+                }
             }
         });
         upAnimation.onUpdate(onUpdate);
@@ -376,6 +384,10 @@ export class MyChecker extends CGFobject {
             onEndCallback();
         });
         animations.start(this.scene.currentTime);
+    }
+
+    isQueen() {
+        return this.rotation > 0.25;
     }
 
     onClick(id) {
