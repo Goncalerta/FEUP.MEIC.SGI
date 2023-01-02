@@ -1,6 +1,9 @@
 import { PlayerTurnState } from "./GameState.js";
 import { CompletedMove, Move } from "./Move.js";
 
+/**
+ * TileState enum, represents the state of a tile.
+ */
 const TileState = {
     WHITE: -1,
     EMPTY: 0,
@@ -10,12 +13,29 @@ const TileState = {
     PLAYER_2_QUEEN: 4,
 };
 
+/**
+ * P1_FORWARD_DIRECTIONS constant, represents the forward directions for player 1.
+ */
 const P1_FORWARD_DIRECTIONS = [[1, 1], [-1, 1]];
+
+/**
+ * P2_FORWARD_DIRECTIONS constant, represents the forward directions for player 2.
+ */
 const P2_FORWARD_DIRECTIONS = [[1, -1], [-1, -1]];
 
+/**
+ * GameModel class, represents the game model.
+ */
 export class GameModel {
     BOARD_SIZE = 8;
     
+    /**
+     * @constructor
+     * @param {MyGame} game Reference to MyGame object.
+     * @param {Number} startTime The start time of the game.
+     * @param {Player} player1 Player 1.
+     * @param {Player} player2 Player 2.
+     */
     constructor(game, startTime, player1, player2) {
         this.game = game;
         this.initBoard();
@@ -31,10 +51,18 @@ export class GameModel {
         this.nextMoves = [];
     }
 
+    /**
+     * Gets the current game time.
+     * @returns {Number} The current game time.
+     */
     getGameTime() {
         return Math.floor(this.gameTime);
     }
 
+    /**
+     * Executes a completed move.
+     * @param {CompletedMove} completedMove The completed move.
+     */
     executeMove(completedMove) {
         if (completedMove.promoted) {
             this.board[completedMove.to[1]][completedMove.to[0]] = this.getPlayerQueen(completedMove.by);
@@ -49,6 +77,10 @@ export class GameModel {
         }
     }
 
+    /**
+     * Reverses a completed move.
+     * @param {CompletedMove} completedMove The completed move.
+     */
     executeMoveReverse(completedMove) {
         if (completedMove.promoted) {
             this.board[completedMove.from[1]][completedMove.from[0]] = this.getPlayerRegular(completedMove.by);
@@ -63,6 +95,11 @@ export class GameModel {
         }
     }
 
+    /**
+     * Makes a move.
+     * @param {Move} move The move.
+     * @returns {CompletedMove} The completed move.
+     */
     move(move) {
         const playerId = this.getPlayerId(...move.from);
         const isQueen = this.isQueen(...move.from);
@@ -83,6 +120,10 @@ export class GameModel {
         return completedMove;
     }
 
+    /**
+     * Undoes the last move.
+     * @returns {CompletedMove} The undone move.
+     */
     undo() {
         const move = this.previousMoves.pop();
         if (!move) {
@@ -94,6 +135,10 @@ export class GameModel {
         return move;
     }
 
+    /**
+     * Prepares the game for film mode.
+     * @returns {Array} The game moves up to this point.
+     */
     prepareFilm() {
         const moves = this.previousMoves;
         this.player1.score = 0;
@@ -102,7 +147,11 @@ export class GameModel {
         return moves;
     }
 
-    redo() {
+    /**
+     * Redoes the last undone move.
+     * @returns {CompletedMove} The redone move.
+     */
+    redo() { // TODO: delete this and associated code? like this.nextMoves...
         const move = this.nextMoves.pop();
         if (!move) {
             return;
@@ -113,22 +162,59 @@ export class GameModel {
         return move;
     }
 
+    /**
+     * Sets the game state.
+     * @param {GameState} game_state The game state.
+     */
     setGameState(game_state) {
         this.state = game_state;
     }
 
+    /**
+     * Gets the game state.
+     * @returns {GameState} The game state.
+     */
     getGameState() {
         return this.state;
     }
 
+    /**
+     * Gets the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {Player} The player.
+     */
     getPlayer(playerId) {
         return playerId === 1 ? this.player1 : this.player2;
     }
 
+    /**
+     * Gets the opponent of the given player.
+     * @param {Player} player The player.
+     * @returns {Player} The opponent.
+     */
     getOpponent(player) {
         return player.getId() === 1 ? this.player2 : this.player1;
     }
 
+    /**
+     * Gets the opponent's ID.
+     * @param {Number} playerId The player ID.
+     * @returns {Number} The opponent's ID.
+     */
+    getOpponentId(playerId) {
+        if (playerId == 1) {
+            return 2;
+        } else if (playerId == 2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Updates the game.
+     * @param {Number} t The current time.
+     */
     update(t) {
         if (this.state.increaseGameTime()) {
             this.gameTime += (t - this.current_time) / 1000;
@@ -137,6 +223,9 @@ export class GameModel {
         this.state.update(t);
     }
 
+    /**
+     * Initializes the board with the starting positions.
+     */
     initBoard() {
         this.board = [];
         for (let i = 0; i < this.BOARD_SIZE; i++) {
@@ -155,6 +244,11 @@ export class GameModel {
         }     
     }
 
+    /**
+     * Gets the captured piece in a move.
+     * @param {Move} move The move.
+     * @returns {Array} The captured piece's x coordinate, y coordinate and tile state.
+     */
     getCapturedPiece(move) {
         if (Math.abs(move.to[0] - move.from[0]) == 1) {
             return; // Can't capture if only moving one tile
@@ -171,16 +265,11 @@ export class GameModel {
         return [capturedX, capturedY, this.board[capturedY][capturedX]];
     }
 
-    getOpponentId(playerId) {
-        if (playerId == 1) {
-            return 2;
-        } else if (playerId == 2) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
+    /**
+     * Gets the score of the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {Number} The score.
+     */
     getScore(playerId) {
         if (playerId == 1) {
             return this.player1.getScore();
@@ -191,14 +280,32 @@ export class GameModel {
         }
     }
 
+    /**
+     * Checks if there is a queen in the given position.
+     * @param {Number} x The x coordinate.
+     * @param {Number} y The y coordinate.
+     * @returns {Boolean} True if there is a queen, false otherwise.
+     */
     isQueen(x, y) {
         return this.board[y][x] == TileState.PLAYER_1_QUEEN || this.board[y][x] == TileState.PLAYER_2_QUEEN;
     }
 
+    /**
+     * Checks if there is a regular piece in the given position.
+     * @param {Number} x The x coordinate.
+     * @param {Number} y The y coordinate.
+     * @returns {Boolean} True if there is a regular piece, false otherwise.
+     */
     isRegular(x, y) {
         return this.board[y][x] == TileState.PLAYER_1 || this.board[y][x] == TileState.PLAYER_2;
     }
 
+    /**
+     * Gets the player ID of the piece in the given position.
+     * @param {Number} x The x coordinate.
+     * @param {Number} y The y coordinate.
+     * @returns {Number} The player ID.
+     */
     getPlayerId(x, y) {
         const tileState = this.board[y][x];
         if (tileState == TileState.PLAYER_1 || tileState == TileState.PLAYER_1_QUEEN) {
@@ -210,6 +317,11 @@ export class GameModel {
         }
     }
 
+    /**
+     * Gets Queen tile state of the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {TileState} The Queen tile state.
+     */
     getPlayerQueen(playerId) {
         if (playerId == 1) {
             return TileState.PLAYER_1_QUEEN;
@@ -218,6 +330,11 @@ export class GameModel {
         }
     }
 
+    /**
+     * Gets regular tile state of the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {TileState} The regular tile state.
+     */
     getPlayerRegular(playerId) {
         if (playerId == 1) {
             return TileState.PLAYER_1;
@@ -226,6 +343,11 @@ export class GameModel {
         }
     }
 
+    /**
+     * Gets the promotion row of the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {Number} The promotion row.
+     */
     getPromotionRow(playerId) {
         if (playerId == 1) {
             return this.BOARD_SIZE - 1;
@@ -234,10 +356,21 @@ export class GameModel {
         }
     }
 
+    /**
+     * Checks if the given position is inside the board.
+     * @param {Number} x The x coordinate.
+     * @param {Number} y The y coordinate.
+     * @returns {Boolean} True if the position is inside the board, false otherwise.
+     */
     insideBoard(x, y) {
         return x >= 0 && x < this.BOARD_SIZE && y >= 0 && y < this.BOARD_SIZE;
     }
 
+    /**
+     * Gets the positions of the checkers pieces of the player with the given ID.
+     * @param {Number} playerId The player ID.
+     * @returns {Array} The positions of the pieces.
+     */
     getPieces(playerId) {
         const pieces = [];
         for (let i = 0; i < this.BOARD_SIZE; i++) {
@@ -250,6 +383,12 @@ export class GameModel {
         return pieces;
     }
 
+    /**
+     * Gets the valid moves for the player with the given ID.
+     * If there are capture moves, only capture moves are returned.
+     * @param {Number} playerId The player ID.
+     * @returns {Array} The valid moves.
+     */
     getValidMoves(playerId) {
         const captureMoves = [];
         const nonCaptureMoves = [];
@@ -265,6 +404,15 @@ export class GameModel {
         return captureMoves.length > 0 ? captureMoves : nonCaptureMoves;
     }
 
+    /**
+     * Gets the valid moves for the piece in the given position.
+     * @param {Number} x The x coordinate.
+     * @param {Number} y The y coordinate.
+     * @returns {Array} The valid moves.
+     * 
+     * The first element of the array is an array of capture moves.
+     * The second element of the array is an array of non-capture moves.
+     */
     getValidMovesFor(x, y) {
         const currentPlayerId = this.getPlayerId(x, y);
         const isQueen = this.isQueen(x, y);

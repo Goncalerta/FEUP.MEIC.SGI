@@ -1,12 +1,9 @@
-import { identity } from './EasingFunctions.js';
-
 /**
  * Represents a generic animation, which may change more than just transformations, and which is triggered by a runtime event.
  */
 export class EventAnimationChain {
     /**
      * @constructor
-     * @param {CGFscene} scene - Reference to MyScene object
      */
     constructor() {
         this.animations = [];
@@ -14,14 +11,26 @@ export class EventAnimationChain {
         this.currentAnimation = 0;
     }
 
+    /**
+     * Adds animations to the chain.
+     * @param {...MyAnimation} animations - Animations to add.
+     */
     push(...animations) {
         this.animations.push(...animations);
     }
 
+    /**
+     * Adds a callback to be called when the animation ends.
+     * @param {function} onEnd - Callback to be called.
+     */
     onEnd(onEnd) {
         this.onEndCallback.push(onEnd);
     }
 
+    /**
+     * Starts the animation.
+     * @param {number} t - Current time in milliseconds.
+     */
     start(t) {
         for (let i = 0; i < this.animations.length - 1; i++) {
             this.animations[i].onEnd(() => {
@@ -37,6 +46,9 @@ export class EventAnimationChain {
         this.animations[0].start(t);
     }
 
+    /**
+     * Interrupts the animation.
+     */
     interrupt() {
         this.animations[this.currentAnimation].interrupt();
     }
