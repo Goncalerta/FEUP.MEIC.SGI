@@ -457,22 +457,25 @@ export class BeginFilmState extends GameState {
         }
 
         animations.onEnd(() => {
-            const animations = new EventAnimationChain();
+            const demoteAnimations = new EventAnimationChain();
             const pieces = [...this.model.game.checkers.pieces];
 
             for (let i = 0; i < pieces.length; i++) {
                 const piece = pieces[i];
                 
                 if (piece.isQueen()) {
-                    animations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
+                    demoteAnimations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
                 }
             }
-
-            animations.onEnd(() => {
+            
+            if (demoteAnimations.length > 0) {
+                demoteAnimations.onEnd(() => {
+                    this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
+                });
+                demoteAnimations.start(this.model.current_time);
+            } else {
                 this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
-            });
-
-            animations.start(this.model.current_time);
+            }
         });
 
         animations.start(this.model.current_time);
