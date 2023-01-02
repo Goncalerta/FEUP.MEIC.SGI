@@ -1,10 +1,13 @@
 import { EventAnimation } from '../../animations/EventAnimation.js';
-import { CGFobject, CGFtexture, CGFshader } from '../../../lib/CGF.js';
+import { CGFobject, CGFtexture } from '../../../lib/CGF.js';
 import { MyBox } from '../../MyBox.js';
 import { MyRectangle } from '../../MyRectangle.js';
 import { quadMin } from '../../animations/EasingFunctions.js';
 import { getAppearance } from '../../utils.js';
 
+/**
+ * MyButton class, representing a button with an icon and a callback function.
+ */
 export class MyButton extends CGFobject {
     static WIDTH = 1.0
     static HEIGHT = 1.0
@@ -20,6 +23,16 @@ export class MyButton extends CGFobject {
         specular: [0.35, 0.3, 0.3, 1.0],
     };
 
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {number} pickingId - Picking ID
+     * @param {function} commandCallBack - Callback function to be called when the button is clicked
+     * @param {string} iconPath - Path to the icon texture
+     * @param {vec4} iconColor - Color of the icon
+     * @param {object} material - Material of the button
+     * @param {string} texturePath - Path to the texture of the button
+     */
     constructor(scene, pickingId, commandCallBack=null, iconPath=null, iconColor=[1,1,1,1], material=MyButton.DEFAULT_MATERIAL, texturePath=MyButton.TEXTURE_PATH) {
         super(scene);
 
@@ -38,6 +51,10 @@ export class MyButton extends CGFobject {
         this.currentDepth = MyButton.DEPTH;
     }
 
+    /**
+     * Sets the shader values for the icon.
+     * @param {CGFshader} shader - Shader to be used
+     */
     setShaderValues(shader) {
         shader.setUniformsValues({
             dims: [0, 0],
@@ -45,6 +62,10 @@ export class MyButton extends CGFobject {
         });
     }
 
+    /**
+     * Method called when the button is clicked.
+     * It calls the callback function and animates the button.
+     */
     onClick() {
         const pressAnimation = new EventAnimation(this.scene, 1, quadMin(this.MIN_RATIO_DEPTH));
         let callBackCalled = false;
@@ -61,6 +82,10 @@ export class MyButton extends CGFobject {
         pressAnimation.start(this.scene.currentTime);
     }
 
+    /**
+     * Displays the button.
+     * @param {boolean} displayFont - If true, the icon is displayed. Otherwise, the button box is displayed.
+     */
     display(displayFont) {
         this.scene.pushMatrix();
 

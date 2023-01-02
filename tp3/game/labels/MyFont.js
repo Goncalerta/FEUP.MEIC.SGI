@@ -1,10 +1,11 @@
 import { MyRectangle } from "../../MyRectangle.js";
-import { CGFtexture, CGFshader } from "../../../lib/CGF.js";
+import { CGFtexture } from "../../../lib/CGF.js";
 import { getAppearance } from '../../utils.js';
 
-
+/**
+ * MyFont class, representing a text font.
+ */
 export class MyFont {
-    // TODO might need to use other font or adjust this (e.g. 'I' are weird since they are not centered)
     TEXTURE_PATH = "scenes/images/game/oolite-font.trans.png";
     MATERIAL = {
         shininess: 1,
@@ -14,6 +15,13 @@ export class MyFont {
         specular: [0, 0, 0, 1.0],
     };
 
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {number} fontSize - Font size
+     * @param {vec4} colorRGBa - Font color
+     * @param {number} elevated - Font elevation
+     */
     constructor(scene, fontSize=1, colorRGBa=[0,0,0,1], elevated=0.01) {
         this.scene = scene;
         
@@ -27,6 +35,10 @@ export class MyFont {
         this.elevated = elevated;
     }
 
+    /**
+     * Sets the shader values for the font.
+     * @param {CGFshader} shader - Shader to be used
+     */
     setShaderValues(shader) {
         shader.setUniformsValues({
             dims: [16, 16],
@@ -34,10 +46,19 @@ export class MyFont {
         });
     }
 
+    /**
+     * Sets the font size.
+     * @param {number} fontSize - Font size
+     */
     setFontSize(fontSize) {
         this.fontSize = fontSize;
     }
 
+    /**
+     * Writes a character.
+     * @param {string} char - Character to be written
+     * @param {CGFshader} shader - Shader to be used
+     */
     writeChar(char, shader) {
         const charCode = char.charCodeAt(0);
         const charX = charCode % 16;
@@ -52,6 +73,11 @@ export class MyFont {
         this.scene.popMatrix();
     }
 
+    /**
+     * Writes a string centered.
+     * @param {string} stringToDisplay - String to be written
+     * @param {CGFshader} shader - Shader to be used
+     */
     writeCenteredEqualLines(stringToDisplay, shader) {
         const lines = stringToDisplay.split('\n');
         const numLines = lines.length;
@@ -81,6 +107,11 @@ export class MyFont {
         this.scene.popMatrix();
     }
 
+    /**
+     * Gets the translation amount to center the string.
+     * @param {string} stringToDisplay - String to be written
+     * @returns {number} Translation amount
+     */
     getTransAmountCenteredEqualLines(stringToDisplay) {
         return Math.max(0, ...stringToDisplay.split('\n').map(line => line.length/2.0 * this.fontSize));
     }

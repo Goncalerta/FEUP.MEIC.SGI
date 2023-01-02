@@ -7,12 +7,21 @@ import { MyTextBox } from "../labels/MyTextBox.js";
 import { Player } from "../Player.js";
 import { CONFIG } from "../config.js";
 
+/**
+ * MyMainMenu class, representing the main menu of the game.
+ */
 export class MyMainMenu extends MyMenu {
     TEXT_COLOR_RGBA = [1.0, 1.0, 1.0, 1.0];
     PLAY_TEXTURE_PATH = "scenes/images/game/play.png";
     LEFT_TEXTURE_PATH = "scenes/images/game/left.png";
     RIGHT_TEXTURE_PATH = "scenes/images/game/right.png";
 
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {function} enableTextCallBack - Callback function to enable text
+     * @param {function} playCallBack - Callback function to start the game
+     */
     constructor(scene, enableTextCallBack, playCallBack=(scenarioFileName, player1Name, player2Name) => {}) {
         super(scene);
 
@@ -47,7 +56,7 @@ export class MyMainMenu extends MyMenu {
                 return;
             }
 
-            playCallBack(this.getCurrentScenarioFileName(), player1Name, player2Name)
+            playCallBack(this.getCurrentScenarioFileName(), player1Name, player2Name);
         }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
@@ -59,14 +68,26 @@ export class MyMainMenu extends MyMenu {
         this.scenarioLabel = new MyLabel(this.scene, () => { return "SCENARIO" }, this.getShader(), this.TEXT_COLOR_RGBA);
     }
 
+    /**
+     * Gets the dimensions of the menu.
+     * @returns {Dimensions} - The dimensions of the menu
+     */
     getDimensions() {
         return new Dimensions(15, 15, 1);
     }
 
+    /**
+     * Gets the title of the menu.
+     * @returns {MyLabel} - The title of the menu
+     */
     getTitle() {
         return this.title;
     }
 
+    /**
+     * Gets the labels of the menu.
+     * @returns {MyLabel[]} - The labels of the menu
+     */
     getLabels() {
         return [
             this.scenarioLabel,
@@ -82,6 +103,11 @@ export class MyMainMenu extends MyMenu {
         ];
     }
 
+    /**
+     * Gets the currently selected scenario file name.
+     * @returns {string} - The currently selected scenario file name
+     * @returns {null} - If there are no scenarios
+     */
     getCurrentScenarioFileName() {
         if (this.scenariosNames.length == 0) {
             return null;
@@ -90,14 +116,23 @@ export class MyMainMenu extends MyMenu {
         return this.scenariosNames[this.currentScenarioIndex];
     }
 
+    /**
+     * Gets the currently selected scenario name with appropriate length.
+     * @returns {string} - The currently selected scenario name with appropriate length
+     */
     getCurrentScenarioName() {
-        if (this.scenariosNames.length == 0) {
+        const fileName = this.getCurrentScenarioFileName();
+        if (fileName == null) {
             return " ? ";
         }
 
-        return textToLimitedCentered(removeFileExtension(this.scenariosNames[this.currentScenarioIndex]), 5);
+        return textToLimitedCentered(removeFileExtension(fileName), 5);
     }
 
+    /**
+     * Updates the currently selected scenario index.
+     * @param {number} delta - The delta to add to the current scenario index
+     */
     updateScenarioIndex(delta) {
         if (this.scenariosNames.length == 0) {
             return;
