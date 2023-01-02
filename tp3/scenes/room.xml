@@ -7,7 +7,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
         <ortho id="mainOrthoView" near="0.1" far="100" left="-5.5" right="5.5" top="2.75" bottom="-2.75" >
-            <from x="5" y="5.6" z="5" />
+            <from x="7" y="5.6" z="7" />
             <to x="0" y="0.6" z="0" />
             <up x="0" y="1" z="0" />
         </ortho>
@@ -39,24 +39,24 @@
     </views>
 
     <ambient>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
         <background r="0.529" g="0.808" b="0.922" a="1.0" />
     </ambient>
 
     <lights>
         <omni id="roomlight" enabled="1">
-            <location x="8.4" y="8" z="0" w="1.0" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+            <location x="8.4" y="6.25" z="0" w="1.0" />
+            <ambient r="0.7" g="0.65" b="0.63" a="1.0" />
+            <diffuse r="0.9" g="0.895" b="0.88" a="1.0" />
+            <specular r="0.25" g="0.24" b="0.2" a="1.0" />
             <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
         </omni>
         <omni id="bedsideLight" enabled="0">
             <location x="11.65" y="-1.2" z="19" w="1.0" />
-            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
-            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
-            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
-            <attenuation constant="1.0" linear="0.0" quadratic="0.0" />
+            <ambient r="0.15" g="0.12" b="0.06" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="0.95" a="1.0" />
+            <specular r="1.0" g="1.0" b="0.95" a="1.0" />
+            <attenuation constant="0.0" linear="1.0" quadratic="0.0" />
         </omni>
     </lights>
 
@@ -88,11 +88,101 @@
             <diffuse r="0.0" g="0.0" b="0.0" a="1.0" />
             <specular r="0.0" g="0.0" b="0.0" a="1.0" />
         </material>
-        <material id="wallMaterial" shininess="1">
+        <material id="wallMaterial" shininess="20">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
-            <ambient r="0.94" g="0.94" b="0.94" a="1.0" />
-            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <ambient r="0.75" g="0.75" b="0.75" a="1.0" />
+            <diffuse r="0.675" g="0.675" b="0.675" a="1.0" />
             <specular r="0.05" g="0.05" b="0.05" a="1.0" />
+        </material>
+        <material id="floorMaterial" shininess="1">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.05" g="0.05" b="0.05" a="1.0" />
+        </material>
+        <material id="boardMaterial" shininess="10">
+            <emission r="0.12" g="0.11" b="0.11" a="1.0" />
+            <ambient r="0.85" g="0.75" b="0.75" a="1.0" />
+            <diffuse r="0.55" g="0.45" b="0.45" a="1.0" />
+            <specular r="0.08" g="0.06" b="0.06" a="1.0" />
+        </material>
+        <material id="darkWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.35" g="0.35" b="0.35" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="bedDarkWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.45" g="0.45" b="0.45" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="doorWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="bedsideWoodMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.8" g="0.8" b="0.8" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="tableTopMaterial" shininess="10">
+            <emission r="0.05" g="0.05" b="0.05" a="1.0" />
+            <ambient r="0.35" g="0.35" b="0.35" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+        <material id="bedMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="0.15" g="0.15" b="0.15" a="1.0" />
+        </material>
+        <material id="pillowMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.6" g="0.83" b="0.99" a="1.0" />
+            <diffuse r="0.4" g="0.64" b="0.8" a="1.0" />
+            <specular r="0.15" g="0.15" b="0.15" a="1.0" />
+        </material>
+        <material id="knobMaterial" shininess="8">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="footballMaterial" shininess="8">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.85" g="0.85" b="0.85" a="1.0" />
+            <diffuse r="0.9" g="0.9" b="0.9" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="lightBulbMaterial" shininess="1">
+            <emission r="0.25" g="0.25" b="0.25" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="lightConeMaterial" shininess="10">
+            <emission r="0.05" g="0.05" b="0.05" a="1.0" />
+            <ambient r="1.0" g="1.0" b="1.0" a="1.0" />
+            <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="stringMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="1.0" g="1.0" b="1.0" a="1.0" />
+        </material>
+        <material id="bedsideLightBaseMaterial" shininess="10">
+            <emission r="0" g="0" b="0" a="1.0" />
+            <ambient r="0.4" g="0.2" b="0.1" a="1.0" />
+            <diffuse r="0.7" g="0.5" b="0.4" a="1.0" />
+            <specular r="0.1" g="0.1" b="0.1" a="1.0" />
         </material>
     </materials>
 
@@ -139,7 +229,7 @@
             <cylinder top="0.08" base="0.115" height="2.3" slices="150" stacks="150" />
         </primitive>
         <primitive id="string">
-            <cylinder top="0.05" base="0.05" height="4" slices="40" stacks="40" />
+            <cylinder top="0.05" base="0.05" height="5.75" slices="40" stacks="40" />
         </primitive>
         <primitive id="cylinder">
             <cylinder top="1" base="1" height="0.75" slices="40" stacks="40" />
@@ -217,9 +307,9 @@
                 <scale x="0.55" y="1.2" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="boardMaterial" />
             </materials>
-            <texture id="boardTexture" />
+            <texture id="boardTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <primitiveref id="boardSupportTriangle" />
                 <componentref id="boardSupportTriangleBack" />
@@ -277,7 +367,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="stringMaterial" />
             </materials>
             <texture id="none" />
             <children>
@@ -286,11 +376,11 @@
         </component>
         <component id="roomLightBulb">
             <transformation>
-                <translate x="0" y="0" z="4" />
+                <translate x="0" y="0" z="5.75" />
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="lightBulbMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -299,10 +389,10 @@
         </component>
         <component id="roomLightCone">
             <transformation>
-                <translate x="0" y="0" z="3.25" />
+                <translate x="0" y="0" z="5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="lightConeMaterial" />
             </materials>
             <texture id="lampTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -332,7 +422,7 @@
                 <scale x="6.75" y="13.5" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="doorWoodMaterial" />
             </materials>
             <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -344,7 +434,7 @@
                 <translate x="0" y="6.625" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -412,7 +502,7 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="knobMaterial" />
             </materials>
             <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -425,7 +515,7 @@
                 <translate x="-0.35" y="0" z="0" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="knobMaterial" />
             </materials>
             <texture id="shinyMetalTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -454,7 +544,7 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -472,7 +562,7 @@
                 <translate x="-0.5" y="-0.5" z="0.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableTopMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -614,7 +704,7 @@
                 <rotate axis="y" angle="-5" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -627,7 +717,7 @@
                 <rotate axis="y" angle="190" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -638,7 +728,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="darkWoodMaterial" />
             </materials>
             <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -653,7 +743,7 @@
                 <rotate axis="x" angle="3.5" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -672,7 +762,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -685,7 +775,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -698,7 +788,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="tableMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -767,7 +857,7 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="tableTopMaterial" />
+                <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -959,7 +1049,7 @@
                 <scale x="0.5" y="1" z="0.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkWoodMaterial" />
             </materials>
             <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1055,7 +1145,7 @@
                 <translate x="15.85" y="-0.2" z="-18.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="darkWoodMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1098,7 +1188,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="doorWoodMaterial" />
             </materials>
             <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1158,7 +1248,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="doorWoodTexture" length_s="1.0" length_t="1.0" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1219,9 +1309,9 @@
                 <rotate axis="y" angle="180" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedDarkWoodMaterial" />
             </materials>
-            <texture id="darkWoodTexture" />
+            <texture id="darkWoodTexture" length_s="1.0" length_t="1.0" />
             <children>
                 <componentref id="bedTop" />
                 <componentref id="bedSideTop1" />
@@ -1263,7 +1353,7 @@
                 <rotate axis="y" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="pillowMaterial" />
             </materials>
             <texture id="pillowTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1280,7 +1370,7 @@
                 <rotate axis="z" angle="90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedMaterial" />
             </materials>
             <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1293,7 +1383,7 @@
                 <scale x="1" y="0.5" z="1" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedMaterial" />
             </materials>
             <texture id="bedSheetsBackTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1309,7 +1399,7 @@
                 <rotate axis="z" angle="-90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedMaterial" />
             </materials>
             <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1320,8 +1410,9 @@
             <transformation>
                 <rotate axis="x" angle="180" />
                 <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="0" z="0.5" />
+                <translate x="0.5" y="0" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
+                <rotate axis="z" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1333,8 +1424,9 @@
         </component>
         <component id="bedSideBottom2">
             <transformation>
-                <translate x="-0.5" y="-0.5" z="0.5" />
+                <translate x="0.5" y="-0.5" z="0.5" />
                 <scale x="1" y="0.5" z="1" />
+                <rotate axis="z" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1348,8 +1440,9 @@
             <transformation>
                 <rotate axis="z" angle="180" />
                 <rotate axis="y" angle="90" />
-                <translate x="-0.5" y="0" z="0.5" />
-                <scale x="1" y="0.5" z="1" />
+                <translate x="0.5" y="0" z="0.5" />
+                <scale x="1" y="0.5" z="1" />bedM
+                <rotate axis="z" angle="90" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -1364,7 +1457,7 @@
                 <transformationref id="topTransformation" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedMaterial" />
             </materials>
             <texture id="bedSheetsTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1411,7 +1504,7 @@
                 <rotate axis="x" angle="180" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedsideLightBaseMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1423,7 +1516,7 @@
                 <translate x="0" y="0" z="0.75" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedsideLightBaseMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1450,7 +1543,7 @@
                 <scale x="0.2" y="0.2" z="0.2" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="lightBulbMaterial" />
             </materials>
             <texture id="inherit" />
             <children>
@@ -1461,7 +1554,7 @@
             <transformation>
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="lightConeMaterial" />
             </materials>
             <texture id="lampTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1474,7 +1567,7 @@
                 <scale x="4" y="3.8" z="3" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="bedsideWoodMaterial" />
             </materials>
             <texture id="drawerBackTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1542,7 +1635,7 @@
                 <scale x="0.7" y="0.7" z="0.7" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="footballMaterial" />
             </materials>
             <texture id="footballTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1561,7 +1654,7 @@
             <materials>
                 <material id="wallMaterial" />
             </materials>
-            <texture id="inherit" />
+            <texture id="none" />
             <children>
                 <componentref id="wallPositiveX" />
                 <componentref id="wallNegativeX" />
@@ -1579,7 +1672,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1592,7 +1685,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1606,7 +1699,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1618,7 +1711,7 @@
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="floorMaterial" />
             </materials>
             <texture id="floorTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -1633,7 +1726,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>
@@ -1645,7 +1738,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="inherit" />
             <children>
                 <primitiveref id="square" />
             </children>

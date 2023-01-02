@@ -152,13 +152,13 @@
         <material id="tableMaterial" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="1.0" g="1.0" b="0.8" a="1.0" />
-            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <diffuse r="0.4" g="0.3" b="0.3" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
         <material id="tableTopMaterial" shininess="10">
-            <emission r="0.35" g="0.32" b="0.32" a="1.0" />
+            <emission r="0.05" g="0.05" b="0.05" a="1.0" />
             <ambient r="1.0" g="1.0" b="0.8" a="1.0" />
-            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <diffuse r="1.0" g="0.98" b="0.98" a="1.0" />
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
         <material id="tableLegMaterial" shininess="10">
@@ -168,9 +168,9 @@
             <specular r="0.9" g="0.9" b="0.9" a="1.0" />
         </material>
         <material id="boardMaterial" shininess="10">
-            <emission r="0.25" g="0.22" b="0.22" a="1.0" />
-            <ambient r="0.7" g="0.6" b="0.6" a="1.0" />
-            <diffuse r="0.45" g="0.35" b="0.35" a="1.0" />
+            <emission r="0.12" g="0.11" b="0.11" a="1.0" />
+            <ambient r="0.85" g="0.75" b="0.75" a="1.0" />
+            <diffuse r="0.55" g="0.45" b="0.45" a="1.0" />
             <specular r="0.08" g="0.06" b="0.06" a="1.0" />
         </material>
         <material id="cubemapMaterial" shininess="1">
@@ -291,7 +291,6 @@
             <diffuse r="0.9" g="0.843" b="0.0" a="1.0" />
             <specular r="0.9" g="0.95" b="0.7" a="1.0" />
         </material>
-
         <material id="redCubemapMaterial" shininess="1">
             <emission r="0.6" g="0.4" b="0.4" a="1.0" />
             <ambient r="0.0" g="0.0" b="0.0" a="1.0" />
@@ -853,7 +852,7 @@
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
-                <material id="tableTopMaterial" />
+                <material id="tableMaterial" />
             </materials>
             <texture id="tableTopTexture" length_s="1.0" length_t="1.0" />
             <children>
@@ -872,7 +871,7 @@
                 <translate x="0" y="0" z="0.5" />
             </transformation>
             <materials>
-                <material id="inherit" />
+                <material id="tableTopMaterial" />
             </materials>
             <texture id="inherit" />
             <children>

@@ -17,8 +17,8 @@ export class MyButton extends CGFobject {
     static TEXTURE_PATH = "scenes/images/game/wood.jpg";
     static DEFAULT_MATERIAL = {
         shininess: 0,
-        emission: [0.25, 0.1, 0.1, 1.0],
-        ambient: [0.25, 0.2, 0.2, 1.0],
+        emission: [0.25, 0.15, 0.15, 1.0],
+        ambient: [0.25, 0.15, 0.15, 1.0],
         diffuse: [0.45, 0.4, 0.4, 1.0],
         specular: [0.35, 0.3, 0.3, 1.0],
     };
