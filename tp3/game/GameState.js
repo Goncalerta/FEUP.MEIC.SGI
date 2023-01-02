@@ -433,7 +433,6 @@ export class GameOverState extends GameState {
         super(model);
         this.winner = winner;
         this.win_time = model.current_time;
-        console.log("winner detected: TODO winning", winner);
     }
 
     getWinner() {
