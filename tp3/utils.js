@@ -245,3 +245,7 @@ export function textToLimitedCentered(text, maxChars) {
 export function removeFileExtension(filename) {
     return filename.substring(0, filename.lastIndexOf('.'));
 }
+
+export function isOnlyWhiteSpaces(text) {
+    return text.trim().length == 0;
+}

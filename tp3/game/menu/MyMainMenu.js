@@ -2,7 +2,7 @@ import { MyLabelButton } from "../labels/MyLabelButton.js";
 import { MyLabel } from "../labels/MyLabel.js";
 import { MyButton } from "../labels/MyButton.js";
 import { Dimensions, MyMenu } from "./MyMenu.js";
-import { textToLimitedCentered, removeFileExtension } from "../../utils.js";
+import { textToLimitedCentered, removeFileExtension, isOnlyWhiteSpaces } from "../../utils.js";
 import { MyTextBox } from "../labels/MyTextBox.js";
 import { Player } from "../Player.js";
 import { CONFIG } from "../config.js";
@@ -29,7 +29,26 @@ export class MyMainMenu extends MyMenu {
         this.player2NameTextBox = new MyTextBox(scene, pickingId++, enableTextCallBack, this.getShader(), Player.PLAYER_2_DEFAULT_NAME, Player.PLAYER_LENGTH);
 
         // Buttons
-        this.playButton  = new MyButton(scene, pickingId++, () => { playCallBack(this.getCurrentScenarioFileName(), this.player1NameTextBox.getContent(), this.player2NameTextBox.getContent()) }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
+        this.playButton  = new MyButton(scene, pickingId++, () => {
+            const player1Name = this.player1NameTextBox.getContent();
+            const player2Name = this.player2NameTextBox.getContent();
+
+            let error1 = isOnlyWhiteSpaces(player1Name);
+            let error2 = isOnlyWhiteSpaces(player2Name);
+
+            if (player1Name == player2Name) {
+                error1 = true;
+                error2 = true;
+            }
+
+            if (error1 || error2) {
+                this.player1NameTextBox.setError(error1);
+                this.player2NameTextBox.setError(error2);
+                return;
+            }
+
+            playCallBack(this.getCurrentScenarioFileName(), player1Name, player2Name)
+        }, this.PLAY_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioRightButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(1) }, this.RIGHT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
         this.scenarioLeftButton = new MyButton(scene, pickingId++, () => { this.updateScenarioIndex(-1) }, this.LEFT_TEXTURE_PATH, this.TEXT_COLOR_RGBA);
 

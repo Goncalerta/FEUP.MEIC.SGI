@@ -16,9 +16,9 @@ function getUrllets() {
 }
 
 function resetScene() {
-    let bodyEle = document.getElementsByTagName("body")[0];
-    let canvasEle = bodyEle.getElementsByTagName("canvas")[0];
-    let interfaceEle = bodyEle.getElementsByClassName("dg ac")[0];
+    const bodyEle = document.getElementsByTagName("body")[0];
+    const canvasEle = bodyEle.getElementsByTagName("canvas")[0];
+    const interfaceEle = bodyEle.getElementsByClassName("dg ac")[0];
 
     if (canvasEle) {
         bodyEle.removeChild(canvasEle);
@@ -30,8 +30,6 @@ function resetScene() {
 }
 
 function changeScene(sceneName, player1Name, player2Name) {
-    resetScene();
-
     // Standard application, scene and interface setup
     const app = new CGFapplication(document.body);
     const myInterface = new MyInterface();
@@ -49,7 +47,14 @@ function changeScene(sceneName, player1Name, player2Name) {
     const myGraph = new MySceneGraph(sceneName, myScene);
 
     // Game specific setup
-    myScene.initGame(changeScene, player1Name, player2Name);
+    myScene.initGame((x, y, z) => {
+        if (x === CONFIG.menu) {
+            window.location.reload();
+        } else {
+            resetScene();
+        }
+        changeScene(x, y, z);
+    }, player1Name, player2Name);
 
     // start
     app.run();
