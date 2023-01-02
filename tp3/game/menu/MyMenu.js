@@ -1,7 +1,16 @@
 import {CGFobject,CGFshader} from '../../../lib/CGF.js';
 import { MyMenuBox } from './MyMenuBox.js';
 
+/**
+ * MyMenu class, representing a generic menu.
+ * A menu is composed of a box, a title and a list of labels.
+ * The labels must have the same font size.
+ */
 export class MyMenu extends CGFobject {
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     */
     constructor(scene) {
         super(scene);
 
@@ -9,14 +18,26 @@ export class MyMenu extends CGFobject {
         this.transparentShader = new CGFshader(scene.gl, "shaders/transparent.vert", "shaders/transparent.frag");
     }
 
+    /**
+     * Gets the shader to be used.
+     * @returns {CGFshader} Shader
+     */
     getShader() {
         return this.transparentShader;
     }
 
+    /**
+     * Gets the box dimensions.
+     * @returns {Dimensions} Box dimensions
+     */
     getDimensions() {
         throw new Error("Abstract method");
     }
 
+    /**
+     * Gets the scale factor to be used to fit the title and labels in the box.
+     * @returns {number} Scale factor
+     */
     getScaleFactor() {
         const boxDimensions = this.getDimensions();
         const textWidth = this.getLabels().reduce((acc, label) => {
@@ -34,6 +55,10 @@ export class MyMenu extends CGFobject {
         return 1.2 * Math.max(textWidth / boxDimensions.width, textHeight / boxDimensions.height);
     }
 
+    /**
+     * Gets the title of the menu.
+     * @returns {MyLabel} Title
+     */
     getTitle() {
         return null;
     }
@@ -41,11 +66,16 @@ export class MyMenu extends CGFobject {
     /**
      * Gets the labels of the menu.
      * Labels must have the same font size.
+     * @returns {MyLabel[]} Labels
      */
     getLabels() {
         throw new Error("Abstract method");
     }
 
+    /**
+     * Scales the title and labels.
+     * @param {number} scale - Scale factor
+     */
     scaleTitleAndLabels(scale) {
         const title = this.getTitle();
         if (title != null) {
@@ -60,6 +90,10 @@ export class MyMenu extends CGFobject {
         }
     }
 
+    /**
+     * Displays the menu.
+     * @param {boolean} displayFont - Whether to display the font or not
+     */
     displayBase(displayFont) {
         this.scaleTitleAndLabels(this.getScaleFactor());
 
@@ -111,6 +145,10 @@ export class MyMenu extends CGFobject {
         this.scaleTitleAndLabels(1 / this.getScaleFactor());
     }
 
+    /**
+     * Displays the menu.
+     * @param {boolean} pickMode - Whether to display the menu in pick mode or not
+     */
     display(pickMode) {
         this.displayBase(false);
         if (!pickMode) {
@@ -121,7 +159,17 @@ export class MyMenu extends CGFobject {
     }
 }
 
+
+/**
+ * Dimensions class, representing the dimensions of a box.
+ */
 export class Dimensions {
+    /**
+     * @constructor
+     * @param {number} width - Width
+     * @param {number} height - Height
+     * @param {number} depth - Depth
+     */
     constructor(width, height, depth) {
         this.width = width;
         this.height = height;

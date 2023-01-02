@@ -6,6 +6,9 @@ import { CONFIG } from '../config.js';
 import { GameOverState } from '../GameState.js';
 import { Player } from '../Player.js';
 
+/**
+ * MyScoreBoard class, representing the score board of the game.
+ */
 export class MyScoreBoard extends MyMenu {
     UNDO_TEXTURE_PATH = "scenes/images/game/undo.png";
     SCENARIO_TEXTURE_PATH = "scenes/images/game/scenario.png";
@@ -18,6 +21,15 @@ export class MyScoreBoard extends MyMenu {
     TEXT_COLOR_RGBA = [1, 1, 0.9, 1];
     DELTA_TEXT = 0.1;
 
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {MyGame} game - MyGame object
+     * @param {MyGameCameras} cameras - MyGameCameras object
+     * @param {Player} player1 - Player 1 object
+     * @param {Player} player2 - Player 2 object
+     * @param {function} playCallBack - callback function to return to the main menu
+     */
     constructor(scene, game, cameras, player1, player2, playCallBack) {
         super(scene);
 
@@ -43,6 +55,7 @@ export class MyScoreBoard extends MyMenu {
         this.capturesLabel = new MyLabelButton(scene, () => { return `   CAPTURES` }, this.frontalPOVButton,  this.getShader(), this.TEXT_COLOR_RGBA);
         this.player1Label = new MyLabelButton(scene, () => { return `${this.player1NameShort}    ${this.player1.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0")}` }, this.p1POVButton, this.getShader(), this.TEXT_COLOR_RGBA);
         this.player2Label = new MyLabelButton(scene, () => { return `${this.player2NameShort}    ${this.player2.getScore().toString().padStart(this.MAX_SCORE_SIZE, "0")}` }, this.p2POVButton, this.getShader(), this.TEXT_COLOR_RGBA);
+
         this.currentLabel = new MyLabelButton(scene, () => {
             const gameState = this.gameModel.getGameState();
             if (gameState instanceof GameOverState) {
@@ -50,6 +63,7 @@ export class MyScoreBoard extends MyMenu {
             }
             return `    CURRENT`
         }, this.undoButton, this.getShader(), this.TEXT_COLOR_RGBA);
+
         this.currentPlayerLabel = new MyLabelButton(scene, () => {
             const gameState = this.gameModel.getGameState();
             if (gameState instanceof GameOverState) {
@@ -72,10 +86,18 @@ export class MyScoreBoard extends MyMenu {
 
     }
 
+    /**
+     * Gets the dimensions of the score board.
+     * @returns {Dimensions} - the dimensions of the score board
+     */
     getDimensions() {
         return new Dimensions(3, 2, .4);
     }
 
+    /**
+     * Gets the labels of the score board.
+     * @returns {MyButton[]} - the labels of the score board
+     */
     getLabels() {
         return [
             this.totalTimeLabel,

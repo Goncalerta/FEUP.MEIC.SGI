@@ -1,8 +1,20 @@
 import { MyLabel } from "./MyLabel.js";
 import { MyButton } from "./MyButton.js";
 
-// A label with a button on the right. Optionally, a button on the left.
+/**
+ * MyLabelButton class, representing a label with a button on the right. Optionally, a button on the left.
+ */
 export class MyLabelButton extends MyLabel {
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {function} getLabelString - Function that returns the label string
+     * @param {MyButton} rightButton - Button on the right
+     * @param {CGFshader} shader - Shader to be used
+     * @param {vec4} colorRGBa - Font color
+     * @param {MyButton} leftButton - Button on the left
+     * @param {number} fontSize - Font size
+     */
     constructor(scene, getLabelString, rightButton, shader, colorRGBa=[0, 0, 0, 1], leftButton=null, fontSize=1) {
         super(scene, getLabelString, shader, colorRGBa, fontSize);
 
@@ -10,6 +22,10 @@ export class MyLabelButton extends MyLabel {
         this.leftButton = leftButton;
     }
 
+    /**
+     * Gets half the label width.
+     * @returns {number} Half the label width
+     */
     getLabelTrans() {
         let labelTrans = super.getLabelTrans();
 
@@ -22,6 +38,10 @@ export class MyLabelButton extends MyLabel {
         return labelTrans;
     }
 
+    /**
+     * Displays the label.
+     * @param {boolean} displayFont - Whether to display the font
+     */
     display(displayFont) {
         this.scene.pushMatrix();
         if (this.leftButton == null) {
