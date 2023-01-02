@@ -88,7 +88,7 @@
 
     <lights>
         <omni id="sunlight" enabled="1">
-            <location x="5" y="5" z="0" w="1.0" />
+            <location x="15" y="5" z="0" w="1.0" />
             <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
             <diffuse r="1.0" g="1.0" b="1.0" a="1.0" />
             <specular r="1.0" g="1.0" b="1.0" a="1.0" />
@@ -128,7 +128,13 @@
             </patch>
         </primitive>
         <primitive id="chairBackCylinder">
-            <cylinder top="0.5" base="0.5" height="1" slices="150" stacks="150" />
+            <cylinder top="0.08" base="0.115" height="2.3" slices="150" stacks="150" />
+        </primitive>
+        <primitive id="knobJoint">
+            <cylinder top="0.1" base="0.2" height="0.3" slices="60" stacks="60" />
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="1" slices="150" stacks="150" />
         </primitive>
     </primitives>
 
@@ -145,8 +151,131 @@
             <texture id="none" />
             <children>
                 <componentref id="table" />
-                <componentref id="chair" />
+                <componentref id="chairLeft" />
+                <componentref id="chairRight" />
                 <componentref id="wallsFloor" />
+                <componentref id="door" />
+                <componentref id="wardrobe" />
+            </children>
+        </component>
+
+        <!-- ==== -->
+        <!-- Door -->
+        <component id="door">
+            <transformation>
+                <translate x="-3" y="-6.2" z="-19.95" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="doorFront" />
+                <componentref id="doorFrame" />
+                <componentref id="doorKnob" />
+            </children>
+        </component>
+        <component id="doorFront">
+            <transformation>
+                <scale x="6.75" y="13.5" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="doorFrame">
+            <transformation>
+                <translate x="0" y="6.625" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="doorFrameLeft" />
+                <componentref id="doorFrameRight" />
+                <componentref id="doorFrameTop" />
+            </children>
+        </component>
+        <component id="doorFrameLeft">
+            <transformation>
+                <scale x="1" y="13.25" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+        <component id="doorFrameRight">
+            <transformation>
+                <translate x="6.75" y="0" z="0" />
+                <scale x="1" y="13.25" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+        <component id="doorFrameTop">
+            <transformation>
+                <translate x="3.375" y="6.875" z="0" />
+                <scale x="7.25" y="1" z="1" />
+                <rotate axis="z" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="leg" />
+            </children>
+        </component>
+        <component id="doorKnob">
+            <transformation>
+                <translate x="1.5" y="6.25" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="doorKnobHandle" />
+                <componentref id="doorKnobJoint" />
+            </children>
+        </component>
+        <component id="doorKnobHandle">
+            <transformation>
+                <translate x="0" y="0" z="0.3" />
+                <scale x="0.7" y="0.15" z="0.1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="doorKnobJoint">
+            <transformation>
+                <translate x="-0.35" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="knobJoint" />
             </children>
         </component>
 
@@ -268,6 +397,8 @@
         </component>
         <component id="tableLegs">
             <transformation>
+                <translate x="0" y="-3.1" z="0" />
+                <scale x="1" y="5.8" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -282,7 +413,7 @@
         </component>
         <component id="tableLeg1">
             <transformation>
-                <translate x="3" y="-3.1" z="3.875" />
+                <translate x="3" y="0" z="3.875" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -294,7 +425,7 @@
         </component>
         <component id="tableLeg2">
             <transformation>
-                <translate x="3" y="-3.1" z="-3.875" />
+                <translate x="3" y="0" z="-3.875" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -306,7 +437,7 @@
         </component>
         <component id="tableLeg3">
             <transformation>
-                <translate x="-3" y="-3.1" z="3.875" />
+                <translate x="-3" y="0" z="3.875" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -318,7 +449,7 @@
         </component>
         <component id="tableLeg4">
             <transformation>
-                <translate x="-3" y="-3.1" z="-3.875" />
+                <translate x="-3" y="0" z="-3.875" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -329,11 +460,36 @@
             </children>
         </component>
 
-        <!-- ===== -->
-        <!-- Chair -->
+        <!-- ====== -->
+        <!-- Chairs -->
+        <component id="chairLeft">
+            <transformation>
+                <translate x="-1.1" y="-2.45" z="6" />
+                <rotate axis="y" angle="-5" />
+            </transformation>
+            <materials>
+                <material id="tableMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chair" />
+            </children>
+        </component>
+        <component id="chairRight">
+            <transformation>
+                <translate x="0.3" y="-2.45" z="-6.5" />
+                <rotate axis="y" angle="190" />
+            </transformation>
+            <materials>
+                <material id="tableMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="chair" />
+            </children>
+        </component>
         <component id="chair">
             <transformation>
-                <translate x="-0.7" y="-2.45" z="6.5" />
             </transformation>
             <materials>
                 <material id="tableMaterial" />
@@ -348,6 +504,7 @@
 
         <component id="chairBack">
             <transformation>
+                <rotate axis="x" angle="3.5" />
             </transformation>
             <materials>
                 <material id="tableMaterial" />
@@ -363,10 +520,49 @@
                 <componentref id="chairBackCylinder3" />
             </children>
         </component>
+        <component id="chairBackCylinder1">
+            <transformation>
+                <translate x="0.5" y="1.3" z="1.125" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="tableMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="chairBackCylinder" />
+            </children>
+        </component>
+        <component id="chairBackCylinder2">
+            <transformation>
+                <translate x="0" y="1.3" z="1.125" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="tableMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="chairBackCylinder" />
+            </children>
+        </component>
+        <component id="chairBackCylinder3">
+            <transformation>
+                <translate x="-0.5" y="1.3" z="1.125" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="tableMaterial" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="chairBackCylinder" />
+            </children>
+        </component>
         <component id="chairBackLeft">
             <transformation>
                 <translate x="-1.125" y="2.2" z="1.125" />
-                <scale x="1" y="0.75" z="1" />
+                <scale x="1" y="4.35" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -379,7 +575,7 @@
         <component id="chairBackRight">
             <transformation>
                 <translate x="1.125" y="2.2" z="1.125" />
-                <scale x="1" y="0.75" z="1" />
+                <scale x="1" y="4.35" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -393,8 +589,8 @@
             <transformation>
                 <translate x="0" y="3.75" z="1.125" />
                 <rotate axis="y" angle="90" />
-                <scale x="0.8" y="0.8" z="0.325" />
                 <rotate axis="x" angle="90" />
+                <scale x="0.7" y="1.89" z="0.7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -408,8 +604,8 @@
             <transformation>
                 <translate x="0" y="1.3" z="1.125" />
                 <rotate axis="y" angle="90" />
-                <scale x="0.8" y="0.8" z="0.325" />
                 <rotate axis="x" angle="90" />
+                <scale x="0.7" y="1.89" z="0.7" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -539,7 +735,7 @@
         <component id="chairLeg1">
             <transformation>
                 <translate x="1.125" y="-1.95" z="1.125" />
-                <scale x="1" y="0.62" z="1" />
+                <scale x="1" y="3.6" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -552,7 +748,7 @@
         <component id="chairLeg2">
             <transformation>
                 <translate x="1.125" y="-1.95" z="-1.125" />
-                <scale x="1" y="0.62" z="1" />
+                <scale x="1" y="3.6" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -565,7 +761,7 @@
         <component id="chairLeg3">
             <transformation>
                 <translate x="-1.125" y="-1.95" z="1.125" />
-                <scale x="1" y="0.62" z="1" />
+                <scale x="1" y="3.6" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -578,7 +774,7 @@
         <component id="chairLeg4">
             <transformation>
                 <translate x="-1.125" y="-1.95" z="-1.125" />
-                <scale x="1" y="0.62" z="1" />
+                <scale x="1" y="3.6" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -591,8 +787,8 @@
         <component id="chairJoinLeft">
             <transformation>
                 <translate x="1.125" y="-2.4" z="0" />
-                <scale x="1" y="1" z="0.325" />
                 <rotate axis="x" angle="90" />
+                <scale x="1" y="1.89" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -605,8 +801,8 @@
         <component id="chairJoinRight">
             <transformation>
                 <translate x="-1.125" y="-2.4" z="0" />
-                <scale x="1" y="1" z="0.325" />
                 <rotate axis="x" angle="90" />
+                <scale x="1" y="1.89" z="1" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -621,19 +817,19 @@
         <!-- Leg -->
         <component id="leg">
             <transformation>
-                <scale x="0.5" y="5.8" z="0.5" />
+                <scale x="0.5" y="1" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
             <texture id="inherit" />
             <children>
-                <componentref id="tableTopUp" />
-                <componentref id="tableTopDown" />
-                <componentref id="tableTopSide1" />
-                <componentref id="tableTopSide2" />
-                <componentref id="tableTopSide3" />
-                <componentref id="tableTopSide4" />
+                <componentref id="legTop" />
+                <componentref id="legBottom" />
+                <componentref id="legSide1" />
+                <componentref id="legSide2" />
+                <componentref id="legSide3" />
+                <componentref id="legSide4" />
             </children>
         </component>
         <component id="legSide1">
@@ -691,7 +887,7 @@
         </component>
         <component id="legTop">
             <transformation>
-                <rotate axis="z" angle="270" />
+                <rotate axis="z" angle="90" />
                 <rotate axis="x" angle="-90" />
                 <rotate axis="y" angle="90" />
                 <translate x="-0.5" y="-0.5" z="0.5" />
@@ -705,6 +901,173 @@
             </children>
         </component>
         <component id="legBottom">
+            <transformation>
+                <rotate axis="z" angle="-90" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+
+        <!-- ======== -->
+        <!-- Wardrobe -->
+        <component id="wardrobe">
+            <transformation>
+                <translate x="15.85" y="0" z="-18.5" />
+                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="wardrobeBox" />
+                <componentref id="wardrobeKnobLeft" />
+                <componentref id="wardrobeKnobRight" />
+            </children>
+        </component>
+        <component id="wardrobeKnobLeft">
+            <transformation>
+                <translate x="0" y="0.5" z="0" />
+                <rotate axis="z" angle="180" />
+                <translate x="1.5" y="0" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="doorKnobHandle" />
+                <componentref id="doorKnobJoint" />
+            </children>
+        </component>
+        <component id="wardrobeKnobRight">
+            <transformation>
+                <translate x="1.5" y="0.5" z="3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="doorKnobHandle" />
+                <componentref id="doorKnobJoint" />
+            </children>
+        </component>
+        <component id="wardrobeBox">
+            <transformation>
+                <scale x="10" y="12" z="3" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="wardrobeFrontLeft" />
+                <componentref id="wardrobeFrontRight" />
+                <componentref id="wardrobeBack" />
+                <componentref id="wardrobeSide1" />
+                <componentref id="wardrobeSide2" />
+                <componentref id="wardrobeSide3" />
+                <componentref id="wardrobeSide4" />
+            </children>
+        </component>
+        <component id="wardrobeSide1">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeSide2">
+            <transformation>
+                <rotate axis="x" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeSide3">
+            <transformation>
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeSide4">
+            <transformation>
+                <rotate axis="z" angle="180" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeFrontLeft">
+            <transformation>
+                <translate x="-0.25" y="0" z="0" />
+                <scale x="0.5" y="1" z="1" />
+                <rotate axis="z" angle="270" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeFrontRight">
+            <transformation>
+                <translate x="0.25" y="0" z="0" />
+                <scale x="0.5" y="1" z="1" />
+                <rotate axis="z" angle="270" />
+                <rotate axis="x" angle="-90" />
+                <rotate axis="y" angle="90" />
+                <translate x="-0.5" y="-0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="square" />
+            </children>
+        </component>
+        <component id="wardrobeBack">
             <transformation>
                 <rotate axis="z" angle="90" />
                 <rotate axis="x" angle="-90" />
