@@ -467,8 +467,8 @@ export class BeginFilmState extends GameState {
                     demoteAnimations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
                 }
             }
-            
-            if (demoteAnimations.length > 0) {
+
+            if (demoteAnimations.animations.length > 0) {
                 demoteAnimations.onEnd(() => {
                     this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
                 });
