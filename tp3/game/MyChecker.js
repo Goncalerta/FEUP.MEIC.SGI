@@ -335,11 +335,6 @@ export class MyChecker extends CGFobject {
             const capturedPiece = this.scene.game.getChecker(move.captured[0], move.captured[1]);
 
             onTestCollision = (animation) => {
-                // TODO confirmar com a professora se é isto que querem como collision detection
-                //      Para simplificar só usamos o xOz, ignorando o y.
-                //      Para simplificar, apenas verificamos colisão entre a peça que mexe a peça potencialmente capturável
-                //      Como nesta dimensão as peças são circulos com raios iguais, comparamos a distância em relação ao diametro
-                
                 const movingX = this.position[0];
                 const movingZ = this.position[2];
                 const capturedX = capturedPiece.position[0];
