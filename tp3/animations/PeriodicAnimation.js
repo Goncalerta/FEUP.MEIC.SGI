@@ -7,6 +7,9 @@ export class PeriodicAnimation {
     /**
      * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
+     * @param {number} duration - Duration of the animation in seconds.
+     * @param {function} easingFunction - Easing function to be used.
+     * @param {boolean} loopback - Whether the animation should loop back to its initial state.
      */
     constructor(scene, duration, easingFunction=identity, loopback=false) {
         this.scene = scene;

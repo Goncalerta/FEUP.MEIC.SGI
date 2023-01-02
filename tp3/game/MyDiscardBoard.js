@@ -18,7 +18,11 @@ export class MyDiscardBoard {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * TODO: add parameters
+     * @param realHalfSize Half size of the board
+     * @param width Width of the board
+     * @param position Position of the board
+     * @param direction Direction of the board
+     * @param padding Padding between pieces
      */
      constructor(scene, realHalfSize, width, position, direction = 1, padding = 0.5) {
         this.scene = scene;

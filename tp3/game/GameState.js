@@ -1,56 +1,127 @@
 import { EventAnimationChain } from "../animations/EventAnimationChain.js";
 import { arraysIncludes } from "../utils.js";
+import { MyChecker } from "./MyChecker.js";
 
+/**
+ * Represents a generic game state.
+ */
 class GameState {
     MAX_CYCLIC_MOVES = 20;
 
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     */
     constructor(model) {
         this.model = model;
     }
 
+    /**
+     * Updates the game state.
+     * @param {Number} t - Current time.
+     */
     update(t) {}
 
+    /**
+     * Gets the selected piece.
+     * @returns {MyChecker|null} Selected piece.
+     */
     getSelectedPiece() {
         return null;
     }
 
+    /**
+     * Gets the move hints.
+     * @returns {Array} Move hints.
+     */
     getMoveHints() {
         return [];
     }
 
+    /**
+     * Gets the highlighted pieces.
+     * @returns {Array} Highlighted pieces.
+     */
     getHighlightedPieces() {
         return [];
     }
 
+    /**
+     * Selects a piece.
+     * @param {MyChecker} piece - Piece to be selected.
+     * @param {Number} x - Piece's x coordinate.
+     * @param {Number} y - Piece's y coordinate.
+     */
     selectPiece(piece, x, y) {}
 
+    /**
+     * Selects a tile.
+     * @param {Number} x - Tile's x coordinate.
+     * @param {Number} y - Tile's y coordinate.
+     */
     selectTile(x, y) {}
 
+    /**
+     * Gets the current player.
+     * @returns {Player|null} Current player.
+     */
     getCurrentPlayer() {
         return null;
     }
 
+    /**
+     * Gets the current spotlight position.
+     * @returns {Array|null} Spotlight position.
+     */
     spotlightOn() {
         return null;
     }
 
+    /**
+     * Gets the round remaining time.
+     * @returns {Number|null} Round remaining time.
+     */
     getRemainingTime() {
         return null;
     }
 
+    /**
+     * Checks if the game time should be increased.
+     * @returns {Boolean} True if the game time should be increased, false otherwise.
+     */
     increaseGameTime() {
         return false;
     }
 
+    /**
+     * Trigger the undo.
+     * @param {Function} getChecker - Function to get a checker.
+     */
     triggerUndo(getChecker) {}
 
+    /**
+     * Trigger the replay.
+     * @param {Function} getChecker - Function to get a checker.
+     */
     triggerReplay(getChecker) {}
 }
 
+/**
+ * PlayerTurnState class, represents a player turn.
+ */
 export class PlayerTurnState extends GameState {
     static TURN_TIME_LIMIT = 300;
     static ONE_MOVE_TIME_LIMT = 60;
 
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player} player - Current player.
+     * @param {Number} startTime - Turn start time.
+     * @param {Number} t - Current time.
+     * @param {Array} validMoves - Valid moves.
+     * @param {Number} turn_time_limit - Turn time limit.
+     */
     constructor(model, player, startTime, t = null, validMoves = null, turn_time_limit=null) {
         super(model);
         this.player = player;
@@ -130,7 +201,22 @@ export class PlayerTurnState extends GameState {
     }
 }
 
+/**
+ * PieceSelectedState class, represents the state where a player has selected a piece.
+ */
 export class PieceSelectedState extends PlayerTurnState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player} player - Current player.
+     * @param {Number} startTime - Turn start time.
+     * @param {Number} t - Current time.
+     * @param {Array} validMoves - Valid moves.
+     * @param {Array} filteredValidMoves - Valid moves for the selected piece.
+     * @param {MyChecker} piece - Selected piece.
+     * @param {Array} piecePosition - Selected piece position.
+     * @param {Number} turn_time_limit - Turn time limit.
+     */
     constructor(model, player, startTime, t, validMoves, filteredValidMoves, piece, piecePosition, turn_time_limit=null) {
         super(model, player, startTime, t, validMoves, turn_time_limit);
         this.piece = piece;
@@ -186,7 +272,19 @@ export class PieceSelectedState extends PlayerTurnState {
     }
 }
 
+/**
+ * AnimationState class.
+ * Represents the state where a piece is moving (both normally and when undoing).
+ */
 export class AnimationState extends GameState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player} player - Current player.
+     * @param {Move} completedMove - Completed move.
+     * @param {MyChecker} piece - Moving piece.
+     * @param {Number} remaining_time - Remaining time.
+     */
     constructor(model, player, completedMove, piece, remaining_time) {
         super(model);
         this.player = player;
@@ -212,7 +310,18 @@ export class AnimationState extends GameState {
     }
 }
 
+/**
+ * PieceMovingUndoState class, represents the state where a piece is moving.
+ */
 export class PieceMovingState extends AnimationState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player} player - Current player.
+     * @param {Move} completedMove - Completed move.
+     * @param {MyChecker} piece - Moving piece.
+     * @param {Number} remaining_time - Remaining time.
+     */
     constructor(model, player, completedMove, piece, remaining_time) {
         super(model, player, completedMove, piece, remaining_time);
 
@@ -248,7 +357,19 @@ export class PieceMovingState extends AnimationState {
     }
 }
 
+/**
+ * PieceMovingUndoState class, represents the state where a piece is moving when undoing.
+ */
 export class PieceMovingUndoState extends AnimationState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player} player - Current player.
+     * @param {Move} completedMove - Completed move.
+     * @param {MyChecker} piece - Moving piece.
+     * @param {Number} remaining_time - Remaining time.
+     * @param {Number} turn_time_limit - Turn time limit.
+     */
     constructor(model, player, completedMove, piece, remaining_time) {
         super(model, player, completedMove, piece, remaining_time);
 
@@ -273,7 +394,17 @@ export class PieceMovingUndoState extends AnimationState {
     }
 }
 
+/**
+ * BeginFilmState class, represents the state where the game film will begin.
+ */
 export class BeginFilmState extends GameState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Array} moves - Array of moves.
+     * @param {Function} getChecker - Function to get a checker.
+     * @param {Number} remainingTime - Remaining time.
+     */
     constructor(model, moves, getChecker, remainingTime = null) {
         super(model);
         this.moves = moves;
@@ -335,6 +466,10 @@ export class BeginFilmState extends GameState {
         animations.start(this.model.current_time);
     }
 
+    /**
+     * Initializes the positions of the pieces.
+     * @returns {Array} Array with the positions of the pieces.
+     */
     initPositions() {
         const player1_positions = [];
         const player2_positions = [];
@@ -357,7 +492,17 @@ export class BeginFilmState extends GameState {
     }
 }
 
+/**
+ * FilmState class, represents the state where the game film is being played.
+ */
 export class FilmState extends GameState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Array} moves - Array of moves.
+     * @param {Function} getChecker - Function to get a checker.
+     * @param {Number} remainingTime - Remaining time.
+     */
     constructor(model, moves, getChecker, remainingTime = null) {
         super(model);
         this.moves = moves;
@@ -369,6 +514,9 @@ export class FilmState extends GameState {
         this.animateMove();
     }
 
+    /**
+     * Advances to the next move to be played.
+     */
     nextMove() {
         this.moveIndex += 1;
         this.currentMove = this.moves[this.moveIndex];
@@ -376,6 +524,9 @@ export class FilmState extends GameState {
         this.player = this.model.getPlayer(this.currentMove.by);
     }
 
+    /**
+     * Animates the current move.
+     */
     animateMove() {
         if (this.moveIndex < this.moves.length - 1) {
             this.piece.animateMove(
@@ -428,13 +579,26 @@ export class FilmState extends GameState {
     }
 }
 
+/**
+ * GameOverState class, represents the state where the game is over.
+ * A player has won or the game has ended in a draw.
+ */
 export class GameOverState extends GameState {
+    /**
+     * @constructor
+     * @param {GameModel} model - Reference to the game model.
+     * @param {Player|null} winner - The winner of the game.
+     */
     constructor(model, winner) {
         super(model);
         this.winner = winner;
         this.win_time = model.current_time;
     }
 
+    /**
+     * Returns the winner of the game.
+     * @returns {Player|null} The winner of the game.
+     */
     getWinner() {
         return this.winner;
     }
