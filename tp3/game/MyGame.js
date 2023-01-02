@@ -86,7 +86,7 @@ export class MyGame {
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);
         this.scene.translate(0, 1, -this.TILE_SIZE * (this.model.BOARD_SIZE / 2 + 2) );
-        this.scoreBoard.display();
+        this.scoreBoard.display(pickMode);
         this.scene.popMatrix();
 
         this.player1DiscardBoard.display();

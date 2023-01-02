@@ -12,7 +12,7 @@ export class MyTextBox extends CGFobject {
         specular: [0.8, 0.6, 0.6, 1.0],
     };
 
-    constructor(scene, pickingId, enableTextCallBack, startContent="", maxSize=10, colorRGBa=[0, 0, 0, 1], fontSize=1, elevated=0.01) {
+    constructor(scene, pickingId, enableTextCallBack, shader, startContent="", maxSize=10, colorRGBa=[0, 0, 0, 1], fontSize=1, elevated=0.01) {
         super(scene);
 
         this.pickingId = pickingId;
@@ -21,7 +21,7 @@ export class MyTextBox extends CGFobject {
         this.elevated = elevated;
         this.content = startContent;
 
-        this.label = new MyLabel(scene, () => { return this.content }, colorRGBa, fontSize); // TODO is there a way to make this class extend MyLabel passing a method (with the content) to the super constructor?
+        this.label = new MyLabel(scene, () => { return this.content }, shader, colorRGBa, fontSize); // TODO is there a way to make this class extend MyLabel passing a method (with the content) to the super constructor?
         this.quad = new MyRectangle(scene, -0.5, 0.5, -0.5, 0.5);
 
         this.appearance = getAppearance(scene, this.MATERIAL);
@@ -55,19 +55,21 @@ export class MyTextBox extends CGFobject {
         this.enableTextCallBack(this.write.bind(this));
     }
 
-    display() {
-        this.scene.registerForPick(this.pickingId, this);
+    display(displayFont) {
+        if (displayFont) {
+            this.label.display(displayFont);
+        } else {
+            this.scene.registerForPick(this.pickingId, this);
 
-        this.appearance.apply();
+            this.appearance.apply();
 
-        this.scene.pushMatrix();
-        this.scene.translate(0, 0, this.elevated);
-        this.scene.scale(this.label.getFontSize() * this.maxSize, 1, 1);
-        this.quad.display();
-        this.scene.popMatrix();
+            this.scene.pushMatrix();
+            this.scene.translate(0, 0, this.elevated);
+            this.scene.scale(this.label.getFontSize() * this.maxSize, 1, 1);
+            this.quad.display();
+            this.scene.popMatrix();
 
-        this.label.display();
-
-        this.scene.registerForPick(-1, null);
+            this.scene.registerForPick(-1, null);
+        }
     }
 }
