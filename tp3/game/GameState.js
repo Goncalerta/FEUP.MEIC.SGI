@@ -431,9 +431,6 @@ export class BeginFilmState extends GameState {
             const next_player_positions = player.getId() === 1 ? next_player1_positions : next_player2_positions;
             
             if (arraysIncludes(player_positions, piece.boardPosition)) {
-                if (piece.isQueen()) {
-                    animations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
-                }
                 continue;
             }
 
@@ -460,7 +457,22 @@ export class BeginFilmState extends GameState {
         }
 
         animations.onEnd(() => {
-            this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
+            const animations = new EventAnimationChain();
+            const pieces = [...this.model.game.checkers.pieces];
+
+            for (let i = 0; i < pieces.length; i++) {
+                const piece = pieces[i];
+                
+                if (piece.isQueen()) {
+                    animations.push(...piece.getJumpAnimations([...piece.position], [...piece.boardPosition], null, false));
+                }
+            }
+
+            animations.onEnd(() => {
+                this.model.setGameState(new FilmState(this.model, this.moves, this.getChecker, this.remainingTime));
+            });
+
+            animations.start(this.model.current_time);
         });
 
         animations.start(this.model.current_time);
