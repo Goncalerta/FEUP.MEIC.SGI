@@ -19,6 +19,7 @@ export class XMLscene extends CGFscene {
 
         this.interface = myinterface;
         this.sceneName = sceneName;
+        this.selectedPickingId = null;
     }
 
     /**
@@ -31,10 +32,20 @@ export class XMLscene extends CGFscene {
         this.mainMenu = null;
         this.game = null;
         if (this.sceneName == CONFIG.menu) {
-            this.mainMenu = new MyMainMenu(this, this.interface.onClickText.bind(this.interface), playCallBack, this.interface);
+            this.mainMenu = new MyMainMenu(this, this.selectTextBox.bind(this), playCallBack, this.interface);
         } else {
             this.game = new MyGame(this, playCallBack, player1Name, player2Name);
         }
+    }
+
+    selectTextBox(writeCallBack, pickId) {
+        this.selectedPickingId = pickId;
+        this.interface.onClickText(writeCallBack);
+    }
+
+    removeSelectedTextBox() {
+        this.selectedPickingId = null;
+        this.interface.removeOnClickTextIfAny();
     }
 
     /**
@@ -455,8 +466,7 @@ export class XMLscene extends CGFscene {
         if (this.pickMode == false) {
             // results can only be retrieved when picking mode is false
             if (this.pickResults != null && this.pickResults.length > 0) {
-                // Removing "selection" from textBoxes
-                this.interface.removeOnClickTextIfAny();
+                this.removeSelectedTextBox();
 
                 for (let i = 0; i < this.pickResults.length; i++) {
                     let obj = this.pickResults[i][0];
