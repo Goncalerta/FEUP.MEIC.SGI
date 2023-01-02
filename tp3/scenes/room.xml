@@ -2,27 +2,40 @@
     <scene root="root" axis_length="0.5"/>
 
     <views default="mainView">
-        <perspective id="mainView" near="0.1" far="5000" angle="22.9">
+        <perspective id="mainView" near="0.1" far="100" angle="22.9">
             <from x="10" y="10" z="10" />
             <to x="0" y="0" z="0" />
         </perspective>
-
-        <ortho id="mainOrthoView" near="0.1" far="5000" left="-5.5" right="5.5" top="2.75" bottom="-2.75" >
+        <ortho id="mainOrthoView" near="0.1" far="100" left="-5.5" right="5.5" top="2.75" bottom="-2.75" >
             <from x="5" y="5.6" z="5" />
             <to x="0" y="0.6" z="0" />
             <up x="0" y="1" z="0" />
         </ortho>
-
-        <perspective id="topTableView" near="0.1" far="5000" angle="22.9">
+        <perspective id="topTableView" near="0.1" far="100" angle="22.9">
             <from x="10.25" y="20" z="0" />
             <to x="0" y="0" z="0" />
         </perspective>
-
-        <ortho id="orthoTable" near="0.1" far="5000" left="-7" right="7" top="3.75" bottom="-3.75" >
+        <ortho id="orthoTable" near="0.1" far="100" left="-7" right="7" top="3.75" bottom="-3.75" >
             <from x="7" y="2.4" z="7" />
             <to x="0" y="-0.2" z="0" />
             <up x="0" y="1" z="0" />
         </ortho>
+        <perspective id="bedView" near="0.1" far="100" angle="22.9">
+            <from x="0" y="10" z="-3" />
+            <to x="14" y="-3" z="18" />
+        </perspective>
+        <perspective id="sleepView" near="0.1" far="100" angle="22.9">
+            <from x="15" y="-2.5" z="19" />
+            <to x="14" y="-2" z="15" />
+        </perspective>
+        <perspective id="wideView" near="0.1" far="100" angle="22.9">
+            <from x="23" y="13" z="31" />
+            <to x="4.5" y="1.5" z="-3" />
+        </perspective>
+        <perspective id="enterDoorView" near="0.1" far="100" angle="22.9">
+            <from x="-1" y="5.6" z="-20" />
+            <to x="3.7" y="0.6" z="-3" />
+        </perspective>
     </views>
 
     <ambient>
