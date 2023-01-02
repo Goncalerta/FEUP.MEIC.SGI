@@ -60,20 +60,10 @@ export class MyMenu extends CGFobject {
         }
     }
 
-    displayBox() {
-        const dimensions = this.getDimensions();
-        
-        // box
-        this.scene.pushMatrix();
-        this.scene.scale(dimensions.width, dimensions.height, dimensions.depth);
-        this.box.display();
-        this.scene.popMatrix();
-    }
-
-    displayText() {
-        const dimensions = this.getDimensions();
-
+    displayBase(displayFont) {
         this.scaleTitleAndLabels(this.getScaleFactor());
+
+        const dimensions = this.getDimensions();
         const title = this.getTitle();
         const labels = this.getLabels();
 
@@ -87,24 +77,34 @@ export class MyMenu extends CGFobject {
 
         this.scene.pushMatrix();
 
+        // box
+        if (!displayFont) {
+            this.scene.pushMatrix();
+            this.scene.scale(dimensions.width, dimensions.height, dimensions.depth);
+            this.box.display();
+            this.scene.popMatrix();
+        }
+
         this.scene.translate(0, halfVertical, dimensions.depth/2.0);
 
         // title
         if (title != null) {
-            title.display(true);
+            title.display(displayFont);
             this.scene.translate(0, -1.1 * title.getFontSize() * 2, 0);
         }
 
         // labels
+        this.scene.pushMatrix();
         
         for (let i = 0; i < labels.length; i++) {
             const label = labels[i];
             if (label !== null) {
                 fontSize = label.getFontSize();
-                label.display(true);
+                label.display(displayFont);
             }
             this.scene.translate(0, -1.1 * fontSize, 0);
         }
+        this.scene.popMatrix();
 
         this.scene.popMatrix();
 
@@ -112,10 +112,10 @@ export class MyMenu extends CGFobject {
     }
 
     display(pickMode) {
-        this.displayBox();
+        this.displayBase(false);
         if (!pickMode) {
             this.scene.setActiveShaderSimple(this.transparentShader);
-            this.displayText();
+            this.displayBase(true);
             this.scene.setActiveShaderSimple(this.scene.defaultShader);
         }
     }
