@@ -7,10 +7,20 @@ import { MyScoreBoard } from './menu/MyScoreBoard.js';
 import { Player } from './Player.js';
 import { MyGameCameras } from './MyGameCameras.js';
 
+/**
+ * MyGame class, representing the game.
+ */
 export class MyGame {
     TILE_SIZE = 0.5;
     DISCARD_BOARD_GAP = 0.15;
 
+    /**
+     * @constructor
+     * @param {CGFscene} scene - MyScene object
+     * @param {function} playCallBack - function to call to go back to the main menu
+     * @param {string} player1Name - player 1 name
+     * @param {string} player2Name - player 2 name
+     */
     constructor(scene, playCallBack, player1Name=Player.PLAYER_1_DEFAULT_NAME, player2Name=Player.PLAYER_2_DEFAULT_NAME) {
         this.scene = scene;
 
@@ -32,18 +42,34 @@ export class MyGame {
         this.crosses = new Set();
     }
 
+    /**
+     * Sets the spotlight position.
+     * @param {number} x - Spotlight x position
+     * @param {number} y - Spotlight y position
+     */
     setSpotlightPosition(x, y) {
         this.scene.setGameSpotlightPosition(x, y);
     }
 
+    /**
+     * Enables the spotlight.
+     */
     enableSpotlight() {
         this.scene.updateGameSpotlight(true);
     }
 
+    /**
+     * Disables the spotlight.
+     */
     disableSpotlight() {
         this.scene.updateGameSpotlight(false);
     }
 
+    /**
+     * Generates an animated cross at the given position.
+     * @param {number} x - Cross x position
+     * @param {number} y - Cross y position
+     */
     makeCross(x, y) {
         let height = 0.01;
         if (this.model.isQueen(x, y)) {
@@ -59,6 +85,11 @@ export class MyGame {
         cross.start(this.model.current_time);
     }
 
+    /**
+     * Returns the discard board of the given player.
+     * @param {number} playerId - Player id
+     * @returns {MyDiscardBoard} Discard board
+     */
     getDiscardBoard(playerId) {
         if (playerId == 1) {
             return this.player1DiscardBoard;
@@ -67,10 +98,20 @@ export class MyGame {
         }
     }
 
+    /**
+     * Returns the checker at the given position.
+     * @param {number} x - Checker x position
+     * @param {number} y - Checker y position
+     * @returns {MyChecker} Checker
+     */
     getChecker(x, y) {
         return this.checkers.getChecker(x, y);
     }
 
+    /**
+     * Updates the game state.
+     * @param {number} t - Current time
+     */
     update(t) {
         this.model.update(t);
 
@@ -82,6 +123,10 @@ export class MyGame {
         }
     }
 
+    /**
+     * Displays the game.
+     * @param {boolean} pickMode - True if in pick mode, false otherwise
+     */
     display(pickMode) {
         this.scene.pushMatrix();
         this.scene.rotate(Math.PI / 2, 0, 1, 0);

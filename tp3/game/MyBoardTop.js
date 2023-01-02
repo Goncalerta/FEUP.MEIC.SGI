@@ -3,7 +3,7 @@ import { MyPatch } from '../MyPatch.js';
 import { getAppearance } from '../utils.js';
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyBoardTop class, representing the top of the board with its texture.
  */
 export class MyBoardTop {
     TEXTURE_PATH = "scenes/images/game/board.png";
@@ -18,10 +18,7 @@ export class MyBoardTop {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param realHalfSize Half size of the board
      */
      constructor(scene, realHalfSize) {
         this.scene = scene;
@@ -41,6 +38,9 @@ export class MyBoardTop {
         ]);
     }
 
+    /**
+     * Displays the board top.
+     */
     display() {
         this.material.apply();
         this.scene.pushMatrix();

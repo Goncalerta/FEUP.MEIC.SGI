@@ -3,7 +3,7 @@ import { MyPatch } from '../MyPatch.js';
 import { getAppearance } from '../utils.js';
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyDiscardBoard class, representing a discard board.
  */
 export class MyDiscardBoard {
     TEXTURE_PATH = "scenes/images/game/discardboard.png";
@@ -18,10 +18,7 @@ export class MyDiscardBoard {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * TODO: add parameters
      */
      constructor(scene, realHalfSize, width, position, direction = 1, padding = 0.5) {
         this.scene = scene;
@@ -58,6 +55,11 @@ export class MyDiscardBoard {
         }
     }
 
+    /**
+     * Adds a piece to the board.
+     * @param {MyChecker} piece Piece to be added.
+     * @returns {Array} Position of the piece.
+     */
     putPiece(piece) {
         const slot = this.emptySlots.pop();
         this.occupiedSlots.push(slot);
@@ -65,12 +67,20 @@ export class MyDiscardBoard {
         return slot;
     }
 
+    /**
+     * Removes a piece from the board.
+     * @returns {MyChecker} Piece removed.
+     */
     takePiece() {
         const slot = this.occupiedSlots.pop();
         this.emptySlots.push(slot);
         return this.pieces.pop();
     }
 
+    /**
+     * Removes all pieces from the board.
+     * @returns {Array} Pieces removed.
+     */
     takeAllPieces() {
         const pieces = this.pieces.reverse();
         this.pieces = [];
@@ -79,6 +89,9 @@ export class MyDiscardBoard {
         return pieces;
     }
 
+    /**
+     * Displays the board.
+     */
     display() {
         this.material.apply();
         this.scene.pushMatrix();

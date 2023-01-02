@@ -15,12 +15,19 @@ export class MyChecker extends CGFobject {
     PROMOTION_FULL_TURNS = 1;
 
     /**
-     * @method constructor
+     * @constructor
      * @param {CGFscene} scene - Reference to MyScene object
-     * @param {float} radius - Radius of the checker's base
-     * @param {float} height - Height of the checker (along Z axis)
-     * @param {integer} slices - Number of divisions around the Z axis (circumference)
-     * @param {integer} stacks - Number of divisions along the Z axis
+     * @param {Object} geometries - Array of geometries
+     * @param {Object} materials - Array of materials
+     * @param {Object} textures - Array of textures
+     * @param {MyGameModel} model - MyGameModel object
+     * @param {Number} pickingId - Picking ID
+     * @param {Number} tileSize - Size of a tile
+     * @param {Number} radius - Radius of the checker
+     * @param {Number} height - Height of the checker
+     * @param {Player} player - Player that owns the checker
+     * @param {Array} position - Position of the checker on the board
+     * @param {Number} topOffset - Offset of the checker
      */
     constructor(scene, geometries, materials, textures, model, pickingId, tileSize, radius, height, player, position = [0, 0], topOffset = 0.01) {
         super(scene);
@@ -44,15 +51,27 @@ export class MyChecker extends CGFobject {
         this.topOffset = topOffset;
     }
 
+    /**
+     * Calculates the position of the checker
+     * @param {Array} position - Position of the checker on the board
+     * @returns {Array} Position of the checker
+     */
     calculatePosition(position) {
         return [(position[0] - 3.5) * this.tileSize, 0, -(position[1] - 3.5) * this.tileSize];
     }
 
+    /**
+     * Sets the position of the checker
+     * @param {Array} position - Position of the checker on the board
+     */
     setPosition(position) {
         this.position = this.calculatePosition(position);
         this.boardPosition = position;
     }
 
+    /**
+     * Animates the cheker for being an unallowed move
+     */
     animateUnallowed() {
         const animation = new EventAnimation(this.scene, 0.4, identity);
         animation.onUpdate((t) => {
@@ -64,6 +83,11 @@ export class MyChecker extends CGFobject {
         animation.start(this.scene.currentTime);
     }
 
+    /**
+     * Gets the animation for a promotion
+     * @param {Boolean} reversed - If the animation should be reversed
+     * @returns {Array} Array of animations
+     */
     getPromotionAnimations(reversed = false) {
         const halfDuration = 1;
         const heightToTurn = this.PROMOTION_HEIGHT - this.radius;
@@ -112,6 +136,13 @@ export class MyChecker extends CGFobject {
         return [upAnimation, downAnimation];
     }
 
+    /**
+     * Gets the animation for a move
+     * @param {Array} direction - Direction of the move
+     * @param {Array} endPosition - End position of the move
+     * @param {Function} onTestCollision - Function to test collision
+     * @returns {Array} Array of animations
+     */
     getMoveAnimations(direction, endPosition, onTestCollision = null) {
         // The direction is only used to walk half a tile
         const scaledDirection = [direction[0] / 2, direction[1] / 2];
@@ -170,6 +201,12 @@ export class MyChecker extends CGFobject {
         return [accelAnimation, uniformAnimation, decelAnimation];
     }
 
+    /**
+     * Gets the animations for a recoil (when a piece goes against another during a move)
+     * @param {MyChecker} capturedPiece - Piece that is captured
+     * @param {Array} direction - Direction of the move
+     * @returns {Array} Array of animations
+     */
     getRecoilAnimations(capturedPiece, direction) {
         const recoilAnimation = new EventAnimation(this.scene, 0.5, easeOutCubic);
 
@@ -217,6 +254,11 @@ export class MyChecker extends CGFobject {
         return [recoilAnimation];
     }
 
+    /**
+     * Gets the animation for a change in height
+     * @param {number} finalHeight - Final height of the piece
+     * @returns {EventAnimation} Animation for the change in height
+     */
     getChangeHeightAnimation(finalHeight) {
         const changeHeightAnimation = new EventAnimation(this.scene, 0.25, identity);
 
@@ -236,6 +278,14 @@ export class MyChecker extends CGFobject {
         return changeHeightAnimation;
     }
 
+    /**
+     * Gets the animations for a jump
+     * @param {Array} endPosition - Final position of the piece
+     * @param {Array} endBoardPosition - Final board position of the piece
+     * @param {Function} onStart - Function to be called when the animation starts
+     * @param {boolean} keepPromotion - Whether to keep the promotion or not
+     * @returns {Array} Array of animations
+     */
     getJumpAnimations(endPosition, endBoardPosition, onStart = null, keepPromotion = true) {
         const onUpdate = (t, params) => {
             this.position = [
@@ -304,6 +354,12 @@ export class MyChecker extends CGFobject {
         return [upAnimation, downAnimation];
     }
 
+    /**
+     * Animates an undo operation
+     * @param {Move} move - Move to be undone
+     * @param {Function} updateScore - Function to update the score
+     * @param {Function} onEndCallback - Function to be called when the animation ends
+     */
     animateUndo(move, updateScore, onEndCallback) {
         const endPosition = this.calculatePosition(move.from);
 
@@ -331,6 +387,12 @@ export class MyChecker extends CGFobject {
         animations.start(this.scene.currentTime);
     }
 
+    /**
+     * Animates a move operation
+     * @param {Move} move - Move to be animated
+     * @param {Function} updateScore - Function to update the score
+     * @param {Function} onEndCallback - Function to be called when the animation ends
+     */
     animateMove(move, updateScore, onEndCallback) {
         const endPosition = this.calculatePosition(move.to);
 
@@ -386,10 +448,17 @@ export class MyChecker extends CGFobject {
         animations.start(this.scene.currentTime);
     }
 
+    /**
+     * Checks if the checker is a queen
+     * @returns {boolean} True if the checker is a queen, false otherwise
+     */
     isQueen() {
         return this.rotation > 0.25;
     }
 
+    /**
+     * Method called when the checker is clicked
+     */
     onClick(id) {
         if (!this.boardPosition) {
             return;

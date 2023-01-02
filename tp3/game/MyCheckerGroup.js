@@ -1,11 +1,11 @@
 import { CGFtexture } from "../../lib/CGF.js";
 import { MyCircle } from "../MyCircle.js";
 import { MyCylinder } from "../MyCylinder.js";
-import { arraysEqual, getAppearance } from "../utils.js";
+import { arraysEqual } from "../utils.js";
 import { MyChecker } from "./MyChecker.js";
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyCheckerGroup class, representing the game checkers.
  */
 export class MyCheckerGroup {
     MATERIAL_P1 = {
@@ -65,10 +65,10 @@ export class MyCheckerGroup {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param model Reference to MyGameModel object.
+     * @param player1 Reference to MyPlayer object.
+     * @param player2 Reference to MyPlayer object.
+     * @param tileSize Size of a tile.
      */
     constructor(scene, model, player1, player2, tileSize) {
         const radius = tileSize * this.PIECE_TILE_RATIO;
@@ -119,10 +119,19 @@ export class MyCheckerGroup {
         }
     }
 
+    /**
+     * Gets the checker at the given tile.
+     * @param {number} x X coordinate of the tile.
+     * @param {number} y Y coordinate of the tile.
+     * @returns {MyChecker} Checker at the given tile.
+     */
     getChecker(x, y) {
         return this.pieces.find((piece) => arraysEqual(piece.boardPosition, [x, y]));
     }
 
+    /**
+     * Displays all checkers.
+     */
     display() {
         for (let i = 0; i < this.pieces.length; i++) {
             this.pieces[i].display();

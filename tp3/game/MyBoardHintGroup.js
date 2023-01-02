@@ -5,7 +5,7 @@ import { PeriodicAnimation } from "../animations/PeriodicAnimation.js";
 
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyBoardHintGroup class, representing the game board hints.
  */
 export class MyBoardHintGroup {
     MATERIAL = {
@@ -27,10 +27,8 @@ export class MyBoardHintGroup {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param model Reference to MyGameModel object.
+     * @param tileSize Size of a tile.
      */
     constructor(scene, model, tileSize) {
         this.scene = scene;
@@ -43,7 +41,7 @@ export class MyBoardHintGroup {
     }
 
     /**
-     * Displays the checker
+     * Displays the board hints.
      */
     display() {
         const moves = this.model.state.getMoveHints();

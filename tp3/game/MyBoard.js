@@ -3,7 +3,7 @@ import { MyBoardTileGroup } from "./MyBoardTileGroup.js";
 import { MyBoardHintGroup } from "./MyBoardHintGroup.js";
 
 /**
- * MyRectangle class, representing a rectangle in XY plane.
+ * MyBoard class, representing the game board.
  */
 export class MyBoard {
     NUM_TILES_SIDE = 8;
@@ -12,10 +12,8 @@ export class MyBoard {
     /**
      * @constructor
      * @param scene Reference to MyScene object.
-     * @param x1 x coordinate of first point.
-     * @param x2 x coordinate of second point.
-     * @param y1 y coordinate of first point.
-     * @param y2 y coordinate of second point.
+     * @param model Reference to MyGameModel object.
+     * @param tileSize Size of the tiles
      */
     constructor(scene, model, tileSize) {
         this.scene = scene;
@@ -26,6 +24,10 @@ export class MyBoard {
         this.moveHints = new MyBoardHintGroup(scene, model, tileSize);
     }
 
+    /**
+     * Displays the board.
+     * @param {Boolean} pickMode Whether the board is being displayed in pick mode
+     */
     display(pickMode) {
         this.boardTop.display();
 

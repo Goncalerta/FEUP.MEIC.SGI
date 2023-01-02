@@ -38,11 +38,19 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Selects a text box to write on
+     * @param {function} writeCallBack - callback to be called when text is written
+     * @param {number} pickId - picking id of the text box
+     */
     selectTextBox(writeCallBack, pickId) {
         this.selectedPickingId = pickId;
         this.interface.onClickText(writeCallBack);
     }
 
+    /**
+     * Removes the selection of a text box, if any is selected
+     */
     removeSelectedTextBox() {
         this.selectedPickingId = null;
         this.interface.removeOnClickTextIfAny();
@@ -165,10 +173,19 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Updates the spotlight position to the given coordinates.
+     * @param {number} x the x coordinate
+     * @param {number} z the z coordinate
+     */
     setGameSpotlightPosition(x, z) {
         this.lights[7].setPosition(x, 3, z, 1);
     }
 
+    /**
+     * Updates the spotlight ON/OFF state.
+     * @param {boolean} on whether the spotlight should be on or off
+     */
     updateGameSpotlight(on) {
         if (on) {
             this.lights[7].enable();
@@ -456,6 +473,9 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Checks if there were any picked objects and calls their onClick method.
+     */
     checkPicking() {
         if (this.pickMode == false) {
             // results can only be retrieved when picking mode is false
@@ -473,10 +493,18 @@ export class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Adds a new event animation to the scene.
+     * @param {EventAnimation} eventAnimation The event animation to be added.
+     */
     animate(eventAnimation) {
         this.eventAnimations.add(eventAnimation);
     }
 
+    /**
+     * Removes an event animation from the scene.
+     * @param {EventAnimation} eventAnimation The event animation to be removed.
+     */
     removeAnimation(eventAnimation) {
         this.eventAnimations.delete(eventAnimation);
     }
